@@ -1,14 +1,31 @@
 import { axiosInstance } from "@/api";
+import { storageKeys } from "@/constants";
 import { MemberDto } from "@/types/domain";
+import { getSecureStore } from "@/utils/secureStore";
 
-async function postSignin(body: FormData): Promise<MemberDto> {
-  const { data } = await axiosInstance.post("api/member/signin", body, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+type ResponseToken = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+async function postSignin(body: FormData): Promise<ResponseToken> {
+  const { data } = await axiosInstance.post("api/mobile/signin", body);
 
   return data;
 }
 
-export { postSignin };
+async function postGetUser() {
+  const { data } = await axiosInstance.post("/api/member/my-info");
+  return data;
+}
+
+async function postRefreshToken(): Promise<ResponseToken> {
+  const refreshToken = await getSecureStore(storageKeys.REFRESH_TOKEN);
+  const body = new FormData();
+  body.append("refreshToken", String(refreshToken));
+  const { data } = await axiosInstance.post("/api/auth/refresh", body);
+
+  return data;
+}
+
+export { postSignin, postGetUser, postRefreshToken };
