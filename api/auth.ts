@@ -1,6 +1,5 @@
 import { axiosInstance } from "@/api";
 import { storageKeys } from "@/constants";
-import { MemberDto } from "@/types/domain";
 import { getSecureStore } from "@/utils/secureStore";
 
 type ResponseToken = {
