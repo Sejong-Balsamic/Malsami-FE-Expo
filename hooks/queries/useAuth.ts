@@ -1,5 +1,5 @@
-import { postRefreshToken, postSignin, queryClient } from "@/api";
-import { useMutation } from "@tanstack/react-query";
+import { postGetUser, postRefreshToken, postSignin, queryClient } from "@/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   setSecureStore,
   getSecureStore,
@@ -30,6 +30,13 @@ function useRefreshAuthToken() {
       await setSecureStore(storageKeys.ACCESS_TOKEN, accessToken);
       await setSecureStore(storageKeys.REFRESH_TOKEN, refreshToken);
     },
+  });
+}
+
+function useGetUser() {
+  return useQuery({
+    queryFn: postGetUser,
+    queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
   });
 }
 
