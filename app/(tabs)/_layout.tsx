@@ -1,45 +1,96 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Tabs } from "expo-router";
+import React from "react";
+import { View, Image, Text, StyleSheet, Pressable } from "react-native";
+import Fontisto from "@expo/vector-icons/Fontisto";
+import { colors } from "@/constants/colors";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import useModal from "@/hooks/useModal";
+import Feather from "@expo/vector-icons/Feather";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const logoModal = useModal();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: colors.PRIMARY_COLOR,
+        tabBarInactiveTintColor: colors.light.text,
         headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
+        sceneStyle: {
+          backgroundColor: colors.UNCHANGED_WHITE,
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          headerShown: true,
+          headerTitle: "",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="home-outline" size={24} color={color} />
+          ),
+          tabBarLabel: "메인",
+          headerLeft: () => (
+            <Pressable style={styles.headerLeftContainer}>
+              <Image
+                style={styles.image}
+                resizeMode="cover"
+                source={require("@/assets/images/logo/malsamiLogo.jpeg")}
+              />
+              <Text style={styles.logoText}>malsami</Text>
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable>
+              <Fontisto
+                style={{ right: 12 }}
+                name="bell"
+                size={24}
+                color="black"
+              />
+            </Pressable>
+          ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="material"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "",
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name="file-text" size={24} color={color} />
+          ),
+          tabBarLabel: "자료",
+        }}
+      />
+      <Tabs.Screen
+        name="question"
+        options={{
+          title: "",
+        }}
+      />
+      <Tabs.Screen
+        name="mypage"
+        options={{
+          title: "",
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  headerLeftContainer: {
+    paddingHorizontal: 12,
+    gap: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    width: 24,
+    height: 24,
+  },
+  logoText: {
+    fontSize: 24,
+  },
+});
