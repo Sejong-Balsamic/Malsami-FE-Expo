@@ -10,6 +10,7 @@ const common = {
   PRIMARY_COLOR: "#08E4BA",
   UNCHANGED_WHITE: "#FFF",
   UNCHANGED_BLACK: "#000",
+  BLUE_500: "",
 };
 
 const colors = {
