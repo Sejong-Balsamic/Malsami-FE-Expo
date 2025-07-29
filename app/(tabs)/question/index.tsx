@@ -1,10 +1,13 @@
+import AuthRoute from "@/components/AuthRoute";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 export default function QuestionHomeScreen() {
   return (
-    <SafeAreaView>
-      <Text>Question Redirecting</Text>
-    </SafeAreaView>
+    <AuthRoute>
+      <SafeAreaView>
+        <Text>Question Redirecting</Text>
+      </SafeAreaView>
+    </AuthRoute>
   );
 }
 
