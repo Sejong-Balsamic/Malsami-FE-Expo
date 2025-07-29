@@ -7,6 +7,7 @@ import {
 } from "@/utils/secureStore";
 import { queryKeys, storageKeys } from "@/constants";
 import { setHeader } from "@/utils";
+import { router } from "expo-router";
 
 function usePostSignin() {
   return useMutation({
@@ -16,8 +17,9 @@ function usePostSignin() {
       await setSecureStore(storageKeys.ACCESS_TOKEN, accessToken);
       await setSecureStore(storageKeys.REFRESH_TOKEN, refreshToken);
       queryClient.fetchQuery({
-        queryKey: [queryKeys.AUTH],
+        queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
       });
+      router.replace("/");
     },
   });
 }
@@ -40,6 +42,17 @@ function useGetUser() {
   });
 }
 
-function useAuth() {}
+function useAuth() {
+  const { data } = useGetUser();
+  const signinMutation = usePostSignin();
+
+  return {
+    auth: {
+      id: data?.id,
+      nickname: data?.nickname,
+    },
+    signinMutation,
+  };
+}
 
 export default useAuth;
