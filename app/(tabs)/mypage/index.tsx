@@ -1,10 +1,13 @@
+import AuthRoute from "@/components/AuthRoute";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 export default function MypageHomeScreen() {
   return (
-    <SafeAreaView>
-      <Text>Mypage Redirecting</Text>
-    </SafeAreaView>
+    <AuthRoute>
+      <SafeAreaView>
+        <Text>Mypage Redirecting</Text>
+      </SafeAreaView>
+    </AuthRoute>
   );
 }
 
