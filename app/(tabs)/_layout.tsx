@@ -6,6 +6,7 @@ import { colors } from "@/constants/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import useModal from "@/hooks/useModal";
 import Feather from "@expo/vector-icons/Feather";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function TabLayout() {
   const logoModal = useModal();
@@ -55,6 +56,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="material"
         options={{
+          headerShown: false,
           title: "",
           tabBarIcon: ({ color, focused }) => (
             <Feather name="file-text" size={24} color={color} />
@@ -65,13 +67,27 @@ export default function TabLayout() {
       <Tabs.Screen
         name="question"
         options={{
+          headerShown: false,
           title: "",
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name="file-question-outline"
+              size={24}
+              color={color}
+            />
+          ),
+          tabBarLabel: "질문",
         }}
       />
       <Tabs.Screen
         name="mypage"
         options={{
+          headerShown: false,
           title: "",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons name="person" color={color} />
+          ),
+          tabBarLabel: "마이페이지",
         }}
       />
     </Tabs>
