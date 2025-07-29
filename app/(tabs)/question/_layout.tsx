@@ -21,7 +21,7 @@ export default function QuestionLayout() {
                 resizeMode="cover"
                 source={require("@/assets/images/logo/malsamiLogo.jpeg")}
               />
-              <Text style={styles.logoText}>malsami</Text>,
+              <Text style={styles.logoText}>malsami</Text>
             </View>
           ),
           headerRight: () => <Fontisto name="bell" size={24} color="black" />,
