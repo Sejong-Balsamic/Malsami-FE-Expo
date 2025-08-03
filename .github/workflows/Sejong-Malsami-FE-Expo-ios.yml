@@ -120,41 +120,6 @@ jobs:
           echo "📋 최종 릴리즈 노트:"
           cat release_notes.txt
 
-      # 🆕 eas.json에 한국어 릴리즈 노트 동적 추가
-      - name: eas.json 업데이트 (한국어 릴리즈 노트 포함)
-        run: |
-          RELEASE_NOTES="${{ steps.release_notes.outputs.release_notes }}"
-
-          # eas.json에 submit 설정이 없으면 추가
-          if ! grep -q '"submit"' eas.json; then
-            # eas.json 파일 끝에 submit 설정 추가
-            sed -i '$ s/}/,\n  "submit": {\n    "production": {\n      "ios": {\n        "appleId": "${{ secrets.APPLE_ID }}",\n        "ascAppId": "${{ secrets.ASC_APP_ID }}",\n        "appleTeamId": "${{ secrets.APPLE_TEAM_ID }}",\n        "releaseNotes": {\n          "ko-KR": "'"$RELEASE_NOTES"'"\n        }\n      }\n    }\n  }\n}/' eas.json
-          else
-            # 기존 submit 설정이 있으면 releaseNotes만 업데이트
-            python3 << PYTHON_SCRIPT
-          import json
-
-          with open('eas.json', 'r', encoding='utf-8') as f:
-              data = json.load(f)
-
-          if 'submit' not in data:
-              data['submit'] = {}
-          if 'production' not in data['submit']:
-              data['submit']['production'] = {}
-          if 'ios' not in data['submit']['production']:
-              data['submit']['production']['ios'] = {}
-
-          data['submit']['production']['ios']['releaseNotes'] = {
-              'ko-KR': '$RELEASE_NOTES'
-          }
-
-          with open('eas.json', 'w', encoding='utf-8') as f:
-              json.dump(data, f, indent=2, ensure_ascii=False)
-          PYTHON_SCRIPT
-          fi
-
-          echo "eas.json 업데이트 완료 (한국어 릴리즈 노트 포함)"
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
