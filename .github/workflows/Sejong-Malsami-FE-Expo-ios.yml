@@ -31,12 +31,19 @@ jobs:
           eas-version: latest
 
       - name: 🔨 Build & 🚀 Submit to TestFlight
+        env:
+          WHAT_TO_TEST: |
+            🔍 이번 빌드에서 확인해 주세요
+            • 신규 로그인 버그 수정
+            • 다크모드 UI 개선
+            • 성능 최적화 ⚡️
         run: |
           eas build \
             --platform ios \
             --profile production \
             --auto-submit \
             --non-interactive
+            --what-to-test "$WHAT_TO_TEST"
 
     concurrency:
       group: ios-testflight
