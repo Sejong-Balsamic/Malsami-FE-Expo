@@ -30,47 +30,130 @@ jobs:
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "현재 버전: $CURRENT_VERSION"
 
-      - name: 새 버전 계산 (patch 버전 증가)
-        id: version
+      # 🆕 릴리즈 노트 생성 (CHANGELOG.json에서 파싱)
+      - name: 릴리즈 노트 생성
+        id: release_notes
         run: |
-          VERSION="${{ steps.current_version.outputs.current_version }}"
+          CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
 
-          # patch 버전 증가 (1.0.0 → 1.0.1)
-          IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
-          MAJOR=${VERSION_PARTS[0]}
-          MINOR=${VERSION_PARTS[1]}
-          PATCH=${VERSION_PARTS[2]}
+          # CHANGELOG.json에서 릴리즈 노트 추출
+          if [ -f "CHANGELOG.json" ]; then
+            echo "📄 CHANGELOG.json에서 v$CURRENT_VERSION 릴리즈 노트 추출 중..."
+            
+            python3 << PYTHON_SCRIPT > release_notes.txt
+          import json
+          import sys
 
-          NEW_PATCH=$((PATCH + 1))
-          NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+          try:
+              with open('CHANGELOG.json', 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+              
+              version = "$CURRENT_VERSION"
+              found = False
+              
+              for release in data['releases']:
+                  if release['version'] == version:
+                      found = True
+                      
+                      # AI가 생성한 모든 카테고리를 동적으로 처리
+                      for category_key, items in release['parsed_changes'].items():
+                          if items:
+                              # 새 형식인지 기존 형식인지 확인
+                              if isinstance(items, dict) and 'title' in items and 'items' in items:
+                                  title = items['title']
+                                  actual_items = items['items']
+                              else:
+                                  title = category_key.replace('_', ' ').title()
+                                  actual_items = items
+                              
+                              print(f"**{title}**")
+                              for item in actual_items:
+                                  if item.strip():
+                                      print(f"• {item}")
+                              print()
+                      
+                      break
+              
+              if not found:
+                  print(f"v{version} 업데이트")
+                  
+          except Exception as e:
+              print(f"v{version} 업데이트")
+          PYTHON_SCRIPT
+            
+            if [ -s release_notes.txt ]; then
+              echo "✅ 릴리즈 노트 추출 성공!"
+              echo "📋 추출된 릴리즈 노트:"
+              echo "----------------------------------------"
+              cat release_notes.txt
+              echo "----------------------------------------"
+              echo "RELEASE_NOTES_FOUND=true" >> $GITHUB_ENV
+            else
+              echo "❌ 릴리즈 노트 추출 실패"
+              echo "RELEASE_NOTES_FOUND=false" >> $GITHUB_ENV
+              echo "v$CURRENT_VERSION 업데이트" > release_notes.txt
+            fi
+          elif [ -f "CHANGELOG.md" ]; then
+            echo "📄 CHANGELOG.md에서 v$CURRENT_VERSION 변경사항 추출 중..."
+            sed -n "/## \[$CURRENT_VERSION\]/,/## \[/p" CHANGELOG.md | sed '$d' > current_release_notes.txt
+            tail -n +2 current_release_notes.txt > release_notes_clean.txt
+            sed '/^$/d; /^---$/d' release_notes_clean.txt > release_notes.txt
+            if [ -s release_notes.txt ]; then
+              echo "추출된 변경사항:"
+              cat release_notes.txt
+              echo "RELEASE_NOTES_FOUND=true" >> $GITHUB_ENV
+            else
+              echo "현재 버전의 변경사항을 찾을 수 없습니다."
+              echo "RELEASE_NOTES_FOUND=false" >> $GITHUB_ENV
+              echo "v$CURRENT_VERSION 업데이트" > release_notes.txt
+            fi
+          else
+            echo "⚠️ CHANGELOG.json과 CHANGELOG.md 파일이 모두 없습니다."
+            echo "RELEASE_NOTES_FOUND=false" >> $GITHUB_ENV
+            echo "v$CURRENT_VERSION 업데이트" > release_notes.txt
+          fi
 
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "새 버전: $NEW_VERSION"
+          # 릴리즈 노트를 GitHub Output으로 설정
+          RELEASE_NOTES=$(cat release_notes.txt | tr '\n' '\\n')
+          echo "release_notes=$RELEASE_NOTES" >> $GITHUB_OUTPUT
 
-      - name: app.json 업데이트
+          echo "📋 최종 릴리즈 노트:"
+          cat release_notes.txt
+
+      # 🆕 eas.json에 한국어 릴리즈 노트 동적 추가
+      - name: eas.json 업데이트 (한국어 릴리즈 노트 포함)
         run: |
-          sed -i 's/"version": "[^"]*"/"version": "'${{ steps.version.outputs.new_version }}'"/' app.json
-          echo "app.json 업데이트 완료: ${{ steps.version.outputs.new_version }}"
+          RELEASE_NOTES="${{ steps.release_notes.outputs.release_notes }}"
 
-      - name: 버전 업 커밋
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add app.json
-          git commit -m "Malsami 버전 정보 관리 : chore: 버전 ${{ steps.version.outputs.new_version }}" || exit 0
-          git push
+          # eas.json에 submit 설정이 없으면 추가
+          if ! grep -q '"submit"' eas.json; then
+            # eas.json 파일 끝에 submit 설정 추가
+            sed -i '$ s/}/,\n  "submit": {\n    "production": {\n      "ios": {\n        "appleId": "${{ secrets.APPLE_ID }}",\n        "ascAppId": "${{ secrets.ASC_APP_ID }}",\n        "appleTeamId": "${{ secrets.APPLE_TEAM_ID }}",\n        "releaseNotes": {\n          "ko-KR": "'"$RELEASE_NOTES"'"\n        }\n      }\n    }\n  }\n}/' eas.json
+          else
+            # 기존 submit 설정이 있으면 releaseNotes만 업데이트
+            python3 << PYTHON_SCRIPT
+          import json
 
-      - name: Git 태그 생성
-        run: |
-          git tag "v${{ steps.version.outputs.new_version }}"
-          git push origin "v${{ steps.version.outputs.new_version }}"
+          with open('eas.json', 'r', encoding='utf-8') as f:
+              data = json.load(f)
 
-      - name: 버전 업 완료 알림
-        run: |
-          echo "버전 업데이트 완료!"
-          echo "이전 버전: ${{ steps.current_version.outputs.current_version }}"
-          echo "새 버전: ${{ steps.version.outputs.new_version }}"
-          echo "커밋: ${{ github.sha }}"
+          if 'submit' not in data:
+              data['submit'] = {}
+          if 'production' not in data['submit']:
+              data['submit']['production'] = {}
+          if 'ios' not in data['submit']['production']:
+              data['submit']['production']['ios'] = {}
+
+          data['submit']['production']['ios']['releaseNotes'] = {
+              'ko-KR': '$RELEASE_NOTES'
+          }
+
+          with open('eas.json', 'w', encoding='utf-8') as f:
+              json.dump(data, f, indent=2, ensure_ascii=False)
+          PYTHON_SCRIPT
+          fi
+
+          echo "eas.json 업데이트 완료 (한국어 릴리즈 노트 포함)"
 
       - uses: actions/setup-node@v4
         with:
@@ -87,6 +170,9 @@ jobs:
 
       - name: 🔨 Build & 🚀 Submit to TestFlight
         run: |
+          echo "📋 사용될 한국어 릴리즈 노트:"
+          echo "${{ steps.release_notes.outputs.release_notes }}"
+
           eas build \
             --platform ios \
             --profile production \
