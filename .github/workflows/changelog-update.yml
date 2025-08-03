@@ -3,7 +3,7 @@ name: CHANGELOG 자동 업데이트
 on:
   pull_request:
     types: [opened, synchronize]
-    branches: ["develop"]
+    branches: ["main"]
 
 # PR 자동 merge를 위한 권한 추가
 permissions:
