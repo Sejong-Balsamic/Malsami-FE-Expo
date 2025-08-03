@@ -1,10 +1,21 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-03T07:58:54Z",
-    "currentVersion": "1.0.4",
-    "totalReleases": 4
+    "lastUpdated": "2025-08-03T09:12:36Z",
+    "currentVersion": "1.0.5",
+    "totalReleases": 5
   },
   "releases": [
+    {
+      "version": "1.0.5",
+      "date": "2025-08-03",
+      "pr_number": 18,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nDocumentation\\n\\nREADME 파일에 \\\"1.0.5도전\\\" 문구가 추가되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 1,\n  \"additions\": 1,\n  \"deletions\": 0,\n  \"changed_files\": 1\n}",
+      "parsed_changes": {
+        "documentation": [
+          "README 파일에 \\\"1.0.5도전\\\" 문구가 추가되었습니다."
+        ]
+      }
+    },
     {
       "version": "1.0.4",
       "date": "2025-08-03",
