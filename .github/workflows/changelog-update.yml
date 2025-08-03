@@ -30,18 +30,39 @@ jobs:
           git pull origin develop
 
       - name: 현재 버전 확인
-        id: get_version
+        id: current_version
         run: |
           CURRENT_VERSION=$(grep '"version":' app.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "현재 버전: $CURRENT_VERSION"
+
+      - name: 새 버전 계산 (patch 버전 증가)
+        id: version
+        run: |
+          VERSION="${{ steps.current_version.outputs.current_version }}"
+
+          # patch 버전 증가 (1.0.0 → 1.0.1)
+          IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "새 버전: $NEW_VERSION"
+
+      - name: app.json 업데이트
+        run: |
+          sed -i 's/"version": "[^"]*"/"version": "'${{ steps.version.outputs.new_version }}'"/' app.json
+          echo "app.json 업데이트 완료: ${{ steps.version.outputs.new_version }}"
 
       - name: CodeRabbit Summary 업데이트 감지 (스마트 폴링)
         id: detect_summary
         run: |
           PR_NUMBER="${{ github.event.pull_request.number }}"
-          VERSION="${{ steps.get_version.outputs.version }}"
+          VERSION="${{ steps.version.outputs.new_version }}"
           TODAY=$(date '+%Y-%m-%d')
           MAX_ATTEMPTS=120  # 10분 = 120 * 5초
           ATTEMPT=0
@@ -84,7 +105,7 @@ jobs:
         if: env.SUMMARY_FOUND == 'true'
         run: |
           PR_NUMBER="${{ github.event.pull_request.number }}"
-          VERSION="${{ steps.get_version.outputs.version }}"
+          VERSION="${{ steps.version.outputs.new_version }}"
           TODAY=$(date '+%Y-%m-%d')
           TIMESTAMP=$(date '+%Y-%m-%dT%H:%M:%SZ')
 
@@ -338,13 +359,13 @@ jobs:
           git pull origin develop
 
           # 변경사항 추가
-          git add CHANGELOG.json CHANGELOG.md
+          git add app.json CHANGELOG.json CHANGELOG.md
 
           # 변경사항이 있는지 확인
           if git diff --staged --quiet; then
             echo "📝 변경사항이 없습니다"
           else
-            git commit -m "Malsami 버전 관리 : docs : v${{ steps.get_version.outputs.version }} 릴리즈 문서 업데이트 (PR #${{ github.event.pull_request.number }})"
+            git commit -m "Malsami 버전 관리 : chore: 버전 ${{ steps.version.outputs.new_version }} (PR #${{ github.event.pull_request.number }})"
             git push origin develop
             echo "✅ 변경사항이 성공적으로 커밋되었습니다"
           fi
@@ -353,9 +374,9 @@ jobs:
         run: |
           if [ "${{ env.SUMMARY_FOUND }}" == "true" ]; then
             echo "✅ CHANGELOG 업데이트 완료!"
-            echo "📦 버전: ${{ steps.get_version.outputs.version }}"
+            echo "📦 새 버전: ${{ steps.version.outputs.new_version }}"
             echo "🔗 PR: #${{ github.event.pull_request.number }}"
-            echo "📄 CHANGELOG.json 및 CHANGELOG.md가 업데이트되었습니다"
+            echo "📄 app.json, CHANGELOG.json 및 CHANGELOG.md가 업데이트되었습니다"
             echo "🎯 동적 카테고리 파싱으로 AI 생성 콘텐츠 유연하게 처리됨"
           else
             echo "⚠️ CodeRabbit Summary를 찾을 수 없어 업데이트를 건너뛰었습니다"
@@ -365,7 +386,7 @@ jobs:
         run: |
           rm -f pr_content.html summary_section.html raw_summary.txt parse_changelog.py
 
-      - name: 자동 PR Merge
+      - name: 자동 PR Merge 및 main 브랜치 업데이트
         if: env.SUMMARY_FOUND == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -383,3 +404,11 @@ jobs:
             echo "❌ PR 머지에 실패했습니다. 수동으로 처리해주세요."
             exit 1
           fi
+
+          echo "🚀 main 브랜치 업데이트 시작..."
+
+          # main 브랜치 fetch 및 develop 브랜치로 강제 푸시
+          git fetch origin develop:develop
+          git push origin develop:main --force
+
+          echo "✅ main 브랜치 업데이트 완료! 배포 워크플로우가 자동으로 트리거됩니다."
