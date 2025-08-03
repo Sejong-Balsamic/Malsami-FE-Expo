@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "lastUpdated": "2025-08-03T07:14:32Z",
+    "currentVersion": "1.0.2",
+    "totalReleases": 1
+  },
+  "releases": [
+    {
+      "version": "1.0.2",
+      "date": "2025-08-03",
+      "pr_number": 13,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nDocumentation\\n\\nREADME 파일에 \\\"test 11\\\" 문구가 추가되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 2,\n  \"additions\": 3,\n  \"deletions\": 1,\n  \"changed_files\": 2\n}",
+      "parsed_changes": {
+        "documentation": [
+          "README 파일에 \\\"test 11\\\" 문구가 추가되었습니다."
+        ]
+      }
+    }
+  ]
+}
