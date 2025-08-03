@@ -1,10 +1,33 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-03T07:24:01Z",
-    "currentVersion": "1.0.2",
-    "totalReleases": 2
+    "lastUpdated": "2025-08-03T07:58:54Z",
+    "currentVersion": "1.0.4",
+    "totalReleases": 4
   },
   "releases": [
+    {
+      "version": "1.0.4",
+      "date": "2025-08-03",
+      "pr_number": 17,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nDocumentation\\n\\nREADME.md 파일이 완전히 새롭게 작성되어 프로젝트 소개, 주요 기능, 기술 스택, 설치 및 개발 방법, 팀원 정보, 배포 및 CI/CD 안내 등 다양한 내용을 포함한 종합적인 문서로 확장되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 2,\n  \"additions\": 26,\n  \"deletions\": 4,\n  \"changed_files\": 4\n}",
+      "parsed_changes": {
+        "documentation": [
+          "README.md 파일이 완전히 새롭게 작성되어 프로젝트 소개, 주요 기능, 기술 스택, 설치 및 개발 방법, 팀원 정보, 배포 및 CI/CD 안내 등 다양한 내용을 포함한 종합적인 문서로 확장되었습니다."
+        ]
+      }
+    },
+    {
+      "version": "1.0.3",
+      "date": "2025-08-03",
+      "pr_number": 15,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\niOS 릴리즈 워크플로우에서 자동 버전 증가 및 git 태그 생성을 제거하고, 릴리즈 노트를 CHANGELOG에서 추출하여 iOS 제출 설정에 자동 반영하도록 개선했습니다.\\nchangelog 및 app.json 업데이트 워크플로우에서 패치 버전 자동 증가, app.json 버전 동기화, 커밋 메시지 개선, PR 병합 후 main 브랜치 강제 동기화 기능을 추가했습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": true,\n  \"mergeable\": null,\n  \"rebaseable\": null,\n  \"mergeable_state\": \"unknown\",\n  \"merged_by\": {\n    \"login\": \"juhyunk0820\",\n    \"id\": 47581536,\n    \"node_id\": \"MDQ6VXNlcjQ3NTgxNTM2\",\n    \"avatar_url\": \"https://avatars.githubusercontent.com/u/47581536?v=4\",\n    \"gravatar_id\": \"\",\n    \"url\": \"https://api.github.com/users/juhyunk0820\",\n    \"html_url\": \"https://github.com/juhyunk0820\",\n    \"followers_url\": \"https://api.github.com/users/juhyunk0820/followers\",\n    \"following_url\": \"https://api.github.com/users/juhyunk0820/following{/other_user}\",\n    \"gists_url\": \"https://api.github.com/users/juhyunk0820/gists{/gist_id}\",\n    \"starred_url\": \"https://api.github.com/users/juhyunk0820/starred{/owner}{/repo}\",\n    \"subscriptions_url\": \"https://api.github.com/users/juhyunk0820/subscriptions\",\n    \"organizations_url\": \"https://api.github.com/users/juhyunk0820/orgs\",\n    \"repos_url\": \"https://api.github.com/users/juhyunk0820/repos\",\n    \"events_url\": \"https://api.github.com/users/juhyunk0820/events{/privacy}\",\n    \"received_events_url\": \"https://api.github.com/users/juhyunk0820/received_events\",\n    \"type\": \"User\",\n    \"user_view_type\": \"public\",\n    \"site_admin\": false\n  },\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 1,\n  \"additions\": 163,\n  \"deletions\": 48,\n  \"changed_files\": 2\n}",
+      "parsed_changes": {
+        "chores": [
+          "iOS 릴리즈 워크플로우에서 자동 버전 증가 및 git 태그 생성을 제거하고, 릴리즈 노트를 CHANGELOG에서 추출하여 iOS 제출 설정에 자동 반영하도록 개선했습니다.",
+          "changelog 및 app.json 업데이트 워크플로우에서 패치 버전 자동 증가, app.json 버전 동기화, 커밋 메시지 개선, PR 병합 후 main 브랜치 강제 동기화 기능을 추가했습니다."
+        ]
+      }
+    },
     {
       "version": "1.0.2",
       "date": "2025-08-03",
