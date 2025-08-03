@@ -1,0 +1,43 @@
+name: 📦 iOS 빌드 & 🚀 TestFlight 배포
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build_and_submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_SECRET_ACCESS_TOKEN }}
+      EXPO_APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - uses: expo/expo-github-action@v8
+        with:
+          token: ${{ env.EXPO_TOKEN }}
+          eas-version: latest
+
+      - name: 🔨 Build & 🚀 Submit to TestFlight
+        run: |
+          eas build \
+            --platform ios \
+            --profile production \
+            --auto-submit \
+            --non-interactive
+
+    concurrency:
+      group: ios-testflight
+      cancel-in-progress: true
