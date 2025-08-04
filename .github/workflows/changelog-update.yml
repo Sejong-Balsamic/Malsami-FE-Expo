@@ -407,8 +407,8 @@ jobs:
 
           echo "🚀 main 브랜치 업데이트 시작..."
 
-          # main 브랜치 fetch 및 develop 브랜치로 강제 푸시
-          git fetch origin develop:develop
-          git push origin develop:main --force
+          # 현재 develop 브랜치의 최신 상태를 main 브랜치로 강제 푸시
+          # 현재 브랜치가 develop이므로 직접 푸시 가능
+          git push origin HEAD:main --force
 
           echo "✅ main 브랜치 업데이트 완료! 배포 워크플로우가 자동으로 트리거됩니다."
