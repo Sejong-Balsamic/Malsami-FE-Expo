@@ -1,10 +1,21 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-03T09:12:36Z",
-    "currentVersion": "1.0.5",
-    "totalReleases": 5
+    "lastUpdated": "2025-08-04T05:57:44Z",
+    "currentVersion": "1.0.6",
+    "totalReleases": 6
   },
   "releases": [
+    {
+      "version": "1.0.6",
+      "date": "2025-08-04",
+      "pr_number": 19,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nDocumentation\\n\\nREADME 파일에 새로운 버전 정보 \\\"1.0.6 도전 1 (25.08.04)\\\"가 추가되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 1,\n  \"additions\": 1,\n  \"deletions\": 0,\n  \"changed_files\": 1\n}",
+      "parsed_changes": {
+        "documentation": [
+          "README 파일에 새로운 버전 정보 \\\"1.0.6 도전 1 (25.08.04)\\\"가 추가되었습니다."
+        ]
+      }
+    },
     {
       "version": "1.0.5",
       "date": "2025-08-03",
