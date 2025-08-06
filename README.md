@@ -120,7 +120,7 @@
 - **iOS**: App Store (TestFlight 베타 테스트)
 - **Android**: Google Play Store (예정)
 - **빌드 도구**: EAS Build
-- **CI/CD**: GitHub Actions
+- **CI/CD**: GitHub Actions : 자동화된 버전관리 포함
 
 ## 📚 문서화
 - **GitHub**: [Sejong-Balsamic](https://github.com/Sejong-Balsamic)
