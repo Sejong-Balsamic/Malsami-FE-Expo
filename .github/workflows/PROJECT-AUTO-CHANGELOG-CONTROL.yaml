@@ -454,28 +454,12 @@ jobs:
       #            exit 1
       #          fi
 
-      - name: REST API로 PR 병합
+      - name: 자동 PR Merge (관리자 우회)
         env:
-          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}   # fine-grained PAT
+          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
         run: |
-          PR_NUM=${{ github.event.pull_request.number }}
-
-          echo "🔄 REST API로 PR #$PR_NUM 병합 시도..."
-
-          # 병합 시도 – 성공 시 .merged == true 반환
-          MERGED=$(gh api \
-          --method PUT \
-          -H "Accept: application/vnd.github+json" \
-          /repos/${{ github.repository }}/pulls/$PR_NUM/merge \
-          -f merge_method=merge \
-          --jq '.merged')
-
-          if [[ "$MERGED" == "true" ]]; then
-          echo "✅ PR #$PR_NUM 병합 완료!"
-          else
-          echo "❌ 병합 실패 (이미 병합됐거나 조건 미충족). 확인 필요."
-          exit 1
-          fi
+          gh pr merge ${{ github.event.pull_request.number }} \
+            --merge --admin --body "auto-merge by Github-workflow"
 
       - name: Deploy 브랜치 업데이트 및 배포 트리거
         run: |
