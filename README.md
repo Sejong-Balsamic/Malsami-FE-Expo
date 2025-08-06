@@ -98,7 +98,5 @@
 - **빌드 도구**: EAS Build
 - **CI/CD**: GitHub Actions
 
-## 📫 연락처
-
-- **이메일**: sejong-malsami@gmail.com
+## 📚 문서화
 - **GitHub**: [Sejong-Balsamic](https://github.com/Sejong-Balsamic)
