@@ -1,11 +1,23 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-06T15:08:42Z",
-    "currentVersion": "1.0.18",
-    "totalReleases": 24,
+    "lastUpdated": "2025-08-06T15:14:27Z",
+    "currentVersion": "1.0.20",
+    "totalReleases": 25,
     "projectType": "react-native-expo"
   },
   "releases": [
+    {
+      "version": "1.0.20",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 31,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\nExpo 프로젝트 버전이 1.0.19로 업데이트되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 7,\n  \"additions\": 36,\n  \"deletions\": 9,\n  \"changed_files\": 6\n}",
+      "parsed_changes": {
+        "chores": [
+          "Expo 프로젝트 버전이 1.0.19로 업데이트되었습니다."
+        ]
+      }
+    },
     {
       "version": "1.0.18",
       "project_type": "react-native-expo",
