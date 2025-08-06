@@ -475,8 +475,7 @@ jobs:
         run: |
           echo "🚀 Deploy 브랜치 업데이트 시작..."
           
-          # PAT 토큰으로 푸시하여 다음 워크플로우 트리거
-          git fetch origin main:main
+          # main → deploy 강제 푸시
           git push origin main:deploy --force
           
           echo "✅ Deploy 브랜치 업데이트 완료! 배포 워크플로우가 자동으로 트리거됩니다."
