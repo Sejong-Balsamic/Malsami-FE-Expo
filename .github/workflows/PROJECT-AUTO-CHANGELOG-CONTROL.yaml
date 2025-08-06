@@ -440,13 +440,36 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
-      - name: 자동 PR Merge (조건 충족 후)
+
+      #      - name: 자동 PR Merge
+      #        env:
+      #          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
+      #        run: |
+      #          echo "🔄 PR #${{ github.event.pull_request.number }} 자동 머지 시도 중..."
+      #
+      #          if gh pr merge ${{ github.event.pull_request.number }} --merge; then
+      #            echo "✅ PR이 성공적으로 머지되었습니다!"
+      #          else
+      #            echo "❌ PR 머지에 실패했습니다. 수동으로 처리해주세요."
+      #            exit 1
+      #          fi
+
+      - name: PR 브랜치 최신화
         env:
           GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
         run: |
-          gh pr merge ${{ github.event.pull_request.number }} \
-            --merge --auto --body "auto-merge by Github-workflow"
+          PR_HEAD=$(gh pr view ${{ github.event.pull_request.number }} --json headRefName -q .headRefName)
+          git fetch origin $PR_HEAD
+          git checkout $PR_HEAD
+          git fetch origin deploy:deploy
+          git merge --no-edit deploy || true
+          git push origin HEAD
+
+      - name: 자동 PR Merge
+        env:
+          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} --merge --admin --body "auto-merge after rebasing"
 
       - name: Deploy 브랜치 업데이트 및 배포 트리거
         run: |
