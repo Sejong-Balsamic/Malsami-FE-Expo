@@ -441,17 +441,40 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: 자동 PR Merge
+      #      - name: 자동 PR Merge
+      #        env:
+      #          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
+      #        run: |
+      #          echo "🔄 PR #${{ github.event.pull_request.number }} 자동 머지 시도 중..."
+      #
+      #          if gh pr merge ${{ github.event.pull_request.number }} --merge; then
+      #            echo "✅ PR이 성공적으로 머지되었습니다!"
+      #          else
+      #            echo "❌ PR 머지에 실패했습니다. 수동으로 처리해주세요."
+      #            exit 1
+      #          fi
+
+      - name: REST API로 PR 병합
         env:
-          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
+          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}   # fine-grained PAT
         run: |
-          echo "🔄 PR #${{ github.event.pull_request.number }} 자동 머지 시도 중..."
-          
-          if gh pr merge ${{ github.event.pull_request.number }} --merge; then
-            echo "✅ PR이 성공적으로 머지되었습니다!"
+          PR_NUM=${{ github.event.pull_request.number }}
+
+          echo "🔄 REST API로 PR #$PR_NUM 병합 시도..."
+
+          # 병합 시도 – 성공 시 .merged == true 반환
+          MERGED=$(gh api \
+          --method PUT \
+          -H "Accept: application/vnd.github+json" \
+          /repos/${{ github.repository }}/pulls/$PR_NUM/merge \
+          -f merge_method=merge \
+          --jq '.merged')
+
+          if [[ "$MERGED" == "true" ]]; then
+          echo "✅ PR #$PR_NUM 병합 완료!"
           else
-            echo "❌ PR 머지에 실패했습니다. 수동으로 처리해주세요."
-            exit 1
+          echo "❌ 병합 실패 (이미 병합됐거나 조건 미충족). 확인 필요."
+          exit 1
           fi
 
       - name: Deploy 브랜치 업데이트 및 배포 트리거
