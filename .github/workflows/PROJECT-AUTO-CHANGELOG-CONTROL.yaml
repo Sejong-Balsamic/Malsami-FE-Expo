@@ -441,18 +441,18 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      #      - name: 자동 PR Merge
-      #        env:
-      #          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
-      #        run: |
-      #          echo "🔄 PR #${{ github.event.pull_request.number }} 자동 머지 시도 중..."
-      #
-      #          if gh pr merge ${{ github.event.pull_request.number }} --merge; then
-      #            echo "✅ PR이 성공적으로 머지되었습니다!"
-      #          else
-      #            echo "❌ PR 머지에 실패했습니다. 수동으로 처리해주세요."
-      #            exit 1
-      #          fi
+#      - name: 자동 PR Merge
+#        env:
+#          GH_TOKEN: ${{ secrets._GITHUB_PAT_TOKEN }}
+#        run: |
+#          echo "🔄 PR #${{ github.event.pull_request.number }} 자동 머지 시도 중..."
+#
+#          if gh pr merge ${{ github.event.pull_request.number }} --merge; then
+#            echo "✅ PR이 성공적으로 머지되었습니다!"
+#          else
+#            echo "❌ PR 머지에 실패했습니다. 수동으로 처리해주세요."
+#            exit 1
+#          fi
 
       - name: PR 브랜치 최신화
         env:
