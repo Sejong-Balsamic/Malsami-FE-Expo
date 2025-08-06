@@ -1,11 +1,40 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-06T14:56:42Z",
-    "currentVersion": "1.0.14",
-    "totalReleases": 21,
+    "lastUpdated": "2025-08-06T15:08:28Z",
+    "currentVersion": "1.0.18",
+    "totalReleases": 23,
     "projectType": "react-native-expo"
   },
   "releases": [
+    {
+      "version": "1.0.18",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 30,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\n이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.\\n빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.\\nExpo 프로젝트 버전이 1.0.17로 업데이트되었습니다.\\n프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 3,\n  \"additions\": 134,\n  \"deletions\": 10,\n  \"changed_files\": 5\n}",
+      "parsed_changes": {
+        "chores": [
+          "이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.",
+          "빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.",
+          "Expo 프로젝트 버전이 1.0.17로 업데이트되었습니다.",
+          "프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다."
+        ]
+      }
+    },
+    {
+      "version": "1.0.17",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 29,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\n앱 버전이 1.0.17로 업데이트되었습니다.\\n내부 워크플로우가 개선되어 PR 병합 전 최신 배포 브랜치와 동기화하는 단계가 추가되었습니다.\\n버전 관리 파일의 타임스탬프가 갱신되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": true,\n  \"mergeable\": null,\n  \"rebaseable\": null,\n  \"mergeable_state\": \"unknown\",\n  \"merged_by\": {\n    \"login\": \"Cassiiopeia\",\n    \"id\": 83532821,\n    \"node_id\": \"MDQ6VXNlcjgzNTMyODIx\",\n    \"avatar_url\": \"https://avatars.githubusercontent.com/u/83532821?v=4\",\n    \"gravatar_id\": \"\",\n    \"url\": \"https://api.github.com/users/Cassiiopeia\",\n    \"html_url\": \"https://github.com/Cassiiopeia\",\n    \"followers_url\": \"https://api.github.com/users/Cassiiopeia/followers\",\n    \"following_url\": \"https://api.github.com/users/Cassiiopeia/following{/other_user}\",\n    \"gists_url\": \"https://api.github.com/users/Cassiiopeia/gists{/gist_id}\",\n    \"starred_url\": \"https://api.github.com/users/Cassiiopeia/starred{/owner}{/repo}\",\n    \"subscriptions_url\": \"https://api.github.com/users/Cassiiopeia/subscriptions\",\n    \"organizations_url\": \"https://api.github.com/users/Cassiiopeia/orgs\",\n    \"repos_url\": \"https://api.github.com/users/Cassiiopeia/repos\",\n    \"events_url\": \"https://api.github.com/users/Cassiiopeia/events{/privacy}\",\n    \"received_events_url\": \"https://api.github.com/users/Cassiiopeia/received_events\",\n    \"type\": \"User\",\n    \"user_view_type\": \"public\",\n    \"site_admin\": false\n  },\n  \"comments\": 1,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 7,\n  \"additions\": 30,\n  \"deletions\": 7,\n  \"changed_files\": 3\n}",
+      "parsed_changes": {
+        "chores": [
+          "앱 버전이 1.0.17로 업데이트되었습니다.",
+          "내부 워크플로우가 개선되어 PR 병합 전 최신 배포 브랜치와 동기화하는 단계가 추가되었습니다.",
+          "버전 관리 파일의 타임스탬프가 갱신되었습니다."
+        ]
+      }
+    },
     {
       "version": "1.0.14",
       "project_type": "react-native-expo",
