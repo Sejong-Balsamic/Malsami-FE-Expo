@@ -42,35 +42,35 @@
     <tr>
         <td align="center">이유진</td>
         <td align="center">손재호</td>
+        <td align="center">강주현</td>
         <td align="center">서새찬</td>
         <td align="center">백지훈</td>
         <td align="center">백민홍</td>
         <td align="center">김성림</td>
         <td align="center">이예진</td>
-        <td align="center">지희</td>
-        <td align="center">강주현</td>
+        <td align="center">윤지희</td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/newjinlee">@newjinlee</a></td>
         <td align="center"><a href="https://github.com/thswogh">@thswogh</a></td>
+        <td align="center"><a href="https://github.com/juhyunk0820">@juhyunk0820</a></td>
         <td align="center"><a href="https://github.com/Cassiiopeia">@Cassiiopeia</a></td>
         <td align="center"><a href="https://github.com/Chuseok22">@Chuseok22</a></td>
         <td align="center"><a href="https://github.com/minhong620">@minhong620</a></td>
         <td align="center"><a href="https://github.com/seonglim">@seonglim</a></td>
         <td align="center"><a href="https://github.com/Vhime">@Vhime</a></td>
         <td align="center"><a href="https://github.com/jihee127">@jihee127</a></td>
-        <td align="center"><a href="https://github.com/juhyunk0820">@juhyunk0820</a></td>
     </tr>
     <tr>
         <td>프론트엔드</td>
         <td>프론트엔드</td>
-        <td>백엔드</td>
-        <td>백엔드</td>
-        <td>백엔드</td>
-        <td>디자인</td>
-        <td>디자인</td>
-        <td>디자인</td>
         <td>프론트엔드</td>
+        <td>백엔드</td>
+        <td>백엔드</td>
+        <td>백엔드</td>
+        <td>디자인</td>
+        <td>디자인</td>
+        <td>디자인</td>
     </tr>
 </table>
 
