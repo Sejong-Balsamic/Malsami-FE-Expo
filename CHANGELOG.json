@@ -1,11 +1,58 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-06T13:24:19Z",
-    "currentVersion": "1.0.8",
-    "totalReleases": 8,
+    "lastUpdated": "2025-08-06T14:02:03Z",
+    "currentVersion": "1.0.9",
+    "totalReleases": 11,
     "projectType": "react-native-expo"
   },
   "releases": [
+    {
+      "version": "1.0.9",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 23,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\n이슈 템플릿이 개선되어 기본 담당자와 라벨이 자동으로 지정되고, 포맷이 향상되었습니다.\\n빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.\\n버전 관리 자동화 및 구성 파일(version.yml, version-manager.sh)이 도입되었습니다.\\nExpo 프로젝트 버전이 1.0.9로 업데이트되었습니다.\\nCHANGELOG 및 README가 최신 정보와 간결한 설명으로 갱신되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 3,\n  \"review_comments\": 4,\n  \"maintainer_can_modify\": false,\n  \"commits\": 9,\n  \"additions\": 656,\n  \"deletions\": 119,\n  \"changed_files\": 11\n}",
+      "parsed_changes": {
+        "chores": [
+          "이슈 템플릿이 개선되어 기본 담당자와 라벨이 자동으로 지정되고, 포맷이 향상되었습니다.",
+          "빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.",
+          "버전 관리 자동화 및 구성 파일(version.yml, version-manager.sh)이 도입되었습니다.",
+          "Expo 프로젝트 버전이 1.0.9로 업데이트되었습니다.",
+          "CHANGELOG 및 README가 최신 정보와 간결한 설명으로 갱신되었습니다."
+        ]
+      }
+    },
+    {
+      "version": "1.0.9",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 23,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\n이슈 템플릿이 개선되어 기본 담당자와 라벨이 자동으로 지정되고, 포맷이 향상되었습니다.\\n빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.\\n버전 관리 자동화 및 구성 파일(version.yml, version-manager.sh)이 도입되었습니다.\\nExpo 프로젝트 버전이 1.0.9로 업데이트되었습니다.\\nCHANGELOG 및 README가 최신 정보와 간결한 설명으로 갱신되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 3,\n  \"review_comments\": 4,\n  \"maintainer_can_modify\": false,\n  \"commits\": 7,\n  \"additions\": 625,\n  \"deletions\": 119,\n  \"changed_files\": 10\n}",
+      "parsed_changes": {
+        "chores": [
+          "이슈 템플릿이 개선되어 기본 담당자와 라벨이 자동으로 지정되고, 포맷이 향상되었습니다.",
+          "빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.",
+          "버전 관리 자동화 및 구성 파일(version.yml, version-manager.sh)이 도입되었습니다.",
+          "Expo 프로젝트 버전이 1.0.9로 업데이트되었습니다.",
+          "CHANGELOG 및 README가 최신 정보와 간결한 설명으로 갱신되었습니다."
+        ]
+      }
+    },
+    {
+      "version": "1.0.8",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 22,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\n이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.\\n빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.\\nExpo 프로젝트 버전이 1.0.8로 업데이트되었습니다.\\n프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": false,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 5,\n  \"review_comments\": 3,\n  \"maintainer_can_modify\": false,\n  \"commits\": 5,\n  \"additions\": 597,\n  \"deletions\": 119,\n  \"changed_files\": 10\n}",
+      "parsed_changes": {
+        "chores": [
+          "이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.",
+          "빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.",
+          "Expo 프로젝트 버전이 1.0.8로 업데이트되었습니다.",
+          "프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다."
+        ]
+      }
+    },
     {
       "version": "1.0.8",
       "project_type": "react-native-expo",
