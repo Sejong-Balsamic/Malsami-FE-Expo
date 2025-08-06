@@ -1,0 +1,202 @@
+name: 📦 iOS 빌드 & 🚀 TestFlight 배포
+
+on:
+  push:
+    branches: [deploy]
+  workflow_dispatch:
+
+jobs:
+  build_and_submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write        # CHANGELOG 읽기
+      id-token: write        # App Store 인증용 OIDC
+
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_SECRET_ACCESS_TOKEN }}
+      EXPO_APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: 🔍 version.yml에서 최신 버전 확인
+        id: current_version
+        run: |
+          # version.yml에서 버전 추출
+          if [ -f "version.yml" ]; then
+            CURRENT_VERSION=$(grep '^version:' version.yml | sed 's/version: *"\?\([^"]*\)"\?/\1/')
+            echo "✅ version.yml에서 버전 추출: $CURRENT_VERSION"
+          else
+            # 백업: app.json에서 버전 추출
+            CURRENT_VERSION=$(grep '"version":' app.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
+            echo "⚠️ version.yml이 없어서 app.json에서 버전 추출: $CURRENT_VERSION"
+          fi
+          
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "📋 현재 사용할 버전: $CURRENT_VERSION"
+
+      # 🆕 changeLog.json에서 릴리즈 노트 생성
+      - name: 📝 릴리즈 노트 생성 (changeLog.json 기반)
+        id: release_notes
+        run: |
+          CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
+
+          # changeLog.json 또는 CHANGELOG.json에서 릴리즈 노트 추출
+          CHANGELOG_FILE=""
+          if [ -f "changeLog.json" ]; then
+            CHANGELOG_FILE="changeLog.json"
+            echo "📄 changeLog.json 파일 발견"
+          elif [ -f "CHANGELOG.json" ]; then
+            CHANGELOG_FILE="CHANGELOG.json"
+            echo "📄 CHANGELOG.json 파일 발견"
+          fi
+
+          if [ -n "$CHANGELOG_FILE" ]; then
+            echo "📄 $CHANGELOG_FILE에서 v$CURRENT_VERSION 릴리즈 노트 추출 중..."
+
+            python3 << PYTHON_SCRIPT > release_notes.txt
+          import json
+          import sys
+
+          try:
+              with open('$CHANGELOG_FILE', 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+
+              version = "$CURRENT_VERSION"
+              found = False
+
+              # releases 배열에서 최신 버전 찾기
+              for release in data['releases']:
+                  if release['version'] == version:
+                      found = True
+                      print(f"📱 버전 {version} 업데이트")
+                      print()
+
+                      # AI가 생성한 모든 카테고리를 동적으로 처리
+                      for category_key, items in release['parsed_changes'].items():
+                          if items:
+                              # 새 형식인지 기존 형식인지 확인
+                              if isinstance(items, dict) and 'title' in items and 'items' in items:
+                                  title = items['title']
+                                  actual_items = items['items']
+                              else:
+                                  # 카테고리명 한글화
+                                  category_mapping = {
+                                      'chores': '🔧 개선사항',
+                                      'features': '✨ 새로운 기능', 
+                                      'bugfixes': '🐛 버그 수정',
+                                      'documentation': '📚 문서 업데이트',
+                                      'refactor': '♻️ 리팩토링',
+                                      'style': '🎨 스타일 변경',
+                                      'test': '🧪 테스트',
+                                      'performance': '⚡ 성능 개선'
+                                  }
+                                  title = category_mapping.get(category_key, category_key.replace('_', ' ').title())
+                                  actual_items = items
+
+                              print(f"**{title}**")
+                              for item in actual_items:
+                                  if item.strip():
+                                      print(f"• {item}")
+                              print()
+
+                      break
+
+              if not found:
+                  print(f"📱 버전 {version} 업데이트")
+                  print("• 앱 안정성 및 사용자 경험이 개선되었습니다.")
+
+          except Exception as e:
+              print(f"📱 버전 {version} 업데이트")
+              print("• 앱 안정성 및 사용자 경험이 개선되었습니다.")
+              print(f"# 오류: {str(e)}")
+          PYTHON_SCRIPT
+
+            if [ -s release_notes.txt ]; then
+              echo "✅ 릴리즈 노트 추출 성공!"
+              echo "📋 추출된 릴리즈 노트:"
+              echo "----------------------------------------"
+              cat release_notes.txt
+              echo "----------------------------------------"
+              echo "RELEASE_NOTES_FOUND=true" >> $GITHUB_ENV
+            else
+              echo "❌ 릴리즈 노트 추출 실패, 기본 메시지 사용"
+              echo "RELEASE_NOTES_FOUND=false" >> $GITHUB_ENV
+              echo "📱 버전 $CURRENT_VERSION 업데이트" > release_notes.txt
+              echo "• 앱 안정성 및 사용자 경험이 개선되었습니다." >> release_notes.txt
+            fi
+          elif [ -f "CHANGELOG.md" ]; then
+            echo "📄 CHANGELOG.md에서 v$CURRENT_VERSION 변경사항 추출 중..."
+            sed -n "/## \[$CURRENT_VERSION\]/,/## \[/p" CHANGELOG.md | sed '$d' > current_release_notes.txt
+            tail -n +2 current_release_notes.txt > release_notes_clean.txt
+            sed '/^$/d; /^---$/d' release_notes_clean.txt > release_notes.txt
+            if [ -s release_notes.txt ]; then
+              echo "추출된 변경사항:"
+              cat release_notes.txt
+              echo "RELEASE_NOTES_FOUND=true" >> $GITHUB_ENV
+            else
+              echo "현재 버전의 변경사항을 찾을 수 없습니다."
+              echo "RELEASE_NOTES_FOUND=false" >> $GITHUB_ENV
+              echo "📱 버전 $CURRENT_VERSION 업데이트" > release_notes.txt
+              echo "• 앱 안정성 및 사용자 경험이 개선되었습니다." >> release_notes.txt
+            fi
+          else
+            echo "⚠️ changeLog.json, CHANGELOG.json, CHANGELOG.md 파일이 모두 없습니다."
+            echo "RELEASE_NOTES_FOUND=false" >> $GITHUB_ENV
+            echo "📱 버전 $CURRENT_VERSION 업데이트" > release_notes.txt
+            echo "• 앱 안정성 및 사용자 경험이 개선되었습니다." >> release_notes.txt
+          fi
+
+          # 릴리즈 노트 파일 확인
+          echo "📋 최종 릴리즈 노트 (release_notes.txt):"
+          echo "========================================"
+          cat release_notes.txt
+          echo "========================================"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - uses: expo/expo-github-action@v8
+        with:
+          token: ${{ env.EXPO_TOKEN }}
+          eas-version: latest
+
+      # 🔨 빌드만 수행
+      - name: 🔨 iOS 앱 빌드
+        run: |
+          echo "🚀 iOS 빌드 시작..."
+          eas build \
+            --platform ios \
+            --profile production \
+            --non-interactive
+
+      # 🚀 TestFlight에 제출 (릴리즈 노트 포함)
+      - name: 🚀 TestFlight 제출
+        run: |
+          echo "📋 TestFlight 제출용 릴리즈 노트:"
+          echo "================================"
+          cat release_notes.txt
+          echo "================================"
+
+          # TestFlight에 제출 (릴리즈 노트 파일 포함)
+          eas submit \
+            --platform ios \
+            --profile production \
+            --release-notes-file release_notes.txt \
+            --non-interactive
+
+          # 선택사항: OTA 업데이트 메시지도 같이 설정하려면 아래 주석 해제
+          # --message "$(cat release_notes.txt)"
+
+    concurrency:
+      group: ios-testflight
+      cancel-in-progress: true
