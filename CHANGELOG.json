@@ -1,11 +1,41 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-06T14:51:18Z",
+    "lastUpdated": "2025-08-06T14:56:42Z",
     "currentVersion": "1.0.14",
-    "totalReleases": 19,
+    "totalReleases": 21,
     "projectType": "react-native-expo"
   },
   "releases": [
+    {
+      "version": "1.0.14",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 28,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\n이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.\\n빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.\\nExpo 프로젝트 버전이 1.0.15로 업데이트되었습니다.\\n프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": false,\n  \"mergeable_state\": \"clean\",\n  \"merged_by\": null,\n  \"comments\": 0,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 36,\n  \"additions\": 917,\n  \"deletions\": 139,\n  \"changed_files\": 12\n}",
+      "parsed_changes": {
+        "chores": [
+          "이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.",
+          "빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.",
+          "Expo 프로젝트 버전이 1.0.15로 업데이트되었습니다.",
+          "프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다."
+        ]
+      }
+    },
+    {
+      "version": "1.0.14",
+      "project_type": "react-native-expo",
+      "date": "2025-08-06",
+      "pr_number": 28,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\nChores\\n\\n이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.\\n빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.\\nExpo 프로젝트 버전이 1.0.15로 업데이트되었습니다.\\n프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다.\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": false,\n  \"mergeable_state\": \"clean\",\n  \"merged_by\": null,\n  \"comments\": 0,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 36,\n  \"additions\": 917,\n  \"deletions\": 139,\n  \"changed_files\": 12\n}",
+      "parsed_changes": {
+        "chores": [
+          "이슈 템플릿의 형식 및 기본 담당자, 라벨 설정이 개선되었습니다.",
+          "빈 이슈 생성을 비활성화하는 설정 파일이 추가되었습니다.",
+          "Expo 프로젝트 버전이 1.0.15로 업데이트되었습니다.",
+          "프로젝트 버전 관리를 위한 설정 파일과 자동화 스크립트가 추가되었습니다."
+        ]
+      }
+    },
     {
       "version": "1.0.14",
       "project_type": "react-native-expo",
