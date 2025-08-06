@@ -4,8 +4,6 @@
 
 이 React Native + Expo 앱은 크로스 플랫폼 모바일 애플리케이션으로 iOS와 Android에서 동작합니다.
 
-> <p style="color:gray; font-weight:bold;">개발기간: 2024.09.04 ~ 현재 </p>
-
 ## 📝 주요 기능
 
 ### **자료 공유 및 다운로드**
