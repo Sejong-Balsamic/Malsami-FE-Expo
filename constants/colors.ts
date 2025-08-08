@@ -7,7 +7,7 @@ const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
 const common = {
-  PRIMARY_COLOR: "#08E4BA",
+  PRIMARY_COLOR: "#00D1F2",
   UNCHANGED_WHITE: "#FFF",
   UNCHANGED_BLACK: "#000",
   BLUE_500: "",
