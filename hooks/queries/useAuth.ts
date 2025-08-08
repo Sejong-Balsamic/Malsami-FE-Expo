@@ -1,21 +1,26 @@
-import { postGetUser, postRefreshToken, postSignin, queryClient } from "@/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import {
-  setSecureStore,
-  getSecureStore,
-  removeSecureStore,
-} from "@/utils/secureStore";
+  postGetUserInfo,
+  postRefreshToken,
+  postSignin,
+  queryClient,
+} from "@/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { setSecureStore } from "@/utils/secureStore";
 import { queryKeys, storageKeys } from "@/constants";
 import { setHeader } from "@/utils";
 import { router } from "expo-router";
+import { AuthDto } from "@/types/responses/authDto";
 
 function usePostSignin() {
   return useMutation({
     mutationFn: postSignin,
-    onSuccess: async ({ accessToken, refreshToken }) => {
-      setHeader("Authorization", accessToken);
-      await setSecureStore(storageKeys.ACCESS_TOKEN, accessToken);
-      await setSecureStore(storageKeys.REFRESH_TOKEN, refreshToken);
+    onSuccess: async (data: AuthDto) => {
+      setHeader("Authorization", String(data.accessToken));
+      await setSecureStore(storageKeys.ACCESS_TOKEN, String(data.accessToken));
+      await setSecureStore(
+        storageKeys.REFRESH_TOKEN,
+        String(data.refreshToken)
+      );
       queryClient.fetchQuery({
         queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
       });
@@ -27,24 +32,28 @@ function usePostSignin() {
 function useRefreshAuthToken() {
   return useMutation({
     mutationFn: postRefreshToken,
-    onSuccess: async ({ accessToken, refreshToken }) => {
-      setHeader("Authorization", accessToken);
-      await setSecureStore(storageKeys.ACCESS_TOKEN, accessToken);
-      await setSecureStore(storageKeys.REFRESH_TOKEN, refreshToken);
+    onSuccess: async (data: AuthDto) => {
+      setHeader("Authorization", String(data.accessToken));
+      await setSecureStore(storageKeys.ACCESS_TOKEN, String(data.accessToken));
+      await setSecureStore(
+        storageKeys.REFRESH_TOKEN,
+        String(data.refreshToken)
+      );
     },
   });
 }
 
-function useGetUser() {
+function useGetUserInfo() {
   return useQuery({
-    queryFn: postGetUser,
+    queryFn: postGetUserInfo,
     queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
   });
 }
 
 function useAuth() {
-  const { data } = useGetUser();
+  const { data } = useGetUserInfo();
   const signinMutation = usePostSignin();
+  const refreshTokenMutation = useRefreshAuthToken();
 
   return {
     auth: {
@@ -52,6 +61,7 @@ function useAuth() {
       nickname: data?.nickname,
     },
     signinMutation,
+    refreshTokenMutation,
   };
 }
 
