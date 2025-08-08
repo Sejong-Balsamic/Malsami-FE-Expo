@@ -1,9 +1,12 @@
+import WelcomeSection from "@/components/home/WelcomeSection";
+import useAuth from "@/hooks/queries/useAuth";
 import { ScrollView, StyleSheet, Text } from "react-native";
 
 export default function HomeScreen() {
+  const { auth } = useAuth();
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <Text>Home Redirecting</Text>
+      <WelcomeSection authData={auth} />
     </ScrollView>
   );
 }
@@ -11,7 +14,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 20,
   },
   searchContainer: {},
   searchHeaderContainer: {
