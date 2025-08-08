@@ -39,3 +39,9 @@ yarn-error.*
 app-example
 
 .env
+.idea/git_toolbox_prj.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/Malsami-FE-Expo.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
