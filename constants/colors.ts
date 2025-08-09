@@ -6,6 +6,10 @@
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
+const gradients = {
+  PRIMARY_GRADIENT: ["#00D1F2", "#00E8BB"],
+} as const;
+
 const common = {
   PRIMARY_COLOR: "#00D1F2",
   UNCHANGED_WHITE: "#FFF",
@@ -14,6 +18,7 @@ const common = {
 };
 
 const colors = {
+  ...gradients,
   ...common,
   light: {
     text: "#11181C",
