@@ -2,12 +2,14 @@ import { colors } from "@/constants";
 import { AuthDto } from "@/types/responses/authDto";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import CustomButton from "../CustomButton";
 
 interface WelcomeSectionProps {
   authData: AuthDto;
+  onPressLogin: () => void;
 }
 
-function WelcomeSection({ authData }: WelcomeSectionProps) {
+function WelcomeSection({ authData, onPressLogin }: WelcomeSectionProps) {
   const myData = authData;
 
   if (!myData.memberId) {
@@ -22,7 +24,11 @@ function WelcomeSection({ authData }: WelcomeSectionProps) {
           <View style={styles.characterIcon} />
         </View>
         <View style={styles.buttonContainer}>
-          <View style={styles.searchBox} />
+          <CustomButton
+            buttonText="로그인"
+            size="large"
+            onPress={onPressLogin}
+          />
         </View>
       </View>
     );
@@ -74,8 +80,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     zIndex: 20,
-    backgroundColor: colors.UNCHANGED_BLACK,
-    borderWidth: 1,
   },
   searchContainer: {
     zIndex: 20,
