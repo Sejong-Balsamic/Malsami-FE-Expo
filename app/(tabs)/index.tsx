@@ -1,12 +1,21 @@
+import CustomButton from "@/components/CustomButton";
 import WelcomeSection from "@/components/home/WelcomeSection";
 import useAuth from "@/hooks/queries/useAuth";
+import { router } from "expo-router";
 import { ScrollView, StyleSheet, Text } from "react-native";
 
 export default function HomeScreen() {
   const { auth } = useAuth();
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <WelcomeSection authData={auth} />
+    <ScrollView
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+    >
+      <WelcomeSection
+        authData={auth}
+        onPressLogin={() => router.replace("/auth")}
+      />
     </ScrollView>
   );
 }
