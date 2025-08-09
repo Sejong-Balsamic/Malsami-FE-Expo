@@ -13,7 +13,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface InputFieldProps extends TextInputProps {
-  placeholderText: string;
+  placeholderText?: string;
   leftChild?: ReactNode;
   rightChild?: ReactNode;
   type?: "search" | "login";
