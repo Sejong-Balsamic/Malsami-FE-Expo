@@ -10,13 +10,14 @@ import { queryKeys, storageKeys } from "@/constants";
 import { setHeader } from "@/utils";
 import { router } from "expo-router";
 import { AuthDto } from "@/types/responses/authDto";
+import { MemberDto } from "@/types/responses/memberDto";
 
 function usePostSignin() {
   return useMutation({
     mutationFn: postSignin,
     onSuccess: async (data: AuthDto) => {
       // 토큰 설정
-      setHeader("Authorization", String(data.accessToken));
+      setHeader("Authorization", `Bearer ${String(data.accessToken)}`);
       await setSecureStore(storageKeys.ACCESS_TOKEN, String(data.accessToken));
       await setSecureStore(
         storageKeys.REFRESH_TOKEN,
@@ -39,7 +40,7 @@ function useRefreshAuthToken() {
     mutationFn: postRefreshToken,
     onSuccess: async (data: AuthDto) => {
       // 토큰 설정
-      setHeader("Authorization", String(data.accessToken));
+      setHeader("Authorization", `Bearer ${String(data.accessToken)}`);
       await setSecureStore(storageKeys.ACCESS_TOKEN, String(data.accessToken));
       await setSecureStore(
         storageKeys.REFRESH_TOKEN,
@@ -53,31 +54,32 @@ function useRefreshAuthToken() {
 }
 
 function useGetUserInfo() {
-  return useQuery<AuthDto>({
+  return useQuery<MemberDto>({
     queryFn: postGetUserInfo,
     queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
     refetchOnWindowFocus: true,
-    retry: (failureCount, error: any) => {
-      if (error?.response?.status === 401) {
-        return false;
-      }
-      return failureCount < 2;
-    },
+    // retry: (failureCount, error: any) => {
+    //   if (error?.response?.status === 401) {
+    //     return false;
+    //   }
+    //   return failureCount < 2;
+    // },
   });
 }
 
 function useAuth() {
-  const { data, isLoading, error, refetch } = useGetUserInfo();
+  const { data, isLoading, error } = useGetUserInfo();
   const signinMutation = usePostSignin();
   const refreshTokenMutation = useRefreshAuthToken();
 
   return {
     auth: {
       // 사용자 기본 정보
-      memberId: data?.memberId || "",
-      studentName: data?.studentName || "",
+      memberId: data?.member?.memberId || "",
+      studentName: data?.member?.studentName || "",
+      studentId: data?.member?.studentId || "",
 
       // 세종포털 인증 정보
       major: data?.major || "",
@@ -91,7 +93,6 @@ function useAuth() {
     },
     isLoading,
     error,
-    refetch,
     signinMutation,
     refreshTokenMutation,
   };
