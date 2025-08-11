@@ -27,7 +27,7 @@ jobs:
         id: current_version
         run: |
           chmod +x .github/scripts/version-manager.sh
-          CURRENT_VERSION=$(.github/scripts/version-manager.sh get)
+          CURRENT_VERSION=$(./.github/scripts/version-manager.sh get | tail -n 1)
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "현재 사용할 버전: $CURRENT_VERSION"
 
