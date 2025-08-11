@@ -38,7 +38,6 @@ export default function TabLayout() {
                 resizeMode="cover"
                 source={require("@/assets/images/logo/malsamiLogo.jpeg")}
               />
-              <Text style={styles.logoText}>malsami</Text>
             </Pressable>
           ),
           headerRight: () => (
@@ -47,7 +46,7 @@ export default function TabLayout() {
                 style={{ right: 12 }}
                 name="bell"
                 size={24}
-                color="black"
+                color={colors.PRIMARY_COLOR}
               />
             </Pressable>
           ),

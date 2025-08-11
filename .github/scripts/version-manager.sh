@@ -62,7 +62,7 @@ read_version_config() {
         PROJECT_TYPE=$(grep "^project_type:" version.yml | sed 's/project_type: *"\([^"]*\)".*/\1/')
         VERSION_FILE=$(grep "^version_file:" version.yml | sed 's/version_file: *"\([^"]*\)".*/\1/')
         CURRENT_VERSION=$(grep "^version:" version.yml | sed 's/version: *"\([^"]*\)".*/\1/')
-
+        
         # 프로젝트 타입별 설정 (fallback)
         if [ "$PROJECT_TYPE" != "basic" ]; then
             case "$PROJECT_TYPE" in
@@ -75,10 +75,10 @@ read_version_config() {
             esac
         fi
     fi
-
+    
     echo_info "프로젝트 정보"
     echo "프로젝트 타입: $PROJECT_TYPE"
-    echo "버전 파일: $VERSION_FILE"
+    echo "버전 파일: $VERSION_FILE"  
     echo "현재 버전: $CURRENT_VERSION"
 }
 
@@ -86,11 +86,11 @@ read_version_config() {
 compare_versions() {
     local v1=$1
     local v2=$2
-
+    
     # 버전을 배열로 분리
     IFS='.' read -ra v1_parts <<< "$v1"
     IFS='.' read -ra v2_parts <<< "$v2"
-
+    
     # 각 부분을 비교
     for i in 0 1 2; do
         if [ "${v1_parts[$i]}" -gt "${v2_parts[$i]}" ]; then
@@ -99,7 +99,7 @@ compare_versions() {
             return -1  # v2가 더 큼
         fi
     done
-
+    
     return 0  # 동일함
 }
 
@@ -107,10 +107,10 @@ compare_versions() {
 get_higher_version() {
     local v1=$1
     local v2=$2
-
+    
     compare_versions "$v1" "$v2"
     result=$?
-
+    
     if [ $result -eq 1 ] || [ $result -eq 0 ]; then
         echo "$v1"  # v1이 더 높거나 같음
     else
@@ -124,7 +124,7 @@ get_version_from_project_file() {
         echo "$CURRENT_VERSION"
         return
     fi
-
+    
     # React Native의 경우 특별 처리
     if [ "$PROJECT_TYPE" = "react-native" ]; then
         # 직접 iOS/Android 파일에서 버전 추출
@@ -148,15 +148,15 @@ get_version_from_project_file() {
             fi
         fi
     fi
-
+    
     if [ ! -f "$VERSION_FILE" ]; then
         echo "⚠️ $VERSION_FILE 파일을 찾을 수 없습니다. version.yml의 버전을 사용합니다."
         echo "$CURRENT_VERSION"
         return
     fi
-
+    
     local PROJECT_VERSION=""
-
+    
     case "$PROJECT_TYPE" in
         "spring")
             # build.gradle에서 버전 추출
@@ -174,6 +174,7 @@ get_version_from_project_file() {
             # pubspec.yaml에서 버전 추출
             if grep -q "version:" "$VERSION_FILE"; then
                 PROJECT_VERSION=$(grep "^version:" "$VERSION_FILE" | sed 's/version: *\([0-9.]*\).*/\1/' | head -1)
+                echo "Flutter 버전: $PROJECT_VERSION"
             else
                 PROJECT_VERSION="$CURRENT_VERSION"
             fi
@@ -322,7 +323,7 @@ update_project_file() {
         fi
         return
     fi
-    
+
     # React Native 케이스는 특별 처리
     if [ "$PROJECT_TYPE" = "react-native" ]; then
         echo_info "React Native Bare 프로젝트 업데이트"
@@ -331,19 +332,19 @@ update_project_file() {
         update_version_yml "$new_version"
         return
     elif [ "$PROJECT_TYPE" = "react-native-expo" ]; then
-        echo_info "React Native Expo 프로젝트 업데이트" 
+        echo_info "React Native Expo 프로젝트 업데이트"
         update_react_native_expo "$new_version"
         # version.yml도 프로젝트 실제 버전과 동기화
         update_version_yml "$new_version"
         return
     fi
-    
+
     if [ ! -f "$VERSION_FILE" ]; then
         echo "⚠️ $VERSION_FILE 파일을 찾을 수 없습니다. version.yml만 업데이트합니다."
         update_version_yml "$new_version"
         return
     fi
-    
+
     case "$PROJECT_TYPE" in
         "spring")
             # build.gradle 업데이트
@@ -351,17 +352,14 @@ update_project_file() {
             rm -f "${VERSION_FILE}.bak"
             ;;
         "flutter")
-            # pubspec.yaml 업데이트 (빌드 번호는 유지)
+            # pubspec.yaml 업데이트 (x.x.x 형식 버전 업데이트)
             if grep -q "version:" "$VERSION_FILE"; then
-                current_line=$(grep "^version:" "$VERSION_FILE")
-                if [[ $current_line =~ \+[0-9]+ ]]; then
-                    build_number=$(echo "$current_line" | sed 's/.*+\([0-9]*\).*/\1/')
-                    sed -i.bak "s/^version:.*/version: $new_version+$build_number/" "$VERSION_FILE"
-                else
-                    sed -i.bak "s/^version:.*/version: $new_version+1/" "$VERSION_FILE"
-                fi
+                # 빌드 번호 없이 순수 버전만 업데이트
+                sed -i.bak "s/^version:.*/version: $new_version/" "$VERSION_FILE"
+                echo "Flutter 버전 업데이트: $new_version (단순 형식)"
             else
-                echo "version: $new_version+1" >> "$VERSION_FILE"
+                echo "version: $new_version" >> "$VERSION_FILE"
+                echo "Flutter 버전 생성: $new_version (단순 형식)"
             fi
             rm -f "${VERSION_FILE}.bak"
             ;;

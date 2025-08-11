@@ -49,19 +49,19 @@ jobs:
 
       - name: 버전 관리 스크립트 권한 설정
         run: |
-          chmod +x scripts/version-manager.sh
+          chmod +x .github/scripts/version-manager.sh
           echo "버전 관리 스크립트 권한 설정 완료"
 
       - name: 현재 버전 확인
         id: current_version
         run: |
-          CURRENT_VERSION=$(./scripts/version-manager.sh get | tail -n 1)
+          CURRENT_VERSION=$(./.github/scripts/version-manager.sh get | tail -n 1)
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
 
       - name: 새 버전 계산 및 업데이트 (patch 버전 증가)
         id: version
         run: |
-          NEW_VERSION=$(./scripts/version-manager.sh increment | tail -n 1)
+          NEW_VERSION=$(./.github/scripts/version-manager.sh increment | tail -n 1)
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
       - name: 프로젝트 타입 확인
@@ -140,7 +140,7 @@ jobs:
           # 파일들 스테이징
           if [ -n "$CHANGED_FILES" ]; then
             git add $CHANGED_FILES
-          
+            
             # 변경사항이 있는지 확인
             if git diff --staged --quiet; then
               echo "📝 변경사항이 없습니다."
@@ -148,7 +148,7 @@ jobs:
               # 커밋 메시지 생성
               REPO_NAME=$(basename "${{ github.repository }}")
               COMMIT_MSG="$REPO_NAME 버전 정보 관리 : chore: 버전 ${{ steps.version.outputs.new_version }} [skip ci]"
-          
+              
               git commit -m "$COMMIT_MSG" || exit 0
               git push
               echo "✅ 버전 업데이트 커밋 완료"
