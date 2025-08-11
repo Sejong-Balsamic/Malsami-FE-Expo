@@ -28,12 +28,12 @@ function RootNavigator() {
   const { auth } = useAuth();
 
   useEffect(() => {
-    auth.id &&
+    auth.memberId &&
       Toast.show({
         type: "success",
-        text1: `${auth.nickname ?? "회원"}님, 환영합니다!`,
+        text1: `${auth.studentName ?? "종이"}님, 환영합니다!`,
       });
-  }, [auth.id]);
+  }, [auth.memberId]);
   return (
     <Stack initialRouteName="(tabs)">
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
