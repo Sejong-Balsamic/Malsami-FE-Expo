@@ -14,8 +14,8 @@ function AuthRoute({ children }: AuthRouteProps) {
   const authRouteModal = useModal();
 
   useFocusEffect(() => {
-    // !auth.id && router.replace("/auth");
-    !auth.id && authRouteModal.show();
+    //멤버 아이디가 없을 시 모달 호출 및 모달을 통한 로그인 페이지 이동
+    !auth.memberId && authRouteModal.show();
   });
   return (
     <>
