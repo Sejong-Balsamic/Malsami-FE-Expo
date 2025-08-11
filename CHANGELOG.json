@@ -1,11 +1,19 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-11T08:52:38Z",
-    "currentVersion": "0.0.5",
+    "lastUpdated": "2025-08-11T13:24:18Z",
+    "currentVersion": "0.0.8",
     "projectType": "react-native-expo",
-    "totalReleases": 1
+    "totalReleases": 2
   },
   "releases": [
+    {
+      "version": "0.0.8",
+      "project_type": "react-native-expo",
+      "date": "2025-08-11",
+      "pr_number": 41,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\n새 기능\\n\\n없음\\n\\n\\nChores\\n\\n앱 버전을 0.0.8로 업데이트하여 최신 빌드 배포 준비.\\niOS TestFlight 배포 단계에서 자동 제출을 활성화해 배포 절차 간소화.\\n버전 메타데이터 최신화.\\n\\n\\nStyle\\n\\n워크플로우 설정의 주석, 따옴표, 공백 및 개행 정리 등 비기능적 포맷 개선(동작 변화 없음).\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": false,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 3,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 20,\n  \"additions\": 22,\n  \"deletions\": 22,\n  \"changed_files\": 6\n}",
+      "parsed_changes": {}
+    },
     {
       "version": "0.0.5",
       "project_type": "react-native-expo",
