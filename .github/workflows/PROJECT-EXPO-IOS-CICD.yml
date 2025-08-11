@@ -82,7 +82,7 @@ jobs:
           eas submit \
             --platform ios \
             --profile production \
-            --release-notes-file release_notes.txt \
+            --auto-submit \
             --non-interactive
 
           # 선택사항: OTA 업데이트 메시지도 같이 설정하려면 아래 주석 해제
