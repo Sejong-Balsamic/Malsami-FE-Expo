@@ -6,14 +6,24 @@
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
+const gradients = {
+  PRIMARY_GRADIENT: ["#00D1F2", "#00E271"],
+} as const;
+
 const common = {
-  PRIMARY_COLOR: "#08E4BA",
+  GRAY_50: "#F2F3F9",
+  GRAY_100: "#D9D9D9",
+  GRAY_200: "#0007234D",
+  GRAY_400: "#0007234D",
+  GRAY_500: "#898989",
+  PRIMARY_COLOR: "#00D1F2",
   UNCHANGED_WHITE: "#FFF",
   UNCHANGED_BLACK: "#000",
   BLUE_500: "",
 };
 
 const colors = {
+  ...gradients,
   ...common,
   light: {
     text: "#11181C",
