@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "lastUpdated": "2025-08-11T08:52:38Z",
+    "currentVersion": "0.0.5",
+    "projectType": "react-native-expo",
+    "totalReleases": 1
+  },
+  "releases": [
+    {
+      "version": "0.0.5",
+      "project_type": "react-native-expo",
+      "date": "2025-08-11",
+      "pr_number": 38,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\n신기능\\n\\n로그인 화면 전면 개편 및 환영 섹션 추가\\n그라디언트 버튼·그라디언트 텍스트 도입\\n입력 필드에 라벨, 지우기 버튼, 포커스 효과 추가\\n\\n\\n개선\\n\\n자동 토큰 갱신으로 세션 안정성 향상\\n로그인 환영 메시지 및 이동 흐름 정비\\n\\n\\nUI/스타일\\n\\n상단 로고 텍스트 제거, 알림 아이콘을 브랜드 컬러로 변경\\n인증 화면에 헤더·뒤로가기 추가\\n색상 팔레트 및 그라디언트 업데이트\\n\\n\\n작업\\n\\n앱 버전 업데이트, 배포 워크플로우 메시지·릴리즈 노트 생성 간소화\\n\\n\\n문서\\n\\nREADME 최신 버전 표기 수정\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 3,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 44,\n  \"additions\": 2142,\n  \"deletions\": 282,\n  \"changed_files\": 113\n}",
+      "parsed_changes": {}
+    }
+  ]
+}
