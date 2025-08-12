@@ -3,6 +3,7 @@ import { AuthDto } from "@/types/responses/authDto";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import CustomButton from "../CustomButton";
+import InputField from "../InputField";
 
 interface WelcomeSectionProps {
   authData: AuthDto;
@@ -50,7 +51,7 @@ function WelcomeSection({ authData, onPressLogin }: WelcomeSectionProps) {
         <View style={styles.characterIcon} />
       </View>
       <View style={styles.searchContainer}>
-        <View style={styles.searchBox} />
+        <InputField type="search" />
       </View>
     </View>
   );
@@ -83,9 +84,6 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     zIndex: 20,
-    backgroundColor: colors.UNCHANGED_BLACK,
-    borderWidth: 1,
-    borderColor: colors.UNCHANGED_WHITE,
   },
   searchBox: {
     width: "100%",

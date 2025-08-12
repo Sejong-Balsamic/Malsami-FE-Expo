@@ -15,8 +15,12 @@ async function postSignin(body: FormData): Promise<AuthDto> {
 async function postGetUserInfo(): Promise<MemberDto> {
   const accessToken = await getSecureStore(storageKeys.ACCESS_TOKEN);
   console.log("accessToken", accessToken);
+
   setHeader("Authorization", `Bearer ${String(accessToken)}`);
-  const { data } = await axiosInstance.post("/api/member/my-info");
+  const body = new FormData();
+  body.append("accessToken", String(accessToken));
+
+  const { data } = await axiosInstance.post("/api/member/my-info", body);
 
   return data;
 }
