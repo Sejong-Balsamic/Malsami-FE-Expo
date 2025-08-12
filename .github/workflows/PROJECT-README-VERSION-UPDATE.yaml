@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
-          ref: deploy
+          ref: main
 
       - name: Git 설정
         run: |
@@ -71,7 +71,7 @@ jobs:
           # 버전 정보 저장
           echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
           echo "release_date=$RELEASE_DATE" >> $GITHUB_OUTPUT
-      
+
       - name: README.md 파일 버전 정보 업데이트
         run: |
           LATEST_VERSION="${{ steps.version_info.outputs.latest_version }}"
@@ -95,7 +95,7 @@ jobs:
           # 버전 정보 업데이트
           sed -i "s/## 최신 버전 : .*/## 최신 버전 : v${LATEST_VERSION} (${RELEASE_DATE})/" README.md
           echo "✅ 버전 정보 업데이트 완료: v${LATEST_VERSION} (${RELEASE_DATE})"
-          
+
       - name: 변경사항 커밋 및 푸시
         run: |
           git add README.md
@@ -105,12 +105,11 @@ jobs:
           else
             REPO_NAME=$(basename "${{ github.repository }}")
             VERSION="${{ steps.version_info.outputs.latest_version }}"
-            
-            git commit -m "$REPO_NAME 버전 관리 : docs : v$VERSION README 버전 정보 업데이트"
-            
-            # deploy → main 브랜치로 푸시하고, 강제 푸시하여 동기화
-            git push origin HEAD:deploy
+          
+            git commit -m "$REPO_NAME 버전 관리 : docs : v$VERSION README 버전 정보 업데이트 [skip ci]"
+          
+            # main 브랜치로만 푸시
             git push origin HEAD:main
-            
+          
             echo "✅ README.md 버전 정보 업데이트 완료"
           fi
