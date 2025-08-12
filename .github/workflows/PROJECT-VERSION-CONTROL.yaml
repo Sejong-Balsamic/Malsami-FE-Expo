@@ -27,9 +27,9 @@ on:
   push:
     branches: ["main"]
     paths-ignore:
-      - 'CHANGELOG.md'
-      - 'CHANGELOG.json'
-      - 'version.yml'  # 무한 루프 방지
+      - "CHANGELOG.md"
+      - "CHANGELOG.json"
+      - "version.yml" # 무한 루프 방지
   workflow_dispatch:
 
 permissions:
@@ -80,16 +80,16 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
+
           # 변경된 파일들 확인
           CHANGED_FILES=""
           PROJECT_TYPE="${{ steps.project_info.outputs.project_type }}"
-          
+
           # version.yml은 항상 포함
           if [ -f "version.yml" ]; then
             CHANGED_FILES="version.yml"
           fi
-          
+
                         # 프로젝트 타입별 파일 추가
           case "$PROJECT_TYPE" in
             "spring")
@@ -134,9 +134,9 @@ jobs:
               echo "📌 기본 타입 프로젝트: version.yml만 관리합니다"
               ;;
           esac
-          
+
           echo "변경된 파일들: $CHANGED_FILES"
-          
+
           # 파일들 스테이징
           if [ -n "$CHANGED_FILES" ]; then
             git add $CHANGED_FILES
@@ -161,7 +161,7 @@ jobs:
         run: |
           NEW_VERSION="${{ steps.version.outputs.new_version }}"
           TAG_NAME="v$NEW_VERSION"
-          
+
           # 태그가 이미 존재하는지 확인
           if git tag -l | grep -q "^$TAG_NAME$"; then
             echo "⚠️ 태그 $TAG_NAME이 이미 존재합니다."

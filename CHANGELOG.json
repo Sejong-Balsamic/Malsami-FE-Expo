@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "lastUpdated": "2025-08-11T13:24:18Z",
+    "currentVersion": "0.0.8",
+    "projectType": "react-native-expo",
+    "totalReleases": 2
+  },
+  "releases": [
+    {
+      "version": "0.0.8",
+      "project_type": "react-native-expo",
+      "date": "2025-08-11",
+      "pr_number": 41,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\n새 기능\\n\\n없음\\n\\n\\nChores\\n\\n앱 버전을 0.0.8로 업데이트하여 최신 빌드 배포 준비.\\niOS TestFlight 배포 단계에서 자동 제출을 활성화해 배포 절차 간소화.\\n버전 메타데이터 최신화.\\n\\n\\nStyle\\n\\n워크플로우 설정의 주석, 따옴표, 공백 및 개행 정리 등 비기능적 포맷 개선(동작 변화 없음).\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": false,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 3,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 20,\n  \"additions\": 22,\n  \"deletions\": 22,\n  \"changed_files\": 6\n}",
+      "parsed_changes": {}
+    },
+    {
+      "version": "0.0.5",
+      "project_type": "react-native-expo",
+      "date": "2025-08-11",
+      "pr_number": 38,
+      "raw_summary": "\"body_html\": \"\\nSummary by CodeRabbit\\n\\n신기능\\n\\n로그인 화면 전면 개편 및 환영 섹션 추가\\n그라디언트 버튼·그라디언트 텍스트 도입\\n입력 필드에 라벨, 지우기 버튼, 포커스 효과 추가\\n\\n\\n개선\\n\\n자동 토큰 갱신으로 세션 안정성 향상\\n로그인 환영 메시지 및 이동 흐름 정비\\n\\n\\nUI/스타일\\n\\n상단 로고 텍스트 제거, 알림 아이콘을 브랜드 컬러로 변경\\n인증 화면에 헤더·뒤로가기 추가\\n색상 팔레트 및 그라디언트 업데이트\\n\\n\\n작업\\n\\n앱 버전 업데이트, 배포 워크플로우 메시지·릴리즈 노트 생성 간소화\\n\\n\\n문서\\n\\nREADME 최신 버전 표기 수정\\n\\n\\n\\n\",\n  \"active_lock_reason\": null,\n  \"merged\": false,\n  \"mergeable\": true,\n  \"rebaseable\": true,\n  \"mergeable_state\": \"unstable\",\n  \"merged_by\": null,\n  \"comments\": 3,\n  \"review_comments\": 0,\n  \"maintainer_can_modify\": false,\n  \"commits\": 44,\n  \"additions\": 2142,\n  \"deletions\": 282,\n  \"changed_files\": 113\n}",
+      "parsed_changes": {}
+    }
+  ]
+}

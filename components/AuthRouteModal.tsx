@@ -17,7 +17,7 @@ function AuthRouteModal({ onPress }: AuthRouteModalProps) {
   return (
     <Modal style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text>로그인 필요</Text>
+        <Text style={styles.headerText}>로그인 필요</Text>
       </View>
       <View style={styles.subHeaderContainer}>
         <Text></Text>
@@ -31,11 +31,19 @@ function AuthRouteModal({ onPress }: AuthRouteModalProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("screen").width - 32,
+    width: (Dimensions.get("screen").width / 3) * 2,
+    padding: 12,
   },
-  headerContainer: {},
+  headerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 24,
+  },
   subHeaderContainer: {},
   buttonContainer: {
+    paddingHorizontal: 32,
     backgroundColor: colors.PRIMARY_COLOR,
   },
   buttonText: {
