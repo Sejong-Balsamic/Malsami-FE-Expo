@@ -1,7 +1,7 @@
 # 📱 세종말싸미 프론트엔드 📱
 
 <!-- 수정하지마세요 자동으로 동기화 됩니다 -->
-## 최신 버전 : v0.0.5 (2025-08-11)
+## 최신 버전 : v0.0.2 (2025-08-12)
 
 [전체 버전 기록 보기](CHANGELOG.md)
 
@@ -61,10 +61,6 @@
 
 조선시대 관리직 등급을 모티브로 한 **18가지 등급** 시스템과 다양한 뱃지를 통해 사용자의 활동을 표시합니다.
 
-### **마이페이지**
-
-**엽전 사용 내역**, **구매한 자료 내역**, **경험치 및 뱃지** 등을 한눈에 확인할 수 있습니다.
-
 ## 🙋🏻‍♀️ 팀원 소개
 
 <table>
@@ -115,89 +111,14 @@
 ## 📱 앱 정보
 
 - **앱 이름**: 세종말싸미
-- **버전**: 1.0.6
 - **플랫폼**: iOS, Android
 - **개발 언어**: TypeScript
 - **프레임워크**: React Native + Expo
 
 ## 🛠️ 배포
 
-- **iOS**: App Store (TestFlight 베타 테스트)
-- **Android**: Google Play Store (예정)
-- **빌드 도구**: EAS Build
-- **CI/CD**: GitHub Actions : 자동화된 버전관리 포함
-
-## 📚 문서화
-- **GitHub**: [Sejong-Balsamic](https://github.com/Sejong-Balsamic)
-  로운 답변, 좋아요, 엽전 적립 등의 소식을 즉시 받아볼 수 있습니다.
-
-### **경험치 및 뱃지 시스템**
-
-조선시대 관리직 등급을 모티브로 한 **18가지 등급** 시스템과 다양한 뱃지를 통해 사용자의 활동을 표시합니다.
-
-### **마이페이지**
-
-**엽전 사용 내역**, **구매한 자료 내역**, **경험치 및 뱃지** 등을 한눈에 확인할 수 있습니다.
-
-## 🙋🏻‍♀️ 팀원 소개
-
-<table>
-    <tr>
-        <td align="center">이유진</td>
-        <td align="center">손재호</td>
-        <td align="center">강주현</td>
-        <td align="center">서새찬</td>
-        <td align="center">백지훈</td>
-        <td align="center">김성림</td>
-        <td align="center">이예진</td>
-        <td align="center">윤지희</td>
-    </tr>
-    <tr>
-        <td align="center"><a href="https://github.com/newjinlee">@newjinlee</a></td>
-        <td align="center"><a href="https://github.com/thswogh">@thswogh</a></td>
-        <td align="center"><a href="https://github.com/juhyunk0820">@juhyunk0820</a></td>
-        <td align="center"><a href="https://github.com/Cassiiopeia">@Cassiiopeia</a></td>
-        <td align="center"><a href="https://github.com/Chuseok22">@Chuseok22</a></td>
-        <td align="center"><a href="https://github.com/seonglim">@seonglim</a></td>
-        <td align="center"><a href="https://github.com/Vhime">@Vhime</a></td>
-        <td align="center"><a href="https://github.com/jihee127">@jihee127</a></td>
-    </tr>
-    <tr>
-        <td>프론트엔드</td>
-        <td>프론트엔드</td>
-        <td>프론트엔드</td>
-        <td>백엔드</td>
-        <td>백엔드</td>
-        <td>백엔드</td>
-        <td>디자인</td>
-        <td>디자인</td>
-        <td>디자인</td>
-    </tr>
-</table>
-
-## 💻 기술 스택
-
-- **React Native**
-- **Expo**
-- **TypeScript**
-- **React Query (TanStack Query)**
-- **Axios**
-- **React Navigation**
-- **Expo Router**
-- **Expo SecureStore**
-
-## 📱 앱 정보
-
-- **앱 이름**: 세종말싸미
-- **버전**: 1.0.6
-- **플랫폼**: iOS, Android
-- **개발 언어**: TypeScript
-- **프레임워크**: React Native + Expo
-
-## 🛠️ 배포
-
-- **iOS**: App Store (TestFlight 베타 테스트)
-- **Android**: Google Play Store (예정)
+- **iOS**: App Store
+- **Android**: Google Play Store
 - **빌드 도구**: EAS Build
 - **CI/CD**: GitHub Actions
 

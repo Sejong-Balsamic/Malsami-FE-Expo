@@ -6,6 +6,8 @@ const storageKeys = {
 const queryKeys = {
   AUTH: "auth",
   GET_USER: "getUser",
+  GET_POST: "getPost",
+  GET_NOTICE: "getNotice",
 };
 
 export { storageKeys, queryKeys };

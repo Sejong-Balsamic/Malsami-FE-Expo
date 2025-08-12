@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
-      contents: write        # CHANGELOG 읽기
-      id-token: write        # App Store 인증용 OIDC
+      contents: write # CHANGELOG 읽기
+      id-token: write # App Store 인증용 OIDC
 
     env:
       EXPO_TOKEN: ${{ secrets.EXPO_SECRET_ACCESS_TOKEN }}
@@ -26,23 +26,42 @@ jobs:
       - name: 버전 확인
         id: current_version
         run: |
-          chmod +x .github/scripts/version-manager.sh
-          CURRENT_VERSION=$(./.github/scripts/version-manager.sh get | tail -n 1)
+          chmod +x .github/scripts/version_manager.sh
+          CURRENT_VERSION=$(./.github/scripts/version_manager.sh get | tail -n 1)
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "현재 사용할 버전: $CURRENT_VERSION"
 
-      # 릴리즈 노트 생성
-      - name: 릴리즈 노트 생성
+      - name: Python 스크립트 실행 권한 설정 (manager)
+        run: |
+          if [ -f ".github/scripts/changelog_manager.py" ]; then
+            chmod +x .github/scripts/changelog_manager.py
+            echo "✅ changelog_manager.py 실행 권한 설정 완료"
+          else
+            echo "⚠️ .github/scripts/changelog_manager.py 파일을 찾을 수 없습니다."
+          fi
+
+      # 릴리즈 노트 생성 (CHANGELOG 기반)
+      - name: 릴리즈 노트 생성 (CHANGELOG 기반)
         id: release_notes
         run: |
+          set -euo pipefail
           CURRENT_VERSION="${{ steps.current_version.outputs.current_version }}"
-          
-          # 기본 릴리즈 노트 생성
-          echo "버전 $CURRENT_VERSION 업데이트" > release_notes.txt
-          echo "앱 안정성 및 사용자 경험이 개선되었습니다." >> release_notes.txt
+
+          # Python 스크립트만 사용하여 릴리즈 노트 생성
+          echo "Python 파서로 릴리즈 노트 생성"
+          python3 .github/scripts/changelog_manager.py export \
+            --version "$CURRENT_VERSION" \
+            --output release_notes.txt || true
+
+          # 3) 최종 폴백 메시지
+          if [ ! -s release_notes.txt ]; then
+            echo "CHANGELOG에서 v$CURRENT_VERSION 항목을 찾지 못했습니다. 기본 메시지를 사용합니다."
+            echo "버전 $CURRENT_VERSION 업데이트" > release_notes.txt
+            echo "앱 안정성 및 사용자 경험이 개선되었습니다." >> release_notes.txt
+          fi
+
           echo "RELEASE_NOTES_FOUND=true" >> $GITHUB_ENV
-          
-          # 릴리즈 노트 파일 확인
+
           echo "최종 릴리즈 노트 (release_notes.txt):"
           echo "========================================"
           cat release_notes.txt
@@ -82,7 +101,7 @@ jobs:
           eas submit \
             --platform ios \
             --profile production \
-            --release-notes-file release_notes.txt \
+            --latest \
             --non-interactive
 
           # 선택사항: OTA 업데이트 메시지도 같이 설정하려면 아래 주석 해제
