@@ -1,21 +1,60 @@
-import CustomButton from "@/components/CustomButton";
+import NoticeFeedList from "@/components/feed/NoticeFeedList";
+import HotDocumentFeedList from "@/components/feed/HotDocumentFeedList";
 import WelcomeSection from "@/components/home/WelcomeSection";
 import useAuth from "@/hooks/queries/useAuth";
 import { router } from "expo-router";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { useEffect } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  useGetDailyDocuments,
+  useGetWeeklyDocuments,
+} from "@/hooks/queries/useGetDocuments";
+import Toast from "react-native-toast-message";
 
 export default function HomeScreen() {
   const { auth } = useAuth();
+
+  const { refetch: refetchDailyDocuments } = useGetDailyDocuments({
+    enabled: false,
+  });
+  const { refetch: refetchWeeklyDocuments } = useGetWeeklyDocuments({
+    enabled: false,
+  });
+
+  useEffect(() => {
+    if (auth) {
+      Toast.show({
+        type: "success",
+        text1: "로그인 성공",
+        text2: `${auth.studentName}님 환영합니다.`,
+        position: "top",
+        topOffset: 1500,
+      });
+      refetchDailyDocuments();
+      refetchWeeklyDocuments();
+    }
+  }, [auth, refetchDailyDocuments, refetchWeeklyDocuments]);
+
   return (
     <ScrollView
       style={styles.container}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
     >
-      <WelcomeSection
-        authData={auth}
-        onPressLogin={() => router.replace("/auth")}
-      />
+      <View>
+        <WelcomeSection
+          authData={auth}
+          onPressLogin={() => router.replace("/auth")}
+        />
+        <NoticeFeedList
+          onPressViewAll={() => console.log("전체보기: 공지사항")}
+          onPressItem={(id) => console.log(`공지사항 상세: ${id}`)}
+        />
+        <HotDocumentFeedList
+          onPressViewAll={() => console.log("전체보기: 인기자료")}
+          onPressItem={(id) => console.log(`자료 상세: ${id}`)}
+        />
+      </View>
     </ScrollView>
   );
 }
