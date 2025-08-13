@@ -1,6 +1,7 @@
 # 📱 세종말싸미 프론트엔드 📱
 
 <!-- 수정하지마세요 자동으로 동기화 됩니다 -->
+
 ## 최신 버전 : v0.0.2 (2025-08-12)
 
 [전체 버전 기록 보기](CHANGELOG.md)
@@ -65,8 +66,6 @@
 
 <table>
     <tr>
-        <td align="center">이유진</td>
-        <td align="center">손재호</td>
         <td align="center">강주현</td>
         <td align="center">서새찬</td>
         <td align="center">백지훈</td>
@@ -75,8 +74,6 @@
         <td align="center">윤지희</td>
     </tr>
     <tr>
-        <td align="center"><a href="https://github.com/newjinlee">@newjinlee</a></td>
-        <td align="center"><a href="https://github.com/thswogh">@thswogh</a></td>
         <td align="center"><a href="https://github.com/juhyunk0820">@juhyunk0820</a></td>
         <td align="center"><a href="https://github.com/Cassiiopeia">@Cassiiopeia</a></td>
         <td align="center"><a href="https://github.com/Chuseok22">@Chuseok22</a></td>
@@ -86,9 +83,6 @@
     </tr>
     <tr>
         <td>프론트엔드</td>
-        <td>프론트엔드</td>
-        <td>프론트엔드</td>
-        <td>백엔드</td>
         <td>백엔드</td>
         <td>백엔드</td>
         <td>디자인</td>
@@ -123,4 +117,5 @@
 - **CI/CD**: GitHub Actions
 
 ## 📚 문서화
+
 - **GitHub**: [Sejong-Balsamic](https://github.com/Sejong-Balsamic)
