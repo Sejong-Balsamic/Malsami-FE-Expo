@@ -25,40 +25,6 @@
 version: "1.0.9"
 project_type: "react-native-expo" # spring, flutter, react, react-native, react-native-expo, node, basic 등
 version_file: "version.yml" # 버전 정보가 저장된 파일 경로
-# 프로젝트 타입별 버전 파일 매핑
-# 실제 프로젝트에서는 해당하는 타입의 설정만 사용
-project_configs:
-  spring:
-    version_file: "build.gradle"
-    version_pattern: "version = '"
-    version_format: "version = '{version}'"
-  flutter:
-    version_file: "pubspec.yaml"
-    version_pattern: "version: "1.0.9"
-    version_format: "version: "1.0.9"
-  react:
-    version_file: "package.json"
-    version_pattern: '"version":'
-    version_format: '"version": "{version}"'
-  react-native:
-    version_file: "ios/*/Info.plist" # iOS가 우선
-    android_file: "android/app/build.gradle"
-    version_pattern: "CFBundleShortVersionString"
-    version_format: 'CFBundleShortVersionString'
-  react-native-expo:
-    version_file: "app.json"
-    version_pattern: '"expo".*"version":'
-    version_format: '"expo": {"version": "{version}"}'
-  node:
-    version_file: "package.json"
-    version_pattern: '"version":'
-    version_format: '"version": "{version}"'
-  basic:
-    version_file: "version.yml"
-    version_pattern: "version: "1.0.9"
-    version_format: 'version: "1.0.9"
-    # basic 타입은 특정 프레임워크에 종속되지 않는 기본 타입으로, version.yml만 관리합니다
-# 메타데이터
 metadata:
   last_updated: "2025-08-19 11:46:32"
   last_updated_by: "Cassiiopeia"
