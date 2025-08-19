@@ -58,11 +58,11 @@ read_version_config() {
     
     log_debug "version.yml 파싱 시작"
     
-    # 기본 파싱 (yq 의존성 제거)
+    # 기본 파싱
     PROJECT_TYPE=$(grep "^project_type:" version.yml | sed 's/project_type:[[:space:]]*[\"'\'']*\([^\"'\''#]*\)[\"'\''#]*.*/\1/' | sed 's/[[:space:]]*$//' | head -1)
     CURRENT_VERSION=$(grep "^version:" version.yml | sed 's/version:[[:space:]]*[\"'\'']*\([^\"'\'']*\)[\"'\'']*$/\1/' | head -1)
     
-    # 프로젝트 타입별 실제 버전 파일 설정
+    # 프로젝트 타입별 버전 파일 설정
     case "$PROJECT_TYPE" in
         "spring")
             VERSION_FILE="build.gradle"
@@ -75,7 +75,7 @@ read_version_config() {
             ;;
         "react-native")
             # iOS 우선, 없으면 Android
-            if find ios -name "Info.plist" -type f | head -1 | read -r ios_plist; then
+            if find ios -name "Info.plist" -type f 2>/dev/null | head -1 | read -r ios_plist; then
                 VERSION_FILE="$ios_plist"
             else
                 VERSION_FILE="android/app/build.gradle"
@@ -359,10 +359,16 @@ update_version_yml() {
     
     log_debug "version.yml 업데이트: $new_version"
     
-    # 기본 sed 사용 (yq 의존성 제거)
+    # version.yml 업데이트
     sed -i.bak "s/version: *[\"']*[^\"']*[\"']*/version: \"$new_version\"/" version.yml
-    sed -i.bak "s/last_updated: *[\"']*[^\"']*[\"']*/last_updated: \"$timestamp\"/" version.yml
-    sed -i.bak "s/last_updated_by: *[\"']*[^\"']*[\"']*/last_updated_by: \"$user\"/" version.yml
+    
+    # metadata 섹션 업데이트 (있는 경우만)
+    if grep -q "last_updated:" version.yml; then
+        sed -i.bak "s/last_updated: *[\"']*[^\"']*[\"']*/last_updated: \"$timestamp\"/" version.yml
+    fi
+    if grep -q "last_updated_by:" version.yml; then
+        sed -i.bak "s/last_updated_by: *[\"']*[^\"']*[\"']*/last_updated_by: \"$user\"/" version.yml
+    fi
     rm -f version.yml.bak
     
     # 전역 변수 업데이트
