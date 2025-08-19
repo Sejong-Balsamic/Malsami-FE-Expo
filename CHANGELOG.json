@@ -1,11 +1,50 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-12T06:21:08Z",
-    "currentVersion": "0.0.2",
-    "projectType": "react-native-expo",
-    "totalReleases": 1
+    "lastUpdated": "2025-08-19T10:55:20Z",
+    "currentVersion": "1.0.0",
+    "projectType": "node",
+    "totalReleases": 2
   },
   "releases": [
+    {
+      "version": "1.0.0",
+      "project_type": "node",
+      "date": "2025-08-19",
+      "pr_number": 50,
+      "raw_summary": "Summary by CodeRabbit\n\n\n신규 기능\n\n홈에 공지사항 피드와 HOT 인기자료 피드(일간/주간 탭) 추가\n피드 아이템 카드 컴포넌트 도입\n검색 입력 필드 활성화\n\n\n\n개선\n\n로그인 성공 시 토스트 안내 추가\n알림 섹션에 실제 데이터 연동\n홈 화면 레이아웃 정리 및 피드 상호작용 기본 동작 연결\n\n\n\n문서\n\nREADME 팀 구성 업데이트 및 문서 링크 추가\n\n\n\n작업/유지보수\n\n이슈 오픈 시 자동 댓글 워크플로 추가\n버전/배포 자동화 스크립트 경로 정리\n앱 버전 업데이트: 0.0.6",
+      "parsed_changes": {
+        "신규_기능": {
+          "title": "신규 기능",
+          "items": [
+            "홈에 공지사항 피드와 HOT 인기자료 피드(일간/주간 탭) 추가",
+            "피드 아이템 카드 컴포넌트 도입",
+            "검색 입력 필드 활성화"
+          ]
+        },
+        "개선": {
+          "title": "개선",
+          "items": [
+            "로그인 성공 시 토스트 안내 추가",
+            "알림 섹션에 실제 데이터 연동",
+            "홈 화면 레이아웃 정리 및 피드 상호작용 기본 동작 연결"
+          ]
+        },
+        "문서": {
+          "title": "문서",
+          "items": [
+            "README 팀 구성 업데이트 및 문서 링크 추가"
+          ]
+        },
+        "작업_유지보수": {
+          "title": "작업/유지보수",
+          "items": [
+            "이슈 오픈 시 자동 댓글 워크플로 추가",
+            "버전/배포 자동화 스크립트 경로 정리",
+            "앱 버전 업데이트: 0.0.6"
+          ]
+        }
+      }
+    },
     {
       "version": "0.0.2",
       "project_type": "react-native-expo",
