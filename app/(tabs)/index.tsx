@@ -10,6 +10,7 @@ import {
   useGetWeeklyDocuments,
 } from "@/hooks/queries/useGetDocuments";
 import Toast from "react-native-toast-message";
+import AuthRoute from "@/components/AuthRoute";
 
 export default function HomeScreen() {
   const { auth } = useAuth();
@@ -36,26 +37,28 @@ export default function HomeScreen() {
   }, [auth, refetchDailyDocuments, refetchWeeklyDocuments]);
 
   return (
-    <ScrollView
-      style={styles.container}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
-    >
-      <View>
-        <WelcomeSection
-          authData={auth}
-          onPressLogin={() => router.replace("/auth")}
-        />
-        <NoticeFeedList
-          onPressViewAll={() => console.log("전체보기: 공지사항")}
-          onPressItem={(id) => console.log(`공지사항 상세: ${id}`)}
-        />
-        <HotDocumentFeedList
-          onPressViewAll={() => console.log("전체보기: 인기자료")}
-          onPressItem={(id) => console.log(`자료 상세: ${id}`)}
-        />
-      </View>
-    </ScrollView>
+    <AuthRoute>
+      <ScrollView
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        <View>
+          <WelcomeSection
+            authData={auth}
+            onPressLogin={() => router.replace("/auth")}
+          />
+          <NoticeFeedList
+            onPressViewAll={() => console.log("전체보기: 공지사항")}
+            onPressItem={(id) => console.log(`공지사항 상세: ${id}`)}
+          />
+          <HotDocumentFeedList
+            onPressViewAll={() => console.log("전체보기: 인기자료")}
+            onPressItem={(id) => console.log(`자료 상세: ${id}`)}
+          />
+        </View>
+      </ScrollView>
+    </AuthRoute>
   );
 }
 
