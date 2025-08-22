@@ -24,7 +24,6 @@ export default function NoticeFeedList({
 }: NoticeFeedListProps) {
   const { noticePostsPage, isLoading, error } = useNoticePostStore();
 
-  // 로딩 중일 때
   if (isLoading && !noticePostsPage) {
     return (
       <View style={styles.container}>
@@ -36,7 +35,6 @@ export default function NoticeFeedList({
     );
   }
 
-  // 에러 발생 시
   if (error) {
     return (
       <View style={styles.container}>
@@ -50,7 +48,6 @@ export default function NoticeFeedList({
     );
   }
 
-  // 데이터가 없을 때
   if (!noticePostsPage?.content?.length) {
     return (
       <View style={styles.container}>
@@ -62,7 +59,6 @@ export default function NoticeFeedList({
     );
   }
 
-  // 아이템 렌더링
   const renderItem = ({ item }: { item: NoticePost }) => {
     return <FeedItem type="notice" noticePost={item} onPress={onPressItem} />;
   };
@@ -82,7 +78,6 @@ export default function NoticeFeedList({
   );
 }
 
-// 헤더 섹션 컴포넌트
 function HeaderSection({
   title,
   onPressViewAll,
@@ -106,6 +101,7 @@ function HeaderSection({
 
 const styles = StyleSheet.create({
   container: {
+    // paddingHorizontal: 20,
     marginVertical: 16,
   },
   headerContainer: {
@@ -127,6 +123,7 @@ const styles = StyleSheet.create({
   viewAllText: {
     fontSize: 14,
     color: "#666",
+    textDecorationLine: "underline",
   },
   listContent: {
     paddingHorizontal: 8,

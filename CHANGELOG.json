@@ -1,11 +1,41 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-19T10:55:20Z",
-    "currentVersion": "1.0.0",
-    "projectType": "node",
-    "totalReleases": 2
+    "lastUpdated": "2025-08-22T09:49:41Z",
+    "currentVersion": "1.0.11",
+    "projectType": "react-native-expo",
+    "totalReleases": 3
   },
   "releases": [
+    {
+      "version": "1.0.11",
+      "project_type": "react-native-expo",
+      "date": "2025-08-22",
+      "pr_number": 53,
+      "raw_summary": "Summary by CodeRabbit\n\n신규 기능\n\n일부 화면 접근 시 로그인이 필요하도록 인증 게이트 추가 및 안내 모달 제공\n\n\n스타일\n\n인증 모달을 전체 중앙 다이얼로그로 개편, 취소/로그인 이중 버튼과 그라데이션 적용\n피드 카드에 썸네일/태그/좋아요 아이콘 및 카운트(999+ 표기) 개선\n인기 자료 탭 테마 색상 적용 및 탭/텍스트 가독성 향상\n공지 목록 ‘전체보기’ 텍스트 밑줄 표시\n\n\n잡무\n\n앱 버전 1.0.11로 업데이트",
+      "parsed_changes": {
+        "신규_기능": {
+          "title": "신규 기능",
+          "items": [
+            "일부 화면 접근 시 로그인이 필요하도록 인증 게이트 추가 및 안내 모달 제공"
+          ]
+        },
+        "스타일": {
+          "title": "스타일",
+          "items": [
+            "인증 모달을 전체 중앙 다이얼로그로 개편, 취소/로그인 이중 버튼과 그라데이션 적용",
+            "피드 카드에 썸네일/태그/좋아요 아이콘 및 카운트(999+ 표기) 개선",
+            "인기 자료 탭 테마 색상 적용 및 탭/텍스트 가독성 향상",
+            "공지 목록 ‘전체보기’ 텍스트 밑줄 표시"
+          ]
+        },
+        "잡무": {
+          "title": "잡무",
+          "items": [
+            "앱 버전 1.0.11로 업데이트"
+          ]
+        }
+      }
+    },
     {
       "version": "1.0.0",
       "project_type": "node",
