@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import { colors } from "@/constants";
 
 interface FeedItemProps {
   type: "notice" | "document";
@@ -25,10 +27,9 @@ function FeedItem({
   documentPost,
   onPress,
 }: FeedItemProps) {
-  // 공통 데이터 처리를 위한 객체
   const feedData = type === "notice" ? noticePost : documentPost;
+  const hasThumbnail = type === "document" && documentPost?.thumbnailUrl;
 
-  // 날짜 포맷팅 함수
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
@@ -38,7 +39,6 @@ function FeedItem({
     )}.${String(date.getDate()).padStart(2, "0")}`;
   };
 
-  // 클릭 이벤트 핸들러
   const handlePress = () => {
     if (!feedData) return;
 
@@ -52,73 +52,125 @@ function FeedItem({
     }
   };
 
-  // 데이터가 없으면 렌더링하지 않음
+  const formatLikeCount = (count?: number) => {
+    if (!count) return "0";
+    if (count >= 1000) return "999+";
+    return count;
+  };
+
   if (!feedData) return null;
 
-  // 카드 배지 (document 타입인 경우 표시)
   const renderBadge = () => {
-    if (type === "document" && documentPost?.documentTypes?.length) {
+    if (type === "document" && documentPost?.subject) {
       return (
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>{documentPost.documentTypes[0]}</Text>
+          <Text style={styles.badgeText}>{documentPost.subject}</Text>
         </View>
       );
     }
     return null;
   };
 
-  return (
-    <TouchableOpacity style={styles.container} onPress={handlePress}>
-      <View style={styles.imageContainer}>
-        {/* 썸네일 이미지 */}
-        <Image
-          source={
-            type === "document" && documentPost?.thumbnailUrl
-              ? { uri: documentPost.thumbnailUrl }
-              : require("@/assets/images/icon.png")
-          }
-          style={styles.image}
-          resizeMode="cover"
-        />
-        {/* 배지 */}
-        {renderBadge()}
+  const renderTags = () => {
+    if (type !== "document") return null;
+
+    const tags = [
+      ...(documentPost?.documentTypes || []),
+      ...(documentPost?.customTags || []),
+    ];
+
+    if (tags.length === 0) return null;
+
+    return (
+      <View style={styles.tagContainer}>
+        <View style={{ gap: 4, flexDirection: "row" }}>
+          {tags.slice(0, 2).map((tag, index) => (
+            <View key={index} style={styles.tag}>
+              <Text style={styles.tagText}>{tag}</Text>
+            </View>
+          ))}
+        </View>
+        <View style={styles.likeContainer}>
+          <AntDesign
+            name={documentPost?.isLiked ? "like1" : "like2"}
+            size={16}
+            color={
+              documentPost?.isLiked ? colors.PRIMARY_COLOR : colors.GRAY_500
+            }
+          />
+          <Text
+            style={[
+              styles.likeText,
+              documentPost?.isLiked && { color: colors.PRIMARY_COLOR },
+            ]}
+          >
+            {formatLikeCount(feedData.likeCount)}
+          </Text>
+        </View>
       </View>
+    );
+  };
+
+  return (
+    <TouchableOpacity
+      style={[styles.container, !hasThumbnail && styles.noImageContainer]}
+      onPress={handlePress}
+    >
+      {hasThumbnail ? (
+        <View style={styles.imageContainer}>
+          <Image
+            source={{ uri: documentPost.thumbnailUrl }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        </View>
+      ) : (
+        <View style={styles.noImageHeader}>
+          {renderBadge()}
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+            {feedData.title}
+          </Text>
+        </View>
+      )}
 
       <View style={styles.contentContainer}>
-        {/* 제목 */}
-        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-          {feedData.title}
-        </Text>
-
-        {/* 메타 정보: 작성자, 날짜 */}
-        <View style={styles.metaContainer}>
-          <Text style={styles.author}>
-            {feedData.member?.studentName || "익명"}
-          </Text>
-          <Text style={styles.date}>{formatDate(feedData.createdDate)}</Text>
-        </View>
-
-        {/* 내용 미리보기 */}
+        {hasThumbnail && (
+          <>
+            {renderBadge()}
+            <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+              {feedData.title}
+            </Text>
+          </>
+        )}
         <Text style={styles.content} numberOfLines={2} ellipsizeMode="tail">
           {feedData.content}
         </Text>
-
-        {/* 하단 정보: 조회수, 좋아요 */}
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Text style={styles.statText}>👁️ {feedData.viewCount || 0}</Text>
+        {renderTags()}
+        {/* <View style={styles.bottomContainer}>
+          <View style={styles.metaContainer}>
+            <Text style={styles.author}>
+              {feedData.member?.studentName || "익명"}
+            </Text>
+            <Text style={styles.date}>{formatDate(feedData.createdDate)}</Text>
           </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statText}>👍 {feedData.likeCount || 0}</Text>
+          <View style={styles.likeContainer}>
+            <AntDesign
+              name={documentPost?.isLiked ? "like1" : "like2"}
+              size={16}
+              color={
+                documentPost?.isLiked ? colors.PRIMARY_COLOR : colors.GRAY_500
+              }
+            />
+            <Text
+              style={[
+                styles.likeText,
+                documentPost?.isLiked && { color: colors.PRIMARY_COLOR },
+              ]}
+            >
+              {formatLikeCount(feedData.likeCount)}
+            </Text>
           </View>
-          {type === "document" && (
-            <View style={styles.statItem}>
-              <Text style={styles.statText}>
-                💬 {feedData.commentCount || 0}
-              </Text>
-            </View>
-          )}
-        </View>
+        </View> */}
       </View>
     </TouchableOpacity>
   );
@@ -127,44 +179,53 @@ function FeedItem({
 const styles = StyleSheet.create({
   container: {
     width: width * 0.7,
-    maxWidth: 240,
+    maxWidth: 292,
     height: 250,
     backgroundColor: "white",
     borderRadius: 10,
     marginHorizontal: 8,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    overflow: "hidden",
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+    overflow: "visible",
+  },
+  noImageContainer: {
+    height: "auto",
+    paddingBottom: 12,
   },
   imageContainer: {
     height: 120,
     width: "100%",
     position: "relative",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    overflow: "hidden",
+  },
+  noImageHeader: {
+    padding: 12,
   },
   image: {
     width: "100%",
     height: "100%",
   },
   badge: {
-    position: "absolute",
-    top: 8,
-    left: 8,
-    backgroundColor: "#2196F3",
+    backgroundColor: colors.PRIMARY_COLOR,
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 4,
+    alignSelf: "flex-start",
+    marginBottom: 8,
   },
   badgeText: {
-    color: "white",
-    fontSize: 10,
-    fontWeight: "bold",
+    color: colors.UNCHANGED_WHITE,
+    fontSize: 12,
+    fontWeight: "600",
   },
   contentContainer: {
-    padding: 12,
     flex: 1,
+    padding: 12,
     justifyContent: "space-between",
   },
   title: {
@@ -173,10 +234,37 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     color: "#333",
   },
-  metaContainer: {
+  content: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: "#555",
+    marginVertical: 4,
+  },
+  tagContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+    marginVertical: 8,
+    justifyContent: "space-between",
+  },
+  tag: {
+    backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  tagText: {
+    fontSize: 11,
+    color: colors.PRIMARY_COLOR,
+  },
+  bottomContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 6,
+    alignItems: "flex-end",
+    marginTop: 8,
+  },
+  metaContainer: {
+    justifyContent: "flex-end",
   },
   author: {
     fontSize: 12,
@@ -186,22 +274,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#999",
   },
-  content: {
-    fontSize: 13,
-    lineHeight: 18,
-    color: "#555",
-    marginBottom: 8,
-  },
-  statsContainer: {
+  likeContainer: {
     flexDirection: "row",
-    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: 4,
   },
-  statItem: {
-    marginRight: 10,
-  },
-  statText: {
-    fontSize: 12,
-    color: "#888",
+  likeText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: colors.GRAY_500,
   },
 });
 
