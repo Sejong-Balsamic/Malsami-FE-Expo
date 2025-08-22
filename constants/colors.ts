@@ -1,8 +1,3 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 
@@ -13,13 +8,17 @@ const gradients = {
 const common = {
   GRAY_50: "#F2F3F9",
   GRAY_100: "#D9D9D9",
+  GRAY_150: "#898989",
   GRAY_200: "#0007234D",
   GRAY_400: "#0007234D",
   GRAY_500: "#898989",
   PRIMARY_COLOR: "#00D1F2",
+  PRIMARY_BACKGROUND_COLOR: "#DDFBFF",
   UNCHANGED_WHITE: "#FFF",
   UNCHANGED_BLACK: "#000",
   BLUE_500: "",
+  TAB_BACKGROUND: "#EDEDED",
+  TAB_TEXT: "#898989",
 };
 
 const colors = {

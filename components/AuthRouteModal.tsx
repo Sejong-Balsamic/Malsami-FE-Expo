@@ -7,47 +7,113 @@ import {
   Text,
   Dimensions,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
+import CustomButton from "./CustomButton";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface AuthRouteModalProps {
   onPress: () => void;
+  hide: () => void;
 }
 
-function AuthRouteModal({ onPress }: AuthRouteModalProps) {
+function AuthRouteModal({ onPress, hide }: AuthRouteModalProps) {
   return (
-    <Modal style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>로그인 필요</Text>
-      </View>
-      <View style={styles.subHeaderContainer}>
-        <Text></Text>
-        <Pressable style={styles.buttonContainer} onPress={onPress}>
-          <Text style={styles.buttonText}>로그인 페이지로 이동</Text>
-        </Pressable>
+    <Modal transparent animationType="fade">
+      <View style={styles.modalBackground}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.headerText}>로그인 필요</Text>
+          <Text style={styles.subHeaderText}>로그인 후 이용 가능합니다.</Text>
+          {/* <Pressable style={styles.buttonContainer} onPress={onPress}>
+            <Text style={styles.buttonText}>로그인 페이지로 이동</Text>
+          </Pressable> */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.cancelButton} onPress={hide}>
+              <Text style={styles.cancelButtonText}>취소</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.loginButton} onPress={onPress}>
+              <LinearGradient
+                style={styles.linearStyle}
+                colors={colors.PRIMARY_GRADIENT}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <Text style={styles.buttonText}>로그인</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: (Dimensions.get("screen").width / 3) * 2,
-    padding: 12,
-  },
-  headerContainer: {
+  modalBackground: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
   },
-  headerText: {
-    fontSize: 24,
+  modalContainer: {
+    width: Dimensions.get("screen").width - 128,
+    backgroundColor: colors.UNCHANGED_WHITE,
+    borderRadius: 8,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    alignItems: "center",
   },
-  subHeaderContainer: {},
+  headerText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  subHeaderText: {
+    fontSize: 12,
+    textAlign: "center",
+    marginBottom: 24,
+  },
   buttonContainer: {
-    paddingHorizontal: 32,
-    backgroundColor: colors.PRIMARY_COLOR,
+    flexDirection: "row",
+    width: "100%",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    gap: 4,
+  },
+  loginButton: {
+    width: "50%",
+    height: 40,
+    paddingVertical: 12,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  linearStyle: {
+    width: "100%",
+    height: 40,
+    paddingVertical: 12,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cancelButton: {
+    width: "50%",
+    height: 40,
+    paddingVertical: 12,
+    backgroundColor: colors.GRAY_100,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: colors.UNCHANGED_WHITE,
   },
   buttonText: {
-    fontSize: 24,
+    fontSize: 16,
+    fontWeight: "bold",
     color: colors.UNCHANGED_WHITE,
   },
 });
