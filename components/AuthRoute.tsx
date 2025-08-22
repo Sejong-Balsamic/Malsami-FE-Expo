@@ -1,7 +1,7 @@
 import useAuth from "@/hooks/queries/useAuth";
 import useModal from "@/hooks/useModal";
 import { router, useFocusEffect } from "expo-router";
-import React, { Children, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { StyleSheet } from "react-native";
 import AuthRouteModal from "./AuthRouteModal";
 
@@ -14,7 +14,6 @@ function AuthRoute({ children }: AuthRouteProps) {
   const authRouteModal = useModal();
 
   useFocusEffect(() => {
-    //멤버 아이디가 없을 시 모달 호출 및 모달을 통한 로그인 페이지 이동
     !auth.memberId && authRouteModal.show();
   });
   return (
@@ -22,6 +21,7 @@ function AuthRoute({ children }: AuthRouteProps) {
       {children}
       {authRouteModal.isVisible && (
         <AuthRouteModal
+          hide={authRouteModal.hide}
           onPress={() => {
             router.replace("/auth");
             authRouteModal.hide();
@@ -31,7 +31,5 @@ function AuthRoute({ children }: AuthRouteProps) {
     </>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default AuthRoute;
