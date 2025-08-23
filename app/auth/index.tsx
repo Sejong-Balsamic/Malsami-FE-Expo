@@ -3,9 +3,19 @@ import GradientText from "@/components/GradientText";
 import InputField from "@/components/InputField";
 import { colors } from "@/constants";
 import useAuth from "@/hooks/queries/useAuth";
-import { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Feather from "@expo/vector-icons/Feather";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function AuthScreen() {
   const insets = useSafeAreaInsets();
@@ -13,20 +23,54 @@ export default function AuthScreen() {
   const [studentId, setStudentId] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    if (signinMutation.isSuccess) {
+      const timer = setTimeout(() => {
+        router.replace("/");
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [signinMutation.isSuccess]);
+
   const handleLogin = () => {
-    console.log("로그인");
+    if (!studentId || !password) {
+      Alert.alert("입력 오류", "학번과 비밀번호를 모두 입력해주세요.");
+      return;
+    }
     const formData = new FormData();
     formData.append("sejongPortalId", studentId);
     formData.append("sejongPortalPassword", password);
     signinMutation.mutate(formData, {
-      onSuccess: () => {
-        console.log("로그인 성공");
-      },
       onError: () => {
-        console.log("로그인 실패");
+        Alert.alert("로그인 실패", "학번 또는 비밀번호를 다시 확인해주세요.");
       },
     });
   };
+
+  if (signinMutation.isPending) {
+    return (
+      <View style={styles.processingContainer}>
+        <ActivityIndicator size="large" color={colors.PRIMARY_COLOR} />
+        <Text style={styles.processingText}>로그인 중이에요!</Text>
+        <Text style={styles.processingSubText}>잠시만 기다려주세요 :)</Text>
+      </View>
+    );
+  }
+
+  if (signinMutation.isSuccess) {
+    return (
+      <View style={styles.processingContainer}>
+        <LinearGradient
+          colors={colors.PRIMARY_GRADIENT}
+          style={styles.iconContainer}
+        >
+          <Feather name="check" size={40} color={"#fff"} />
+        </LinearGradient>
+        <Text style={styles.processingText}>로그인 완료!</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,7 +108,11 @@ export default function AuthScreen() {
         />
       </View>
       <View style={[styles.buttonContainer, { paddingBottom: insets.bottom }]}>
-        <CustomButton buttonText={"로그인"} onPress={handleLogin} />
+        <CustomButton
+          buttonText={"로그인"}
+          onPress={handleLogin}
+          disabled={signinMutation.isPending}
+        />
       </View>
     </SafeAreaView>
   );
@@ -73,6 +121,7 @@ export default function AuthScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   headerContainer: {
     paddingTop: 42,
@@ -92,5 +141,28 @@ const styles = StyleSheet.create({
     bottom: 60,
     left: 0,
     right: 0,
+  },
+  processingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
+    backgroundColor: "#fff",
+  },
+  processingText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: colors.GRAY_500,
+  },
+  processingSubText: {
+    fontSize: 16,
+    color: colors.GRAY_400,
+  },
+  iconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
