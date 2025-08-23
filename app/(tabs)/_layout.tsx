@@ -7,9 +7,13 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import useModal from "@/hooks/useModal";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useAuthModal } from "@/context/AuthModalContext";
+import useAuth from "@/hooks/queries/useAuth";
 
 export default function TabLayout() {
   const logoModal = useModal();
+  const { auth } = useAuth();
+  const { show } = useAuthModal();
 
   return (
     <Tabs
@@ -19,6 +23,22 @@ export default function TabLayout() {
         headerShown: false,
         sceneStyle: {
           backgroundColor: colors.UNCHANGED_WHITE,
+        },
+      }}
+      screenListeners={{
+        tabPress: (e) => {
+          if (!auth.memberId && e.target?.startsWith("material")) {
+            e.preventDefault();
+            show();
+          }
+          if (!auth.memberId && e.target?.startsWith("question")) {
+            e.preventDefault();
+            show();
+          }
+          if (!auth.memberId && e.target?.startsWith("mypage")) {
+            e.preventDefault();
+            show();
+          }
         },
       }}
     >
