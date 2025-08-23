@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useNoticePostStore } from "@/store/noticePostStore";
-import NotificationList from "@/components/NotificationList";
+import NoticeFeedList from "@/components/feed/NoticeFeedList";
 
 interface NotificationSectionProps {}
 
@@ -14,7 +14,7 @@ function NotificationSection({}: NotificationSectionProps) {
 
   return (
     <View style={styles.container}>
-      <NotificationList />
+      <NoticeFeedList />
     </View>
   );
 }
