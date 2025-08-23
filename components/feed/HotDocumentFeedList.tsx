@@ -48,8 +48,12 @@ export default function HotDocumentFeedList({
   if (isLoading && !documents) {
     return (
       <View style={styles.container}>
-        <HeaderSection title={title} onPressViewAll={onPressViewAll} />
-        <TabButtons activeTab={activeTab} onTabChange={handleTabChange} />
+        <HeaderSection
+          title={title}
+          onPressViewAll={onPressViewAll}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
@@ -60,8 +64,12 @@ export default function HotDocumentFeedList({
   if (error) {
     return (
       <View style={styles.container}>
-        <HeaderSection title={title} onPressViewAll={onPressViewAll} />
-        <TabButtons activeTab={activeTab} onTabChange={handleTabChange} />
+        <HeaderSection
+          title={title}
+          onPressViewAll={onPressViewAll}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
         <View style={styles.centerContainer}>
           <Text style={styles.errorText}>
             인기자료를 불러오는 중 오류가 발생했습니다.
@@ -74,8 +82,12 @@ export default function HotDocumentFeedList({
   if (!documents || documents.length === 0) {
     return (
       <View style={styles.container}>
-        <HeaderSection title={title} onPressViewAll={onPressViewAll} />
-        <TabButtons activeTab={activeTab} onTabChange={handleTabChange} />
+        <HeaderSection
+          title={title}
+          onPressViewAll={onPressViewAll}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
         <View style={styles.centerContainer}>
           <Text style={styles.emptyText}>
             {activeTab === "daily" ? "일간 " : "주간 "}인기 자료가 없습니다.
@@ -94,8 +106,12 @@ export default function HotDocumentFeedList({
   return (
     <View style={styles.container}>
       <View style={styles.headerWithTabContainer}>
-        <HeaderSection title={title} onPressViewAll={onPressViewAll} />
-        <TabButtons activeTab={activeTab} onTabChange={handleTabChange} />
+        <HeaderSection
+          title={title}
+          onPressViewAll={onPressViewAll}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
       </View>
       <FlatList
         data={documents}
@@ -112,9 +128,13 @@ export default function HotDocumentFeedList({
 function HeaderSection({
   title,
   onPressViewAll,
+  activeTab,
+  onTabChange,
 }: {
   title: string;
   onPressViewAll?: () => void;
+  activeTab: "daily" | "weekly";
+  onTabChange: (tab: "daily" | "weekly") => void;
 }) {
   return (
     <View style={styles.headerContainer}>
@@ -122,6 +142,7 @@ function HeaderSection({
         <Text style={styles.hotIcon}>🔥</Text>
         <Text style={styles.headerTitle}>{title}</Text>
       </View>
+      <TabButtons activeTab={activeTab} onTabChange={onTabChange} />
       {onPressViewAll && (
         <TouchableOpacity onPress={onPressViewAll}>
           <Text style={styles.viewAllText}>전체보기</Text>
@@ -166,7 +187,7 @@ function TabButtons({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 16,
+    marginVertical: 12,
   },
   headerWithTabContainer: {
     marginBottom: 12,
@@ -175,14 +196,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
   },
   headerTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
   hotIcon: {
-    fontSize: 20,
+    fontSize: 24,
     marginRight: 8,
   },
   headerTitle: {
@@ -197,13 +217,12 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: "row",
-    paddingHorizontal: 16,
     marginTop: 8,
   },
   tabButton: {
     backgroundColor: colors.TAB_BACKGROUND,
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 4,
     borderRadius: 20,
     marginRight: 8,
   },
@@ -220,7 +239,6 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_COLOR,
   },
   listContent: {
-    paddingHorizontal: 8,
     paddingVertical: 4,
   },
   loadingContainer: {
