@@ -50,19 +50,10 @@ export default function AuthScreen() {
 
   if (signinMutation.isPending) {
     return (
-      // <View style={styles.processingContainer}>
-      //   <ActivityIndicator size="large" color={colors.PRIMARY_COLOR} />
-      //   <Text style={styles.processingText}>로그인 중이에요!</Text>
-      //   <Text style={styles.processingSubText}>잠시만 기다려주세요 :)</Text>
-      // </View>
       <View style={styles.processingContainer}>
-        <LinearGradient
-          colors={colors.PRIMARY_GRADIENT}
-          style={styles.iconContainer}
-        >
-          <Feather name="check" size={40} color={"#fff"} />
-        </LinearGradient>
-        <Text style={styles.processingText}>로그인 완료!</Text>
+        <ActivityIndicator size="large" color={colors.PRIMARY_COLOR} />
+        <Text style={styles.processingText}>로그인 중이에요!</Text>
+        <Text style={styles.processingSubText}>잠시만 기다려주세요 :)</Text>
       </View>
     );
   }

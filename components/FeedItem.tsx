@@ -180,7 +180,6 @@ const styles = StyleSheet.create({
   container: {
     width: width * 0.7,
     maxWidth: 292,
-    height: 250,
     backgroundColor: "white",
     borderRadius: 10,
     marginHorizontal: 8,
@@ -193,10 +192,9 @@ const styles = StyleSheet.create({
   },
   noImageContainer: {
     height: "auto",
-    paddingBottom: 12,
+    paddingBottom: 8,
   },
   imageContainer: {
-    height: 120,
     width: "100%",
     position: "relative",
     borderTopLeftRadius: 10,
