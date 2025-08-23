@@ -10,10 +10,12 @@ import {
   useGetWeeklyDocuments,
 } from "@/hooks/queries/useGetDocuments";
 import Toast from "react-native-toast-message";
-import AuthRoute from "@/components/AuthRoute";
+import { useAuthModal } from "@/context/AuthModalContext";
+import AuthRouteModal from "@/components/auth/AuthRouteModal";
 
 export default function HomeScreen() {
   const { auth } = useAuth();
+  const { isVisible, hide } = useAuthModal();
 
   const { refetch: refetchDailyDocuments } = useGetDailyDocuments({
     enabled: false,
@@ -37,7 +39,7 @@ export default function HomeScreen() {
   }, [auth, refetchDailyDocuments, refetchWeeklyDocuments]);
 
   return (
-    <AuthRoute>
+    <>
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
@@ -58,7 +60,16 @@ export default function HomeScreen() {
           />
         </View>
       </ScrollView>
-    </AuthRoute>
+      {isVisible && (
+        <AuthRouteModal
+          onPress={() => {
+            hide();
+            router.replace("/auth");
+          }}
+          hide={hide}
+        />
+      )}
+    </>
   );
 }
 
