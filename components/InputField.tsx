@@ -1,6 +1,6 @@
 import { colors } from "@/constants/colors";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useRef, useState } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -34,6 +34,7 @@ function InputField({
   const inputValue =
     (isControlled ? (props.value as string) : uncontrolledValue) ?? "";
   const [isFocused, setIsFocused] = useState(false);
+  const textInputRef = useRef<TextInput>(null);
 
   const handleChangeText = (text: string) => {
     if (!isControlled) {
@@ -48,91 +49,80 @@ function InputField({
     }
     props.onChangeText?.("");
   };
+
+  const handleContainerPress = () => {
+    textInputRef.current?.focus();
+  };
+
+  const inputContent = (
+    <View
+      style={[
+        styles.container,
+        isFocused ? styles.containerFocused : styles.containerBlurred,
+      ]}
+    >
+      <View style={styles.inputRow}>
+        <TextInput
+          ref={textInputRef}
+          placeholder={placeholderText}
+          {...props}
+          value={inputValue}
+          onFocus={(e) => {
+            setIsFocused(true);
+            props.onFocus?.(e);
+          }}
+          onBlur={(e) => {
+            setIsFocused(false);
+            props.onBlur?.(e);
+          }}
+          onChangeText={handleChangeText}
+          style={styles.textInput}
+        />
+        {inputValue !== "" && (
+          <Pressable onPress={handleClear} hitSlop={8}>
+            <Feather name="x" size={20} color={colors.PRIMARY_COLOR} />
+          </Pressable>
+        )}
+      </View>
+      {type === "search" && (
+        <EvilIcons name="search" size={32} color={colors.PRIMARY_COLOR} />
+      )}
+    </View>
+  );
+
   return (
     <View style={styles.wrapper}>
       {label ? <Text style={styles.label}>{label}</Text> : null}
 
-      {isFocused ? (
-        <LinearGradient
-          colors={[...colors.PRIMARY_GRADIENT]}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.gradientBorder}
-        >
-          <View style={[styles.container, styles.containerFocused]}>
-            {type === "search" && (
-              <EvilIcons name="search" size={32} color={colors.PRIMARY_COLOR} />
-            )}
-            <View style={styles.inputRow}>
-              <TextInput
-                placeholder={placeholderText}
-                {...props}
-                value={inputValue}
-                onFocus={(e) => {
-                  setIsFocused(true);
-                  props.onFocus?.(e);
-                }}
-                onBlur={(e) => {
-                  setIsFocused(false);
-                  props.onBlur?.(e);
-                }}
-                onChangeText={handleChangeText}
-                style={styles.textInput}
-              />
-              {inputValue !== "" && (
-                <Pressable onPress={handleClear} hitSlop={8}>
-                  <Feather name="x" size={20} color={colors.PRIMARY_COLOR} />
-                </Pressable>
-              )}
-            </View>
-            {rightChild}
-          </View>
-        </LinearGradient>
-      ) : (
-        <View style={[styles.container, styles.containerBlurred]}>
-          {type === "search" && (
-            <EvilIcons name="search" size={32} color={colors.PRIMARY_COLOR} />
-          )}
-          <View style={styles.inputRow}>
-            <TextInput
-              placeholder={placeholderText}
-              {...props}
-              value={inputValue}
-              onFocus={(e) => {
-                setIsFocused(true);
-                props.onFocus?.(e);
-              }}
-              onBlur={(e) => {
-                setIsFocused(false);
-                props.onBlur?.(e);
-              }}
-              onChangeText={handleChangeText}
-              style={styles.textInput}
-            />
-            {inputValue !== "" && (
-              <Pressable onPress={handleClear} hitSlop={8}>
-                <Feather name="x" size={20} color={colors.PRIMARY_COLOR} />
-              </Pressable>
-            )}
-          </View>
-          {rightChild}
-        </View>
-      )}
+      <Pressable onPress={handleContainerPress}>
+        {isFocused ? (
+          <LinearGradient
+            colors={[...colors.PRIMARY_GRADIENT]}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.gradientBorder}
+          >
+            {inputContent}
+          </LinearGradient>
+        ) : (
+          inputContent
+        )}
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    gap: 8,
+    gap: 12,
   },
   label: {
     fontSize: 14,
-    color: "#666",
+    color: colors.GRAY_500,
   },
   gradientBorder: {
     borderRadius: 8,
-    padding: 2, // gradient border width
+    padding: 2,
   },
   container: {
     height: 50,
