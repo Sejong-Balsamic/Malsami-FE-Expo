@@ -15,14 +15,10 @@ import AuthRouteModal from "@/components/auth/AuthRouteModal";
 
 export default function HomeScreen() {
   const { auth } = useAuth();
-  const { isVisible, hide } = useAuthModal();
+  const { isVisible, hide, show } = useAuthModal();
 
-  const { refetch: refetchDailyDocuments } = useGetDailyDocuments({
-    enabled: false,
-  });
-  const { refetch: refetchWeeklyDocuments } = useGetWeeklyDocuments({
-    enabled: false,
-  });
+  const { refetch: refetchDailyDocuments } = useGetDailyDocuments();
+  const { refetch: refetchWeeklyDocuments } = useGetWeeklyDocuments();
 
   useEffect(() => {
     if (auth) {
@@ -38,6 +34,10 @@ export default function HomeScreen() {
     }
   }, [auth, refetchDailyDocuments, refetchWeeklyDocuments]);
 
+  const routeHotPostList = () => {
+    router.replace("../hotpost");
+  };
+
   return (
     <>
       <ScrollView
@@ -51,11 +51,21 @@ export default function HomeScreen() {
             onPressLogin={() => router.replace("/auth")}
           />
           <NoticeFeedList
-            onPressViewAll={() => console.log("전체보기: 공지사항")}
+            onPressViewAll={() => {
+              if (!auth.memberId) {
+                return show();
+              }
+              console.log("전체보기: 공지사항");
+            }}
             onPressItem={(id) => console.log(`공지사항 상세: ${id}`)}
           />
           <HotDocumentFeedList
-            onPressViewAll={() => console.log("전체보기: 인기자료")}
+            onPressViewAll={() => {
+              if (!auth.memberId) {
+                return show();
+              }
+              router.push("/hotpost");
+            }}
             onPressItem={(id) => console.log(`자료 상세: ${id}`)}
           />
         </View>
