@@ -41,6 +41,7 @@ function RootNavigator() {
     <Stack initialRouteName="(tabs)">
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="auth" options={{ headerShown: false }} />
+      <Stack.Screen name="hotpost" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
