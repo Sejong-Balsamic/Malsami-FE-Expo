@@ -25,7 +25,7 @@ export default function HotPostLayout() {
           },
           headerTitleAlign: "center",
           headerLeft: () => (
-            <Pressable onPress={() => router.replace("/")}>
+            <Pressable onPress={() => router.back()}>
               <AntDesign name="left" size={24} color={colors.UNCHANGED_BLACK} />
             </Pressable>
           ),
