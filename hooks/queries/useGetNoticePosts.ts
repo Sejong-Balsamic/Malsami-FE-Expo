@@ -1,57 +1,33 @@
-import { getNoticePosts } from "@/api/notice";
+import { useQuery, UseQueryOptions } from "@tanstack/react-query";
+import { getNoticePosts, getFilteredNoticePosts } from "@/api/notice";
 import { queryKeys } from "@/constants";
-import { useNoticePostStore } from "@/store/noticePostStore";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { NoticePostDto } from "@/types/responses/noticePostDto";
 
-interface UseGetNoticePostsProps {
-  enabled?: boolean;
-}
-
-function useGetNoticePosts({ enabled = true }: UseGetNoticePostsProps = {}) {
-  const queryClient = useQueryClient();
-  const { setIsLoading, setError, updateFromDto } = useNoticePostStore();
-
-  const query = useQuery({
+/**
+ * 공지사항 전체 데이터를 가져오는 훅
+ */
+function useGetNoticePosts(options?: Partial<UseQueryOptions<NoticePostDto>>) {
+  return useQuery({
+    queryKey: [queryKeys.NOTICE, "posts"],
     queryFn: getNoticePosts,
-    queryKey: [queryKeys.GET_NOTICE, queryKeys.GET_NOTICE_POSTS],
-    enabled,
+    staleTime: 1000 * 60 * 5, // 5분
+    gcTime: 1000 * 60 * 10, // 10분
+    refetchOnWindowFocus: true,
+    ...options,
   });
-
-  const { data, isLoading, error } = query;
-
-  useEffect(() => {
-    setIsLoading(isLoading);
-  }, [isLoading, setIsLoading]);
-
-  useEffect(() => {
-    if (error) {
-      setError(error as Error);
-    }
-  }, [error, setError]);
-
-  useEffect(() => {
-    if (data) {
-      updateFromDto(data);
-    }
-  }, [data, updateFromDto]);
-
-  const prefetchNextPage = async () => {
-    if (
-      data?.noticePostsPage &&
-      data.noticePostsPage.number < data.noticePostsPage.totalPages - 1
-    ) {
-      await queryClient.prefetchQuery({
-        queryFn: getNoticePosts,
-        queryKey: [queryKeys.GET_NOTICE, queryKeys.GET_NOTICE_POSTS],
-      });
-    }
-  };
-
-  return {
-    ...query,
-    prefetchNextPage,
-  };
 }
 
-export default useGetNoticePosts;
+/**
+ * 검색을 통한 공지사항 데이터를 가져오는 훅
+ */
+function useGetFilteredNoticePosts(filterText: string) {
+  return useQuery({
+    queryKey: [queryKeys.NOTICE, "filtered", filterText],
+    queryFn: () => getFilteredNoticePosts(filterText),
+    enabled: !!filterText && filterText.trim().length > 0, // filterText가 있을 때만 실행
+    staleTime: 1000 * 60 * 2, // 2분
+    gcTime: 1000 * 60 * 5, // 5분
+  });
+}
+
+export { useGetNoticePosts, useGetFilteredNoticePosts };
