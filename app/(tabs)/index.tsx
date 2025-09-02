@@ -2,8 +2,9 @@ import NoticeFeedList from "@/components/feed/NoticeFeedList";
 import HotDocumentFeedList from "@/components/feed/HotDocumentFeedList";
 import WelcomeSection from "@/components/home/WelcomeSection";
 import useAuth from "@/hooks/queries/useAuth";
-import { router } from "expo-router";
-import { useEffect } from "react";
+import { useGetNoticePosts } from "@/hooks/queries/useGetNoticePosts";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   useGetDailyDocuments,
@@ -20,8 +21,28 @@ export default function HomeScreen() {
   const { refetch: refetchDailyDocuments } = useGetDailyDocuments();
   const { refetch: refetchWeeklyDocuments } = useGetWeeklyDocuments();
 
+  // 공지사항 데이터를 가져오는 훅 추가 (수동 호출만)
+  const { refetch: refetchNoticePosts } = useGetNoticePosts({ enabled: false });
+
+  // 화면 포커스 시에만 데이터 로드
+  useFocusEffect(
+    useCallback(() => {
+      console.log("메인 화면 포커스 - 데이터 로드 시작");
+      refetchNoticePosts();
+      if (auth?.memberId) {
+        refetchDailyDocuments();
+        refetchWeeklyDocuments();
+      }
+    }, [
+      auth?.memberId,
+      refetchDailyDocuments,
+      refetchWeeklyDocuments,
+      refetchNoticePosts,
+    ])
+  );
+
   useEffect(() => {
-    if (auth) {
+    if (auth?.memberId && auth?.studentName) {
       Toast.show({
         type: "success",
         text1: "로그인 성공",
@@ -29,14 +50,8 @@ export default function HomeScreen() {
         position: "top",
         topOffset: 1500,
       });
-      refetchDailyDocuments();
-      refetchWeeklyDocuments();
     }
-  }, [auth, refetchDailyDocuments, refetchWeeklyDocuments]);
-
-  const routeHotPostList = () => {
-    router.replace("../hotpost");
-  };
+  }, [auth?.memberId, auth?.studentName]);
 
   return (
     <>
@@ -52,21 +67,35 @@ export default function HomeScreen() {
           />
           <NoticeFeedList
             onPressViewAll={() => {
-              if (!auth.memberId) {
+              if (!auth?.memberId) {
                 return show();
               }
+              // TODO: 공지사항 전체보기 페이지로 이동
               console.log("전체보기: 공지사항");
+              // router.push("/notice"); // 공지사항 페이지가 생성되면 주석 해제
             }}
-            onPressItem={(id) => console.log(`공지사항 상세: ${id}`)}
+            onPressItem={(id) => {
+              if (!auth?.memberId) {
+                return show();
+              }
+              // TODO: 공지사항 상세 페이지로 이동
+              console.log(`공지사항 상세: ${id}`);
+              // router.push(`/notice/${id}`); // 공지사항 상세 페이지가 생성되면 주석 해제
+            }}
           />
           <HotDocumentFeedList
             onPressViewAll={() => {
-              if (!auth.memberId) {
+              if (!auth?.memberId) {
                 return show();
               }
               router.push("/hotpost");
             }}
-            onPressItem={(id) => console.log(`자료 상세: ${id}`)}
+            onPressItem={(id) => {
+              if (!auth?.memberId) {
+                return show();
+              }
+              console.log(`자료 상세: ${id}`);
+            }}
           />
         </View>
       </ScrollView>
