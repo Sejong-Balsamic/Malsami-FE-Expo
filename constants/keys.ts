@@ -12,6 +12,7 @@ const queryKeys = {
   GET_WEEKLY_DOCUMENTS: "getWeeklyDocuments",
   GET_NOTICE: "getNotice",
   GET_NOTICE_POSTS: "getNoticePosts",
+  NOTICE: "notice",
 };
 
 export { storageKeys, queryKeys };
