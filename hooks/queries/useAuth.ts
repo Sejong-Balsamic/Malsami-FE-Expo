@@ -36,7 +36,8 @@ function usePostSignin() {
         queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
       });
 
-      router.replace("/");
+      // 라우터 이동은 auth 컴포넌트에서 처리하도록 제거
+      // router.replace("/");
     },
   });
 }
