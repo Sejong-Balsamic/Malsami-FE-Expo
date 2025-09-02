@@ -1,7 +1,7 @@
 //  src/types/api/responses/commentDto.ts
-import { Page } from "@/types/api/entities/interface/page";
-import { CommentLike } from "@/types/api/entities/mongo/commentLike";
-import { Comment } from "@/types/api/entities/postgres/comment";
+import { Page } from "@/types/entities/interface/page";
+import { CommentLike } from "@/types/entities/mongo/commentLike";
+import { Comment } from "@/types/entities/postgres/comment";
 
 export interface CommentDto {
   comment?: Comment;
