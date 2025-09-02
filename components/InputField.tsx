@@ -1,16 +1,14 @@
 import { colors } from "@/constants/colors";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
 import React, { ReactNode, useMemo, useRef, useState } from "react";
 import {
-  Pressable,
   StyleSheet,
   Text,
   TextInput,
   TextInputProps,
   View,
 } from "react-native";
-import Feather from "@expo/vector-icons/Feather";
-import { LinearGradient } from "expo-linear-gradient";
+import InputFieldContainer from "./common/InputFieldContainer";
+import InputFieldContent from "./common/InputFieldContent";
 
 interface InputFieldProps extends TextInputProps {
   placeholderText?: string;
@@ -50,64 +48,32 @@ function InputField({
     props.onChangeText?.("");
   };
 
-  const handleContainerPress = () => {
-    textInputRef.current?.focus();
+  const handleFocus = (e: any) => {
+    setIsFocused(true);
+    props.onFocus?.(e);
   };
 
-  const inputContent = (
-    <View
-      style={[
-        styles.container,
-        isFocused ? styles.containerFocused : styles.containerBlurred,
-      ]}
-    >
-      <View style={styles.inputRow}>
-        <TextInput
-          ref={textInputRef}
-          placeholder={placeholderText}
-          {...props}
-          value={inputValue}
-          onFocus={(e) => {
-            setIsFocused(true);
-            props.onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            setIsFocused(false);
-            props.onBlur?.(e);
-          }}
-          onChangeText={handleChangeText}
-          style={styles.textInput}
-        />
-        {inputValue !== "" && (
-          <Pressable onPress={handleClear} hitSlop={8}>
-            <Feather name="x" size={20} color={colors.PRIMARY_COLOR} />
-          </Pressable>
-        )}
-      </View>
-      {type === "search" && (
-        <EvilIcons name="search" size={32} color={colors.PRIMARY_COLOR} />
-      )}
-    </View>
-  );
+  const handleBlur = (e: any) => {
+    setIsFocused(false);
+    props.onBlur?.(e);
+  };
 
   return (
     <View style={styles.wrapper}>
-      {label ? <Text style={styles.label}>{label}</Text> : null}
-
-      <Pressable onPress={handleContainerPress}>
-        {isFocused ? (
-          <LinearGradient
-            colors={[...colors.PRIMARY_GRADIENT]}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.gradientBorder}
-          >
-            {inputContent}
-          </LinearGradient>
-        ) : (
-          inputContent
-        )}
-      </Pressable>
+      {label && <Text style={styles.label}>{label}</Text>}
+      <InputFieldContainer isFocused={isFocused}>
+        <InputFieldContent
+          placeholderText={placeholderText}
+          inputValue={inputValue}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChangeText={handleChangeText}
+          onClear={handleClear}
+          type={type}
+          textInputRef={textInputRef}
+          {...props}
+        />
+      </InputFieldContainer>
     </View>
   );
 }
@@ -119,35 +85,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     color: colors.GRAY_500,
-  },
-  gradientBorder: {
-    borderRadius: 8,
-    padding: 2,
-  },
-  container: {
-    height: 50,
-    borderRadius: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    gap: 8,
-    backgroundColor: "#FFF",
-  },
-  containerBlurred: {
-    borderWidth: 1.5,
-    borderColor: "#E2E2E2",
-  },
-  containerFocused: {
-    // no border here, gradient wrapper acts as border
-  },
-  inputRow: {
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  textInput: {
-    flex: 1,
   },
 });
 

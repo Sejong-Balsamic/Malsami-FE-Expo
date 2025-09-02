@@ -4,11 +4,11 @@ import {
   View,
   Text,
   FlatList,
-  ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { useNoticePostStore } from "@/store/noticePostStore";
+import { useGetNoticePosts } from "@/hooks/queries/useGetNoticePosts";
 import FeedItem from "@/components/FeedItem";
+import { LoadingState, ErrorState, EmptyState } from "./FeedListStates";
 import { NoticePost } from "@/types/entities/postgres/noticePost";
 
 interface NoticeFeedListProps {
@@ -22,52 +22,73 @@ export default function NoticeFeedList({
   onPressViewAll,
   onPressItem,
 }: NoticeFeedListProps) {
-  const { noticePostsPage, isLoading, error } = useNoticePostStore();
+  const { data: noticePostsData, isLoading, error } = useGetNoticePosts();
 
-  if (isLoading && !noticePostsPage) {
-    return (
-      <View style={styles.container}>
-        <HeaderSection title={title} onPressViewAll={onPressViewAll} />
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.container}>
-        <HeaderSection title={title} onPressViewAll={onPressViewAll} />
-        <View style={styles.centerContainer}>
-          <Text style={styles.errorText}>
-            공지사항을 불러오는 중 오류가 발생했습니다.
-          </Text>
-        </View>
-      </View>
-    );
-  }
-
-  if (!noticePostsPage?.content?.length) {
-    return (
-      <View style={styles.container}>
-        <HeaderSection title={title} onPressViewAll={onPressViewAll} />
-        <View style={styles.centerContainer}>
-          <Text style={styles.emptyText}>공지사항이 없습니다.</Text>
-        </View>
-      </View>
-    );
-  }
+  // 디버깅을 위한 로그
+  console.log("NoticeFeedList - noticePostsData:", noticePostsData);
+  console.log("NoticeFeedList - isLoading:", isLoading);
+  console.log("NoticeFeedList - error:", error);
 
   const renderItem = ({ item }: { item: NoticePost }) => {
     return <FeedItem type="notice" noticePost={item} onPress={onPressItem} />;
   };
 
+  // Loading state
+  if (isLoading && !noticePostsData) {
+    return (
+      <View style={styles.container}>
+        <NoticeHeader title={title} onPressViewAll={onPressViewAll} />
+        <LoadingState
+          title={title}
+          activeTab="daily"
+          onTabChange={() => {}}
+          onPressViewAll={onPressViewAll}
+        />
+      </View>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <NoticeHeader title={title} onPressViewAll={onPressViewAll} />
+        <ErrorState
+          title={title}
+          activeTab="daily"
+          onTabChange={() => {}}
+          onPressViewAll={onPressViewAll}
+          message="공지사항을 불러오는 중 오류가 발생했습니다."
+        />
+      </View>
+    );
+  }
+
+  // Extract notice posts from the response
+  const noticePosts = noticePostsData?.noticePostsPage?.content || [];
+
+  // Empty state
+  if (noticePosts.length === 0) {
+    return (
+      <View style={styles.container}>
+        <NoticeHeader title={title} onPressViewAll={onPressViewAll} />
+        <EmptyState
+          title={title}
+          activeTab="daily"
+          onTabChange={() => {}}
+          onPressViewAll={onPressViewAll}
+          message="공지사항이 없습니다."
+        />
+      </View>
+    );
+  }
+
+  // Success state
   return (
     <View style={styles.container}>
-      <HeaderSection title={title} onPressViewAll={onPressViewAll} />
+      <NoticeHeader title={title} onPressViewAll={onPressViewAll} />
       <FlatList
-        data={noticePostsPage.content}
+        data={noticePosts}
         renderItem={renderItem}
         keyExtractor={(item) => item.noticePostId || String(Math.random())}
         horizontal
@@ -78,7 +99,7 @@ export default function NoticeFeedList({
   );
 }
 
-function HeaderSection({
+function NoticeHeader({
   title,
   onPressViewAll,
 }: {
@@ -101,14 +122,12 @@ function HeaderSection({
 
 const styles = StyleSheet.create({
   container: {
-    // paddingHorizontal: 20,
-    marginVertical: 16,
+    marginVertical: 12,
   },
   headerContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
     marginBottom: 12,
   },
   headerTitleContainer: {
@@ -126,28 +145,6 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   listContent: {
-    paddingHorizontal: 8,
     paddingVertical: 4,
-  },
-  loadingContainer: {
-    height: 250,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  centerContainer: {
-    height: 250,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 16,
-  },
-  errorText: {
-    color: "#ff6b6b",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  emptyText: {
-    color: "#999",
-    fontSize: 16,
-    textAlign: "center",
   },
 });
