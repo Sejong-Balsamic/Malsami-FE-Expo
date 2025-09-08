@@ -14,6 +14,7 @@ interface FeedItemContentProps {
   likeCount?: number;
   isLiked?: boolean;
   type: "notice" | "document";
+  size?: "small" | "large";
 }
 
 export default function FeedItemContent({
@@ -27,16 +28,30 @@ export default function FeedItemContent({
   likeCount,
   isLiked,
   type,
+  size = "small",
 }: FeedItemContentProps) {
+  const containerStyle =
+    size === "large" ? styles.largeContentContainer : styles.contentContainer;
+  const titleStyle = size === "large" ? styles.largeTitle : styles.title;
+  const contentStyle = size === "large" ? styles.largeContent : styles.content;
+
   return (
-    <View style={styles.contentContainer}>
+    <View style={containerStyle}>
       {showBadge && <FeedItemBadge subject={subject} />}
       {showTitle && (
-        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+        <Text
+          style={titleStyle}
+          numberOfLines={size === "large" ? 2 : 1}
+          ellipsizeMode="tail"
+        >
           {title}
         </Text>
       )}
-      <Text style={styles.content} numberOfLines={2} ellipsizeMode="tail">
+      <Text
+        style={contentStyle}
+        numberOfLines={size === "large" ? 3 : 2}
+        ellipsizeMode="tail"
+      >
         {content}
       </Text>
       {type === "document" && (
@@ -45,6 +60,7 @@ export default function FeedItemContent({
           customTags={customTags}
           likeCount={likeCount}
           isLiked={isLiked}
+          size={size}
         />
       )}
     </View>
@@ -57,16 +73,34 @@ const styles = StyleSheet.create({
     padding: 12,
     justifyContent: "space-between",
   },
+  largeContentContainer: {
+    flex: 1,
+    padding: 16,
+    justifyContent: "space-between",
+  },
   title: {
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 4,
     color: "#333",
   },
+  largeTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 6,
+    color: "#333",
+    lineHeight: 24,
+  },
   content: {
     fontSize: 13,
     lineHeight: 18,
     color: "#555",
     marginVertical: 4,
+  },
+  largeContent: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: "#555",
+    marginVertical: 6,
   },
 });

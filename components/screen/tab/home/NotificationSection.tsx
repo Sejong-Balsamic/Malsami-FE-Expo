@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useNoticePostStore } from "@/store/noticePostStore";
-import NoticeFeedList from "@/components/feed/NoticeFeedList";
+import NoticeFeedList from "./NoticeFeedList";
 
 interface NotificationSectionProps {}
 

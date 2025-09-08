@@ -2,8 +2,8 @@ import { colors } from "@/constants";
 import { AuthDto } from "@/types/responses/authDto";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import CustomButton from "../CustomButton";
-import InputField from "../InputField";
+import CustomButton from "@/components/common/CustomButton";
+import InputField from "@/components/common/InputField";
 
 interface WelcomeSectionProps {
   authData: AuthDto;

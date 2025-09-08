@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CustomButton from "@/components/CustomButton";
-import GradientText from "@/components/GradientText";
-import InputField from "@/components/InputField";
+import CustomButton from "@/components/common/CustomButton";
+import GradientText from "@/components/common/GradientText";
+import InputField from "@/components/common/InputField";
 import { colors } from "@/constants";
 
 interface LoginFormProps {

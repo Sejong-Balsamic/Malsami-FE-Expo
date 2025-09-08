@@ -7,8 +7,8 @@ import {
   TextInputProps,
   View,
 } from "react-native";
-import InputFieldContainer from "./common/InputFieldContainer";
-import InputFieldContent from "./common/InputFieldContent";
+import InputFieldContainer from "@/components/common/InputFieldContainer";
+import InputFieldContent from "@/components/common/InputFieldContent";
 
 interface InputFieldProps extends TextInputProps {
   placeholderText?: string;

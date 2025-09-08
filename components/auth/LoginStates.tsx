@@ -1,22 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Animated,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, Animated, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/Feather";
 import { colors } from "@/constants";
-import { router } from "expo-router";
 
 export function LoginLoadingState() {
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // 회전 애니메이션 - 스피너 이미지
     const rotateAnimation = Animated.loop(
       Animated.timing(rotateAnim, {
         toValue: 1,
@@ -47,7 +38,6 @@ export function LoginLoadingState() {
           },
         ]}
       >
-        {/* 로딩 스피너 이미지 */}
         <Image
           source={require("@/assets/images/loading/spinner.png")}
           style={styles.loadingSpinnerImage}
@@ -71,14 +61,12 @@ export function LoginSuccessState({
   const scaleAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // 체크 아이콘 그리기 애니메이션
     const checkAnimation = Animated.timing(checkAnim, {
       toValue: 1,
       duration: 600,
       useNativeDriver: false,
     });
 
-    // 스케일 애니메이션
     const scaleAnimation = Animated.spring(scaleAnim, {
       toValue: 1,
       tension: 100,
@@ -86,10 +74,8 @@ export function LoginSuccessState({
       useNativeDriver: true,
     });
 
-    // 순차적으로 실행하고 완료 시 콜백 호출
     Animated.sequence([scaleAnimation, checkAnimation]).start((finished) => {
       if (finished && onAnimationComplete) {
-        // 애니메이션 완료 후 1초 더 보여주고 콜백 실행
         setTimeout(() => {
           console.log("🎉 로그인 성공 애니메이션 완료! 라우팅 시작");
           onAnimationComplete();

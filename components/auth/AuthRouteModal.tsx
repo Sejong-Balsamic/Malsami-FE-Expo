@@ -7,9 +7,7 @@ import {
   Text,
   Dimensions,
   Pressable,
-  TouchableOpacity,
 } from "react-native";
-import CustomButton from "../CustomButton";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface AuthRouteModalProps {
@@ -24,9 +22,6 @@ function AuthRouteModal({ onPress, hide }: AuthRouteModalProps) {
         <View style={styles.modalContainer}>
           <Text style={styles.headerText}>로그인 필요</Text>
           <Text style={styles.subHeaderText}>로그인 후 이용 가능합니다.</Text>
-          {/* <Pressable style={styles.buttonContainer} onPress={onPress}>
-            <Text style={styles.buttonText}>로그인 페이지로 이동</Text>
-          </Pressable> */}
           <View style={styles.buttonContainer}>
             <Pressable style={styles.cancelButton} onPress={hide}>
               <Text style={styles.cancelButtonText}>취소</Text>

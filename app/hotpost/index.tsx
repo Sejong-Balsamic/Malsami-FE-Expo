@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import PagerView from "react-native-pager-view";
-import HotDocumentTabSelector from "@/components/hotpost/HotDocumentTabSelector";
-import HotDocumentList from "@/components/hotpost/HotDocumentList";
+import HotDocumentTabSelector from "@/components/screen/hotpost/HotDocumentTabSelector";
+import HotDocumentList from "@/components/screen/hotpost/HotDocumentList";
 import { colors } from "@/constants";
 
 type TabType = "daily" | "weekly";

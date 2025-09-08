@@ -8,6 +8,7 @@ interface FeedItemTagsProps {
   customTags?: string[];
   likeCount?: number;
   isLiked?: boolean;
+  size?: "small" | "large";
 }
 
 export default function FeedItemTags({
@@ -15,6 +16,7 @@ export default function FeedItemTags({
   customTags = [],
   likeCount,
   isLiked,
+  size = "small",
 }: FeedItemTagsProps) {
   const tags = [...documentTypes, ...customTags];
 

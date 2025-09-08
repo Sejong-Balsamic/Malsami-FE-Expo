@@ -7,8 +7,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useGetNoticePosts } from "@/hooks/queries/useGetNoticePosts";
-import FeedItem from "@/components/FeedItem";
-import { LoadingState, ErrorState, EmptyState } from "./FeedListStates";
+import FeedItem from "@/components/common/FeedItem";
+import {
+  LoadingState,
+  ErrorState,
+  EmptyState,
+} from "@/components/common/FeedListStates";
 import { NoticePost } from "@/types/entities/postgres/noticePost";
 
 interface NoticeFeedListProps {
@@ -30,7 +34,14 @@ export default function NoticeFeedList({
   console.log("NoticeFeedList - error:", error);
 
   const renderItem = ({ item }: { item: NoticePost }) => {
-    return <FeedItem type="notice" noticePost={item} onPress={onPressItem} />;
+    return (
+      <FeedItem
+        type="notice"
+        size="small"
+        noticePost={item}
+        onPress={onPressItem}
+      />
+    );
   };
 
   // Loading state
