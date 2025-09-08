@@ -6,8 +6,10 @@ const gradients = {
 } as const;
 
 const common = {
+  GRAY_25: "#C5C5C5",
   GRAY_50: "#F2F3F9",
   GRAY_100: "#D9D9D9",
+  GRAY_125: "#EDEDED",
   GRAY_150: "#898989",
   GRAY_200: "#0007234D",
   GRAY_400: "#0007234D",
