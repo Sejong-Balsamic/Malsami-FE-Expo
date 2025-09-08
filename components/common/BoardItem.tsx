@@ -4,17 +4,44 @@ import { DocumentPost } from "@/types/entities/postgres/documentPost";
 import FeedItemBadge from "./FeedItemBadge";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { colors } from "@/constants";
+import { QuestionPost } from "@/types/entities/postgres/questionPost";
 
 interface BoardItemProps {
-  documentPost: DocumentPost;
+  type: "document" | "question";
+  documentPost?: DocumentPost;
+  questionPost?: QuestionPost;
   position: "first" | "middle" | "last" | "only";
   onPress?: (id: string) => void;
 }
 
-function BoardItem({ documentPost, position, onPress }: BoardItemProps) {
+function BoardItem({
+  type,
+  documentPost,
+  questionPost,
+  position,
+  onPress,
+}: BoardItemProps) {
+  const postType = type === "document" ? documentPost : questionPost;
+  const postData = {
+    postId:
+      type === "document"
+        ? documentPost?.documentPostId
+        : questionPost?.questionPostId,
+    postSubject:
+      type === "document" ? documentPost?.subject : questionPost?.subject,
+    postTitle: type === "document" ? documentPost?.title : questionPost?.title,
+    postContent:
+      type === "document" ? documentPost?.content : questionPost?.content,
+    postCustomTags:
+      type === "document" ? documentPost?.customTags : questionPost?.customTags,
+    postLikeCount:
+      type === "document" ? documentPost?.likeCount : questionPost?.likeCount,
+    postViewCount:
+      type === "document" ? documentPost?.viewCount : questionPost?.viewCount,
+  };
   const handlePress = () => {
-    if (documentPost.documentPostId && onPress) {
-      onPress(documentPost.documentPostId);
+    if (postData?.postId && onPress) {
+      onPress(postData?.postId);
     }
   };
 
@@ -39,20 +66,20 @@ function BoardItem({ documentPost, position, onPress }: BoardItemProps) {
     <TouchableOpacity style={getContainerStyle()} onPress={handlePress}>
       <View style={styles.content}>
         <View style={styles.badgeContainer}>
-          <FeedItemBadge subject={documentPost.subject} />
+          <FeedItemBadge subject={postData?.postSubject} />
         </View>
 
         <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-          {documentPost.title}
+          {postData?.postTitle}
         </Text>
 
         <Text style={styles.description} numberOfLines={2} ellipsizeMode="tail">
-          {documentPost.content}
+          {postData?.postContent}
         </Text>
 
         <View style={styles.bottomInfo}>
           <View style={styles.tagsContainer}>
-            {documentPost.customTags?.map((tag, index) => (
+            {postData?.postCustomTags?.map((tag, index) => (
               <View key={index} style={styles.customTag}>
                 <Text style={styles.customTagText}>{tag}</Text>
               </View>
@@ -62,11 +89,15 @@ function BoardItem({ documentPost, position, onPress }: BoardItemProps) {
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
               <AntDesign name="like2" size={12} color={colors.GRAY_25} />
-              <Text style={styles.statText}>{documentPost.likeCount || 0}</Text>
+              <Text style={styles.statText}>
+                {postData?.postLikeCount || 0}
+              </Text>
             </View>
             <View style={styles.statItem}>
               <AntDesign name="eye" size={12} color={colors.GRAY_25} />
-              <Text style={styles.statText}>{documentPost.viewCount || 0}</Text>
+              <Text style={styles.statText}>
+                {postData?.postViewCount || 0}
+              </Text>
             </View>
           </View>
         </View>
