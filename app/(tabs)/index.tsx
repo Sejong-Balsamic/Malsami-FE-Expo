@@ -1,6 +1,7 @@
-import NoticeFeedList from "@/components/feed/NoticeFeedList";
-import HotDocumentFeedList from "@/components/feed/HotDocumentFeedList";
-import WelcomeSection from "@/components/home/WelcomeSection";
+import NoticeFeedList from "@/components/screen/tab/home/NoticeFeedList";
+import HotDocumentFeedList from "@/components/screen/tab/home/HotDocumentFeedList";
+import DocumentBoardList from "@/components/screen/tab/home/DocumentBoardList";
+import WelcomeSection from "@/components/screen/tab/home/WelcomeSection";
 import useAuth from "@/hooks/queries/useAuth";
 import { useGetNoticePosts } from "@/hooks/queries/useGetNoticePosts";
 import { router, useFocusEffect } from "expo-router";
@@ -20,11 +21,8 @@ export default function HomeScreen() {
 
   const { refetch: refetchDailyDocuments } = useGetDailyDocuments();
   const { refetch: refetchWeeklyDocuments } = useGetWeeklyDocuments();
-
-  // 공지사항 데이터를 가져오는 훅 추가 (수동 호출만)
   const { refetch: refetchNoticePosts } = useGetNoticePosts({ enabled: false });
 
-  // 화면 포커스 시에만 데이터 로드
   useFocusEffect(
     useCallback(() => {
       console.log("메인 화면 포커스 - 데이터 로드 시작");
@@ -95,6 +93,22 @@ export default function HomeScreen() {
                 return show();
               }
               console.log(`자료 상세: ${id}`);
+            }}
+          />
+          <DocumentBoardList
+            onPressViewAll={() => {
+              if (!auth?.memberId) {
+                return show();
+              }
+              // TODO: 자료 게시판 전체보기 페이지로 이동
+              console.log("전체보기: 자료 게시판");
+            }}
+            onPressItem={(id) => {
+              if (!auth?.memberId) {
+                return show();
+              }
+              // TODO: 자료 게시판 상세 페이지로 이동
+              console.log(`자료 게시판 상세: ${id}`);
             }}
           />
         </View>
