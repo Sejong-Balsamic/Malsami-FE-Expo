@@ -66,7 +66,7 @@ function BoardItem({
     <TouchableOpacity style={getContainerStyle()} onPress={handlePress}>
       <View style={styles.content}>
         <View style={styles.badgeContainer}>
-          <FeedItemBadge subject={postData?.postSubject} />
+          <FeedItemBadge subject={postData?.postSubject} type={type} />
         </View>
 
         <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   customTag: {
-    backgroundColor: "#F0F8FF",
+    backgroundColor: colors.PRIMARY_SUB_BACKGROUND_COLOR,
     borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   customTagText: {
     fontSize: 12,
-    color: "#4A90E2",
+    color: colors.PRIMARY_SUB_COLOR,
     fontWeight: "500",
   },
   statsContainer: {
