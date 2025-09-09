@@ -58,7 +58,7 @@ function FeedItem({
         <FeedItemImage thumbnailUrl={documentPost.thumbnailUrl!} />
       ) : (
         <View style={styles.noImageHeader}>
-          <FeedItemBadge subject={documentPost?.subject} />
+          <FeedItemBadge subject={documentPost?.subject} type={type} />
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             {feedData.title}
           </Text>
