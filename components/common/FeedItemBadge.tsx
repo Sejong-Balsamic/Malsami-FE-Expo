@@ -4,13 +4,28 @@ import { colors } from "@/constants";
 
 interface FeedItemBadgeProps {
   subject?: string;
+  type: "notice" | "document" | "question";
 }
 
-export default function FeedItemBadge({ subject }: FeedItemBadgeProps) {
+export default function FeedItemBadge({ subject, type }: FeedItemBadgeProps) {
   if (!subject) return null;
 
+  const getBadgeColor = () => {
+    switch (type) {
+      case "document":
+        return colors.PRIMARY_COLOR;
+      case "question":
+        return colors.PRIMARY_SUB_COLOR;
+      case "notice":
+      default:
+        return colors.PRIMARY_COLOR; // notice는 document와 같은 색상
+    }
+  };
+
+  const badgeColor = getBadgeColor();
+
   return (
-    <View style={styles.badge}>
+    <View style={[styles.badge, { backgroundColor: badgeColor }]}>
       <Text style={styles.badgeText}>{subject}</Text>
     </View>
   );
@@ -18,7 +33,6 @@ export default function FeedItemBadge({ subject }: FeedItemBadgeProps) {
 
 const styles = StyleSheet.create({
   badge: {
-    backgroundColor: colors.PRIMARY_COLOR,
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 4,
