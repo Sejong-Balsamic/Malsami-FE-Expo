@@ -21,4 +21,11 @@ async function getWeeklyQuestions(): Promise<QuestionDto> {
   return data;
 }
 
-export { getDailyQuestions, getWeeklyQuestions };
+async function getQuestionsFilter(): Promise<QuestionDto> {
+  const body = new FormData();
+  body.append("dummy", "value");
+  const { data } = await axiosInstance.post("/api/question/filter", body);
+  return data;
+}
+
+export { getDailyQuestions, getWeeklyQuestions, getQuestionsFilter };
