@@ -37,7 +37,7 @@ export default function FeedItemContent({
 
   return (
     <View style={containerStyle}>
-      {showBadge && <FeedItemBadge subject={subject} />}
+      {showBadge && <FeedItemBadge subject={subject} type={type} />}
       {showTitle && (
         <Text
           style={titleStyle}
