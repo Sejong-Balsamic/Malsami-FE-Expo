@@ -3,7 +3,7 @@ import HotDocumentFeedList from "@/components/screen/tab/home/HotDocumentFeedLis
 import DocumentBoardList from "@/components/screen/tab/home/DocumentBoardList";
 import WelcomeSection from "@/components/screen/tab/home/WelcomeSection";
 import useAuth from "@/hooks/queries/useAuth";
-import { useGetNoticePosts } from "@/hooks/queries/useGetNoticePosts";
+import { useGetNoticeFilter } from "@/hooks/queries/useGetNotices";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -22,7 +22,9 @@ export default function HomeScreen() {
 
   const { refetch: refetchDailyDocuments } = useGetDailyDocuments();
   const { refetch: refetchWeeklyDocuments } = useGetWeeklyDocuments();
-  const { refetch: refetchNoticePosts } = useGetNoticePosts({ enabled: false });
+  const { refetch: refetchNoticePosts } = useGetNoticeFilter({
+    enabled: false,
+  });
 
   useFocusEffect(
     useCallback(() => {
