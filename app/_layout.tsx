@@ -6,6 +6,7 @@ import { Stack } from "expo-router";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import Toast from "react-native-toast-message";
+import { AuthModalProvider } from "@/context/AuthModalContext";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -19,7 +20,9 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <RootNavigator />
+      <AuthModalProvider>
+        <RootNavigator />
+      </AuthModalProvider>
     </QueryClientProvider>
   );
 }
@@ -38,6 +41,7 @@ function RootNavigator() {
     <Stack initialRouteName="(tabs)">
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="auth" options={{ headerShown: false }} />
+      <Stack.Screen name="hotpost" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );

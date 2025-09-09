@@ -6,7 +6,11 @@ import {
   axiosInstance,
 } from "@/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getSecureStore, setSecureStore } from "@/utils/secureStore";
+import {
+  getSecureStore,
+  removeSecureStore,
+  setSecureStore,
+} from "@/utils/secureStore";
 import { queryKeys, storageKeys } from "@/constants";
 import { setHeader } from "@/utils";
 import { router } from "expo-router";
@@ -32,7 +36,8 @@ function usePostSignin() {
         queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
       });
 
-      router.replace("/");
+      // 라우터 이동은 auth 컴포넌트에서 처리하도록 제거
+      // router.replace("/");
     },
   });
 }
@@ -156,6 +161,34 @@ function useAuth() {
   const refreshTokenMutation = useRefreshAuthToken();
   const { refreshToken, executeWithTokenRefresh } = useTokenRefresh();
 
+  const handleLogout = useCallback(async () => {
+    try {
+      // 1. SecureStore에서 토큰 삭제
+      await removeSecureStore(storageKeys.ACCESS_TOKEN);
+      await removeSecureStore(storageKeys.REFRESH_TOKEN);
+
+      // 2. Axios 헤더에서 토큰 제거
+      setHeader("Authorization", "");
+
+      // 3. React Query 캐시 초기화
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
+      });
+      await queryClient.resetQueries({
+        queryKey: [queryKeys.AUTH, queryKeys.GET_USER],
+      });
+
+      // 4. 로그인 화면으로 리디렉션
+      if (router.canGoBack()) {
+        router.back();
+      } else {
+        router.replace("/auth");
+      }
+    } catch (e) {
+      console.error("로그아웃 실패:", e);
+    }
+  }, []);
+
   return {
     auth: {
       // 사용자 기본 정보
@@ -179,6 +212,7 @@ function useAuth() {
     refreshTokenMutation,
     refreshToken,
     executeWithTokenRefresh,
+    handleLogout,
   };
 }
 

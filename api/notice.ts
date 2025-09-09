@@ -1,11 +1,11 @@
 import { NoticePostDto } from "@/types/responses/noticePostDto";
 import { axiosInstance } from "./axios";
 
-async function getNoticePosts(): Promise<NoticePostDto> {
+async function getNoticeFilter(): Promise<NoticePostDto> {
   const body = new FormData();
-  body.append("page", "1");
-  const { data } = await axiosInstance.post("/api/notice/get/pinned", body);
+  body.append("dummy", "value");
+  const { data } = await axiosInstance.post("/api/notice/filter", body);
   return data;
 }
 
-export { getNoticePosts };
+export { getNoticeFilter };

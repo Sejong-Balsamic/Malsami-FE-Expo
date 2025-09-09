@@ -1,4 +1,8 @@
-import { getDailyDocuments, getWeeklyDocuments } from "@/api/document";
+import {
+  getDailyDocuments,
+  getWeeklyDocuments,
+  getDocumentsFilter,
+} from "@/api/document";
 import { queryKeys } from "@/constants";
 import { useDocumentPostStore } from "@/store/documentPostStore";
 import { useQuery } from "@tanstack/react-query";
@@ -8,9 +12,6 @@ interface UseGetDocumentsProps {
   enabled?: boolean;
 }
 
-/**
- * 일간 인기 자료를 조회하는 훅
- */
 function useGetDailyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
   const { setDailyDocuments } = useDocumentPostStore();
 
@@ -24,7 +25,6 @@ function useGetDailyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
     enabled,
   });
 
-  // 데이터가 변경될 때만 저장소 업데이트
   useEffect(() => {
     if (query.data?.documentPostsPage?.content) {
       setDailyDocuments(query.data.documentPostsPage.content);
@@ -34,9 +34,6 @@ function useGetDailyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
   return query;
 }
 
-/**
- * 주간 인기 자료를 조회하는 훅
- */
 function useGetWeeklyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
   const { setWeeklyDocuments } = useDocumentPostStore();
 
@@ -50,7 +47,6 @@ function useGetWeeklyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
     enabled,
   });
 
-  // 데이터가 변경될 때만 저장소 업데이트
   useEffect(() => {
     if (query.data?.documentPostsPage?.content) {
       setWeeklyDocuments(query.data.documentPostsPage.content);
@@ -60,4 +56,26 @@ function useGetWeeklyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
   return query;
 }
 
-export { useGetDailyDocuments, useGetWeeklyDocuments };
+function useGetDocumentsFilter({ enabled = true }: UseGetDocumentsProps = {}) {
+  const { setFilteredDocuments } = useDocumentPostStore();
+
+  const query = useQuery({
+    queryFn: getDocumentsFilter,
+    queryKey: [
+      queryKeys.GET_POST,
+      queryKeys.GET_DOCUMENT,
+      queryKeys.GET_FILTERED_DOCUMENTS,
+    ],
+    enabled,
+  });
+
+  useEffect(() => {
+    if (query.data?.documentPostsPage?.content) {
+      setFilteredDocuments(query.data.documentPostsPage.content);
+    }
+  }, [query.data, setFilteredDocuments]);
+
+  return query;
+}
+
+export { useGetDailyDocuments, useGetWeeklyDocuments, useGetDocumentsFilter };

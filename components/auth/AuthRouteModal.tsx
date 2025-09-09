@@ -7,9 +7,7 @@ import {
   Text,
   Dimensions,
   Pressable,
-  TouchableOpacity,
 } from "react-native";
-import CustomButton from "./CustomButton";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface AuthRouteModalProps {
@@ -19,19 +17,16 @@ interface AuthRouteModalProps {
 
 function AuthRouteModal({ onPress, hide }: AuthRouteModalProps) {
   return (
-    <Modal transparent animationType="fade">
+    <Modal transparent={true} animationType="fade">
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Text style={styles.headerText}>로그인 필요</Text>
           <Text style={styles.subHeaderText}>로그인 후 이용 가능합니다.</Text>
-          {/* <Pressable style={styles.buttonContainer} onPress={onPress}>
-            <Text style={styles.buttonText}>로그인 페이지로 이동</Text>
-          </Pressable> */}
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.cancelButton} onPress={hide}>
+            <Pressable style={styles.cancelButton} onPress={hide}>
               <Text style={styles.cancelButtonText}>취소</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.loginButton} onPress={onPress}>
+            </Pressable>
+            <Pressable style={styles.loginButton} onPress={onPress}>
               <LinearGradient
                 style={styles.linearStyle}
                 colors={colors.PRIMARY_GRADIENT}
@@ -40,7 +35,7 @@ function AuthRouteModal({ onPress, hide }: AuthRouteModalProps) {
               >
                 <Text style={styles.buttonText}>로그인</Text>
               </LinearGradient>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -51,12 +46,13 @@ function AuthRouteModal({ onPress, hide }: AuthRouteModalProps) {
 const styles = StyleSheet.create({
   modalBackground: {
     flex: 1,
+    height: 154,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
   },
   modalContainer: {
-    width: Dimensions.get("screen").width - 128,
+    width: Dimensions.get("window").width - 128,
     backgroundColor: colors.UNCHANGED_WHITE,
     borderRadius: 8,
     paddingVertical: 20,
@@ -67,16 +63,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 20,
+    textAlign: "center",
   },
   subHeaderText: {
-    fontSize: 12,
+    fontSize: 14,
     textAlign: "center",
     marginBottom: 24,
   },
   buttonContainer: {
     flexDirection: "row",
     width: "100%",
-    paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
     gap: 4,

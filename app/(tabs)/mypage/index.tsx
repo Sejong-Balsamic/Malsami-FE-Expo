@@ -1,13 +1,13 @@
-import AuthRoute from "@/components/AuthRoute";
-import { SafeAreaView, StyleSheet, Text } from "react-native";
+import { useAuth } from "@/hooks";
+import { Button, SafeAreaView, StyleSheet, Text } from "react-native";
 
 export default function MypageHomeScreen() {
+  const { auth, handleLogout } = useAuth();
   return (
-    <AuthRoute>
-      <SafeAreaView>
-        <Text>Mypage Redirecting</Text>
-      </SafeAreaView>
-    </AuthRoute>
+    <SafeAreaView>
+      {auth.memberId && <Button title="로그아웃" onPress={handleLogout} />}
+      <Text>Mypage Redirecting</Text>
+    </SafeAreaView>
   );
 }
 
