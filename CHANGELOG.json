@@ -1,11 +1,47 @@
 {
   "metadata": {
-    "lastUpdated": "2025-08-22T09:49:41Z",
-    "currentVersion": "1.0.11",
+    "lastUpdated": "2025-09-09T16:32:53Z",
+    "currentVersion": "1.0.12",
     "projectType": "react-native-expo",
-    "totalReleases": 3
+    "totalReleases": 4
   },
   "releases": [
+    {
+      "version": "1.0.12",
+      "project_type": "react-native-expo",
+      "date": "2025-09-09",
+      "pr_number": 59,
+      "raw_summary": "Summary by CodeRabbit\n\nNew Features\n\nHOT 인기자료 전용 화면(일간/주간 탭)과 자동 캐러셀 도입\n공지/문서/질문 피드·보드 리스트 추가 및 항목 상세 이동\n비로그인 시 탭/액션 차단 후 인증 모달 표시, 로그인 성공/로딩 상태 UI, 마이페이지 로그아웃 버튼\n문서·질문·공지 필터 조회 및 상대 시간 표기, 신규 입력 컴포넌트\n\n\nRefactor\n\n인증 가드 방식을 모달/컨텍스트 기반으로 전환, 홈 섹션 재구성\n\n\nDocumentation\n\n컴포넌트 분리 가이드 추가, README 버전 문구 갱신\n\n\nChores\n\n앱 버전 상승 및 의존성 추가/업데이트",
+      "parsed_changes": {
+        "new_features": {
+          "title": "New Features",
+          "items": [
+            "HOT 인기자료 전용 화면(일간/주간 탭)과 자동 캐러셀 도입",
+            "공지/문서/질문 피드·보드 리스트 추가 및 항목 상세 이동",
+            "비로그인 시 탭/액션 차단 후 인증 모달 표시, 로그인 성공/로딩 상태 UI, 마이페이지 로그아웃 버튼",
+            "문서·질문·공지 필터 조회 및 상대 시간 표기, 신규 입력 컴포넌트"
+          ]
+        },
+        "refactor": {
+          "title": "Refactor",
+          "items": [
+            "인증 가드 방식을 모달/컨텍스트 기반으로 전환, 홈 섹션 재구성"
+          ]
+        },
+        "documentation": {
+          "title": "Documentation",
+          "items": [
+            "컴포넌트 분리 가이드 추가, README 버전 문구 갱신"
+          ]
+        },
+        "chores": {
+          "title": "Chores",
+          "items": [
+            "앱 버전 상승 및 의존성 추가/업데이트"
+          ]
+        }
+      }
+    },
     {
       "version": "1.0.11",
       "project_type": "react-native-expo",
