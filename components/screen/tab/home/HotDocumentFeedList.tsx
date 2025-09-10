@@ -152,6 +152,8 @@ export default function HotDocumentFeedList({
         activeTab={activeTab}
         onTabChange={handleTabChange}
         onPressViewAll={onPressViewAll}
+        icon={<DocumentHotIcon />}
+        type="document"
       />
     );
   }
@@ -164,6 +166,8 @@ export default function HotDocumentFeedList({
         activeTab={activeTab}
         onTabChange={handleTabChange}
         onPressViewAll={onPressViewAll}
+        icon={<DocumentHotIcon />}
+        type="document"
       />
     );
   }
@@ -176,6 +180,8 @@ export default function HotDocumentFeedList({
         activeTab={activeTab}
         onTabChange={handleTabChange}
         onPressViewAll={onPressViewAll}
+        icon={<DocumentHotIcon />}
+        type="document"
       />
     );
   }
@@ -190,6 +196,7 @@ export default function HotDocumentFeedList({
           onPressViewAll={onPressViewAll}
           activeTab={activeTab}
           onTabChange={handleTabChange}
+          type="document"
         />
       </View>
       <FlatList
