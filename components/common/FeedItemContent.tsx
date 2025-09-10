@@ -13,7 +13,7 @@ interface FeedItemContentProps {
   customTags?: string[];
   likeCount?: number;
   isLiked?: boolean;
-  type: "notice" | "document";
+  type: "notice" | "document" | "question";
   size?: "small" | "large";
 }
 
@@ -54,7 +54,7 @@ export default function FeedItemContent({
       >
         {content}
       </Text>
-      {type === "document" && (
+      {(type === "document" || type === "question") && (
         <FeedItemTags
           documentTypes={documentTypes}
           customTags={customTags}

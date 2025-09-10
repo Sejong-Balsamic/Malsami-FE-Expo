@@ -15,6 +15,7 @@ import Toast from "react-native-toast-message";
 import { useAuthModal } from "@/context/AuthModalContext";
 import AuthRouteModal from "@/components/auth/AuthRouteModal";
 import QuestionBoardList from "@/components/screen/tab/home/QuestionBoardList";
+import HotQuestionFeedList from "@/components/screen/tab/home/HotQuestionFeedList";
 
 export default function HomeScreen() {
   const { auth } = useAuth();
@@ -112,6 +113,20 @@ export default function HomeScreen() {
               }
               // TODO: 자료 게시판 상세 페이지로 이동
               console.log(`자료 게시판 상세: ${id}`);
+            }}
+          />
+          <HotQuestionFeedList
+            onPressViewAll={() => {
+              if (!auth?.memberId) {
+                return show();
+              }
+              router.push("/hotpost");
+            }}
+            onPressItem={(id) => {
+              if (!auth?.memberId) {
+                return show();
+              }
+              console.log(`자료 상세: ${id}`);
             }}
           />
           <QuestionBoardList

@@ -1,146 +1,65 @@
-// import React from "react";
-// import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-// import { colors } from "@/constants";
-
-// interface FeedListHeaderProps {
-//   title: string;
-//   onPressViewAll?: () => void;
-//   activeTab: "daily" | "weekly";
-//   onTabChange: (tab: "daily" | "weekly") => void;
-// }
-
-// export default function FeedListHeader({
-//   title,
-//   onPressViewAll,
-//   activeTab,
-//   onTabChange,
-// }: FeedListHeaderProps) {
-//   return (
-//     <View style={styles.headerContainer}>
-//       <View style={styles.headerTitleContainer}>
-//         <Text style={styles.hotIcon}>🔥</Text>
-//         <Text style={styles.headerTitle}>{title}</Text>
-//       </View>
-//       <TabButtons activeTab={activeTab} onTabChange={onTabChange} />
-//       {onPressViewAll && (
-//         <TouchableOpacity onPress={onPressViewAll}>
-//           <Text style={styles.viewAllText}>전체보기</Text>
-//         </TouchableOpacity>
-//       )}
-//     </View>
-//   );
-// }
-
-// function TabButtons({
-//   activeTab,
-//   onTabChange,
-// }: {
-//   activeTab: "daily" | "weekly";
-//   onTabChange: (tab: "daily" | "weekly") => void;
-// }) {
-//   return (
-//     <View style={styles.tabContainer}>
-//       <TouchableOpacity
-//         style={[styles.tabButton, activeTab === "daily" && styles.activeTab]}
-//         onPress={() => onTabChange("daily")}
-//       >
-//         <Text
-//           style={activeTab === "daily" ? styles.activeTabText : styles.tabText}
-//         >
-//           일간
-//         </Text>
-//       </TouchableOpacity>
-//       <TouchableOpacity
-//         style={[styles.tabButton, activeTab === "weekly" && styles.activeTab]}
-//         onPress={() => onTabChange("weekly")}
-//       >
-//         <Text
-//           style={activeTab === "weekly" ? styles.activeTabText : styles.tabText}
-//         >
-//           주간
-//         </Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   headerContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//   },
-//   headerTitleContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//   },
-//   hotIcon: {
-//     fontSize: 24,
-//     marginRight: 8,
-//   },
-//   headerTitle: {
-//     fontSize: 18,
-//     fontWeight: "700",
-//     color: "#000",
-//   },
-//   viewAllText: {
-//     fontSize: 14,
-//     color: "#666",
-//     textDecorationLine: "underline",
-//   },
-//   tabContainer: {
-//     flexDirection: "row",
-//     marginTop: 8,
-//   },
-//   tabButton: {
-//     backgroundColor: colors.TAB_BACKGROUND,
-//     paddingHorizontal: 12,
-//     paddingVertical: 4,
-//     borderRadius: 20,
-//     marginRight: 8,
-//   },
-//   tabText: {
-//     fontSize: 12,
-//     color: colors.TAB_TEXT,
-//   },
-//   activeTab: {
-//     backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
-//   },
-//   activeTabText: {
-//     fontSize: 14,
-//     fontWeight: "600",
-//     color: colors.PRIMARY_COLOR,
-//   },
-// });
 import { colors } from "@/constants";
 import React, { ReactNode } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
+interface TabButtonsProps {
+  activeTab: "daily" | "weekly";
+  onTabChange: (tab: "daily" | "weekly") => void;
+  type?: "document" | "question";
+}
+
 function TabButtons({
   activeTab,
   onTabChange,
-}: {
-  activeTab: "daily" | "weekly";
-  onTabChange: (tab: "daily" | "weekly") => void;
-}) {
+  type = "document",
+}: TabButtonsProps) {
+  const getTabColors = () => {
+    if (type === "question") {
+      return {
+        activeBackgroundColor: colors.PRIMARY_SUB_BACKGROUND_COLOR,
+        activeTextColor: colors.PRIMARY_SUB_COLOR,
+      };
+    }
+    return {
+      activeBackgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+      activeTextColor: colors.PRIMARY_COLOR,
+    };
+  };
+
+  const { activeBackgroundColor, activeTextColor } = getTabColors();
+
   return (
     <View style={styles.tabContainer}>
       <TouchableOpacity
-        style={[styles.tabButton, activeTab === "daily" && styles.activeTab]}
+        style={[
+          styles.tabButton,
+          activeTab === "daily" && { backgroundColor: activeBackgroundColor },
+        ]}
         onPress={() => onTabChange("daily")}
       >
         <Text
-          style={activeTab === "daily" ? styles.activeTabText : styles.tabText}
+          style={
+            activeTab === "daily"
+              ? [styles.activeTabText, { color: activeTextColor }]
+              : styles.tabText
+          }
         >
           일간
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tabButton, activeTab === "weekly" && styles.activeTab]}
+        style={[
+          styles.tabButton,
+          activeTab === "weekly" && { backgroundColor: activeBackgroundColor },
+        ]}
         onPress={() => onTabChange("weekly")}
       >
         <Text
-          style={activeTab === "weekly" ? styles.activeTabText : styles.tabText}
+          style={
+            activeTab === "weekly"
+              ? [styles.activeTabText, { color: activeTextColor }]
+              : styles.tabText
+          }
         >
           주간
         </Text>
@@ -155,6 +74,7 @@ interface FeedListHeaderProps {
   onPressViewAll?: () => void;
   activeTab: "daily" | "weekly" | "none";
   onTabChange: (tab: "daily" | "weekly") => void;
+  type?: "document" | "question";
 }
 
 function FeedListHeader({
@@ -163,6 +83,7 @@ function FeedListHeader({
   onPressViewAll,
   activeTab,
   onTabChange,
+  type = "document",
 }: FeedListHeaderProps) {
   return (
     <View style={styles.container}>
@@ -170,7 +91,11 @@ function FeedListHeader({
         {icon}
         <Text style={styles.titleText}>{title}</Text>
         {activeTab !== "none" && (
-          <TabButtons activeTab={activeTab} onTabChange={onTabChange} />
+          <TabButtons
+            activeTab={activeTab}
+            onTabChange={onTabChange}
+            type={type}
+          />
         )}
       </View>
       {onPressViewAll && <Text style={styles.viewAllText}>전체보기</Text>}
@@ -215,12 +140,12 @@ const styles = StyleSheet.create({
     color: colors.TAB_TEXT,
   },
   activeTab: {
-    backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+    // 동적 색상은 인라인 스타일로 처리
   },
   activeTabText: {
     fontSize: 14,
     fontWeight: "600",
-    color: colors.PRIMARY_COLOR,
+    // 동적 색상은 인라인 스타일로 처리
   },
 });
 
