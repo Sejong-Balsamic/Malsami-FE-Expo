@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { getSecureStore, setSecureStore } from "@/utils/secureStore";
 import { storageKeys } from "@/constants";
 import { setHeader } from "@/utils";
+import Constants from "expo-constants";
 
 // 토큰 갱신 중인지 확인하는 변수
 let isRefreshing = false;
@@ -11,8 +12,36 @@ let failedRequestQueue: {
   reject: (error: AxiosError) => void;
 }[] = [];
 
+// 서버 URL 가져오기 (개발/배포 환경 모두 지원)
+const getServerBaseUrl = () => {
+  // 1. 개발 환경: .env 파일에서 읽기
+  if (__DEV__ && process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL) {
+    return process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL;
+  }
+
+  // 2. 배포 환경: EAS Secret에서 주입된 환경변수
+  if (process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL) {
+    return process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL;
+  }
+
+  // 3. app.json의 extra에서 fallback (필요시)
+  if (Constants.expoConfig?.extra?.serverBaseUrl) {
+    return Constants.expoConfig.extra.serverBaseUrl;
+  }
+
+  // 4. 최종 fallback (개발 환경)
+  if (__DEV__) {
+    console.warn(
+      "⚠️ EXPO_PUBLIC_MALSAMI_SERVER_BASEURL이 설정되지 않았습니다. .env 파일을 확인해주세요."
+    );
+    return "http://localhost:3000"; // 로컬 개발 서버
+  }
+
+  throw new Error("서버 URL이 설정되지 않았습니다. 환경변수를 확인해주세요.");
+};
+
 const axiosInstance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_SERVER_BASEURL,
+  baseURL: getServerBaseUrl(),
   withCredentials: true,
   headers: {
     "Content-Type": "multipart/form-data",
@@ -84,7 +113,7 @@ axiosInstance.interceptors.response.use(
         body.append("refreshToken", String(refreshToken));
 
         const response = await axios.post(
-          `${process.env.EXPO_PUBLIC_SERVER_BASEURL}/api/auth/mobile/refresh`,
+          `${getServerBaseUrl()}/api/auth/mobile/refresh`,
           body,
           {
             headers: {
