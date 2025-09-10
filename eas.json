@@ -16,7 +16,10 @@
         "distribution": "store",
         "credentialsSource": "remote"
       },
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_MALSAMI_SERVER_BASEURL": "$EXPO_PUBLIC_MALSAMI_SERVER_BASEURL"
+      }
     }
   },
   "submit": {
