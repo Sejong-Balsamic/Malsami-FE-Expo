@@ -1,5 +1,6 @@
 import { DocumentPost } from "@/types/entities/postgres/documentPost";
 import { NoticePost } from "@/types/entities/postgres/noticePost";
+import { QuestionPost } from "@/types/entities/postgres/questionPost";
 import React from "react";
 import {
   StyleSheet,
@@ -13,10 +14,11 @@ import FeedItemContent from "./FeedItemContent";
 import FeedItemBadge from "./FeedItemBadge";
 
 interface FeedItemProps {
-  type: "notice" | "document";
+  type: "notice" | "document" | "question";
   size?: "small" | "large";
   noticePost?: NoticePost;
   documentPost?: DocumentPost;
+  questionPost?: QuestionPost;
   onPress?: (id: string) => void;
 }
 
@@ -27,9 +29,15 @@ function FeedItem({
   size = "small",
   noticePost,
   documentPost,
+  questionPost,
   onPress,
 }: FeedItemProps) {
-  const feedData = type === "notice" ? noticePost : documentPost;
+  const feedData =
+    type === "notice"
+      ? noticePost
+      : type === "document"
+      ? documentPost
+      : questionPost;
   const hasThumbnail = type === "document" && documentPost?.thumbnailUrl;
 
   const handlePress = () => {
@@ -38,7 +46,9 @@ function FeedItem({
     const id =
       type === "notice"
         ? noticePost?.noticePostId
-        : documentPost?.documentPostId;
+        : type === "document"
+        ? documentPost?.documentPostId
+        : questionPost?.questionPostId;
 
     if (id && onPress) {
       onPress(id);
@@ -58,7 +68,16 @@ function FeedItem({
         <FeedItemImage thumbnailUrl={documentPost.thumbnailUrl!} />
       ) : (
         <View style={styles.noImageHeader}>
-          <FeedItemBadge subject={documentPost?.subject} type={type} />
+          <FeedItemBadge
+            subject={
+              type === "document"
+                ? documentPost?.subject
+                : type === "question"
+                ? questionPost?.subject
+                : undefined
+            }
+            type={type}
+          />
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             {feedData.title}
           </Text>
@@ -68,13 +87,33 @@ function FeedItem({
       <FeedItemContent
         title={feedData.title || ""}
         content={feedData.content || ""}
-        subject={documentPost?.subject}
+        subject={
+          type === "document"
+            ? documentPost?.subject
+            : type === "question"
+            ? questionPost?.subject
+            : undefined
+        }
         showBadge={Boolean(hasThumbnail)}
         showTitle={Boolean(hasThumbnail)}
-        documentTypes={documentPost?.documentTypes}
-        customTags={documentPost?.customTags}
+        documentTypes={
+          type === "document" ? documentPost?.documentTypes : undefined
+        }
+        customTags={
+          type === "document"
+            ? documentPost?.customTags
+            : type === "question"
+            ? questionPost?.customTags
+            : undefined
+        }
         likeCount={feedData.likeCount}
-        isLiked={documentPost?.isLiked}
+        isLiked={
+          type === "document"
+            ? documentPost?.isLiked
+            : type === "question"
+            ? questionPost?.isLiked
+            : undefined
+        }
         type={type}
         size={size}
       />
