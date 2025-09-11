@@ -12,36 +12,87 @@ let failedRequestQueue: {
   reject: (error: AxiosError) => void;
 }[] = [];
 
-// 서버 URL 가져오기 (개발/배포 환경 모두 지원)
+// 서버 URL 가져오기 (EAS 환경변수 우선 지원)
 const getServerBaseUrl = () => {
-  // 1. 개발 환경: .env 파일에서 읽기
-  if (__DEV__ && process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL) {
-    return process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL;
+  // 1. EAS 런타임 환경변수 (Constants.expoConfig를 통해 접근)
+  const easEnvUrl =
+    Constants.expoConfig?.extra?.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL;
+
+  // 2. 빌드 시점 환경변수 (개발 환경용)
+  const buildEnvUrl = process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL;
+
+  // 3. app.json의 extra 설정 (fallback)
+  const extraUrl = Constants.expoConfig?.extra?.serverBaseUrl;
+
+  console.log("🔍 환경변수 디버깅:");
+  console.log("- __DEV__:", __DEV__);
+  console.log(
+    "- EAS 런타임 환경변수 (Constants.expoConfig?.extra?.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL):",
+    easEnvUrl
+  );
+  console.log(
+    "- 빌드 시점 환경변수 (process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL):",
+    buildEnvUrl
+  );
+  console.log("- app.json extra.serverBaseUrl:", extraUrl);
+
+  // 전체 Constants.expoConfig 구조 확인 (디버깅용)
+  console.log("🔍 Constants.expoConfig?.extra:", Constants.expoConfig?.extra);
+
+  // 환경변수 확인을 위한 디버깅
+  console.warn("🚨 환경변수 체크:", {
+    isDev: __DEV__,
+    easEnvUrl,
+    buildEnvUrl,
+    extraUrl,
+    allProcessEnv: Object.keys(process.env).filter((key) =>
+      key.includes("MALSAMI")
+    ),
+    allExpoConfigExtra: Constants.expoConfig?.extra
+      ? Object.keys(Constants.expoConfig.extra)
+      : [],
+  });
+
+  // 개발 환경에서 Alert으로도 확인 (선택사항)
+  if (__DEV__) {
+    // Alert.alert("환경변수 확인", `EAS: ${easEnvUrl}\nBuild: ${buildEnvUrl}\nExtra: ${extraUrl}`);
   }
 
-  // 2. 배포 환경: EAS Secret에서 주입된 환경변수
-  if (process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL) {
-    return process.env.EXPO_PUBLIC_MALSAMI_SERVER_BASEURL;
+  // 1. 최우선: EAS 런타임 환경변수
+  if (easEnvUrl) {
+    console.log("✅ EAS 런타임 환경변수 사용:", easEnvUrl);
+    return easEnvUrl;
   }
 
-  // 3. app.json의 extra에서 fallback (필요시)
-  if (Constants.expoConfig?.extra?.serverBaseUrl) {
-    return Constants.expoConfig.extra.serverBaseUrl;
+  // 2. 빌드 시점 환경변수 (개발 환경)
+  if (buildEnvUrl) {
+    console.log("✅ 빌드 시점 환경변수 사용:", buildEnvUrl);
+    return buildEnvUrl;
   }
 
-  // 4. 최종 fallback (개발 환경)
+  // 3. app.json의 extra 설정 (fallback)
+  if (extraUrl) {
+    console.log("✅ app.json extra에서 URL 사용:", extraUrl);
+    return extraUrl;
+  }
+
+  // 4. 개발 환경 fallback
   if (__DEV__) {
     console.warn(
-      "⚠️ EXPO_PUBLIC_MALSAMI_SERVER_BASEURL이 설정되지 않았습니다. .env 파일을 확인해주세요."
+      "⚠️ 모든 환경변수가 설정되지 않았습니다. 로컬 서버를 사용합니다."
     );
     return "http://localhost:3000"; // 로컬 개발 서버
   }
 
-  throw new Error("서버 URL이 설정되지 않았습니다. 환경변수를 확인해주세요.");
+  // 5. 프로덕션에서 모든 설정이 없을 때 에러
+  throw new Error(
+    "서버 URL이 설정되지 않았습니다. EAS 환경변수를 확인해주세요."
+  );
 };
 
 const axiosInstance = axios.create({
-  baseURL: getServerBaseUrl(),
+  // baseURL: getServerBaseUrl(),
+  baseURL: "https://api.sejong-malsami.co.kr",
   withCredentials: true,
   headers: {
     "Content-Type": "multipart/form-data",
@@ -73,21 +124,33 @@ const retryOriginalRequest = async (
 
 axiosInstance.interceptors.request.use(
   (request) => {
-    console.log("Axios Request:", request);
+    console.log("🚀 Axios Request:");
+    console.log("- URL:", request.url);
+    console.log("- BaseURL:", request.baseURL);
+    console.log("- Method:", request.method);
+    console.log("- Headers:", request.headers);
     return request;
   },
   (error) => {
-    console.error("Axios Request Error:", error);
+    console.error("❌ Axios Request Error:", error);
     return Promise.reject(error);
   }
 );
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("Axios Response:", response);
+    console.log("✅ Axios Response Success:");
+    console.log("- Status:", response.status);
+    console.log("- URL:", response.config.url);
     return response;
   },
   async (error) => {
+    console.error("❌ Axios Response Error:");
+    console.error("- Status:", error.response?.status);
+    console.error("- URL:", error.config?.url);
+    console.error("- Message:", error.message);
+    console.error("- Full Error:", error);
+
     const originalRequest = error.config;
 
     // 401 에러이면서 재시도된 요청이 아닌 경우
