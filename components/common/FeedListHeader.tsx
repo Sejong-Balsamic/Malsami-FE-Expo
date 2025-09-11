@@ -98,7 +98,11 @@ function FeedListHeader({
           />
         )}
       </View>
-      {onPressViewAll && <Text style={styles.viewAllText}>전체보기</Text>}
+      {onPressViewAll && (
+        <TouchableOpacity onPress={onPressViewAll}>
+          <Text style={styles.viewAllText}>전체보기</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
