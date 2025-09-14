@@ -122,7 +122,7 @@ export default function CustomInput({
                   hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                 >
                   <Ionicons
-                    name={isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+                    name={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
                     size={20}
                     color={colors.GRAY_400}
                   />
