@@ -16,6 +16,7 @@ import { useAuthModal } from "@/context/AuthModalContext";
 import AuthRouteModal from "@/components/auth/AuthRouteModal";
 import QuestionBoardList from "@/components/screen/tab/home/QuestionBoardList";
 import HotQuestionFeedList from "@/components/screen/tab/home/HotQuestionFeedList";
+import CustomInput from "@/components/common/CustomInput";
 
 export default function HomeScreen() {
   const { auth } = useAuth();

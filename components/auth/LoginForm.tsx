@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomButton from "@/components/common/CustomButton";
 import GradientText from "@/components/common/GradientText";
-import InputField from "@/components/common/InputField";
 import { colors } from "@/constants";
+import CustomInput from "../common/CustomInput";
 
 interface LoginFormProps {
   studentId: string;
@@ -45,20 +45,21 @@ export default function LoginForm({
       </View>
 
       <View style={styles.inputContainer}>
-        <InputField
-          placeholderText="학번"
+        <CustomInput
           label="학번"
           type="login"
           value={studentId}
           onChangeText={onStudentIdChange}
+          showClearButton
         />
-        <InputField
-          placeholderText="비밀번호"
+        <CustomInput
           label="비밀번호"
           type="login"
-          secureTextEntry={true}
           value={password}
           onChangeText={onPasswordChange}
+          setSecureTextEntry={true}
+          showClearButton
+          showPasswordToggle
         />
       </View>
 
