@@ -13,7 +13,6 @@ import { colors } from "@/constants/colors";
 
 interface CustomInputProps extends TextInputProps {
   label?: string;
-  type: "login" | "search";
   placeholder?: string;
   setSecureTextEntry?: boolean;
   showClearButton?: boolean;
@@ -22,7 +21,6 @@ interface CustomInputProps extends TextInputProps {
 
 export default function CustomInput({
   label,
-  type = "search",
   placeholder,
   onFocus,
   onBlur,
