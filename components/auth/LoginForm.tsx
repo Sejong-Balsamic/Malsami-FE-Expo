@@ -47,14 +47,12 @@ export default function LoginForm({
       <View style={styles.inputContainer}>
         <CustomInput
           label="학번"
-          type="login"
           value={studentId}
           onChangeText={onStudentIdChange}
           showClearButton
         />
         <CustomInput
           label="비밀번호"
-          type="login"
           value={password}
           onChangeText={onPasswordChange}
           setSecureTextEntry={true}
