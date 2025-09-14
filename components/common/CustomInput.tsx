@@ -16,8 +16,8 @@ interface CustomInputProps extends TextInputProps {
   type: "login" | "search";
   placeholder?: string;
   setSecureTextEntry?: boolean;
-  showClearButton?: boolean; // X 버튼 표시 여부
-  showPasswordToggle?: boolean; // eye 아이콘 표시 여부
+  showClearButton?: boolean;
+  showPasswordToggle?: boolean;
 }
 
 export default function CustomInput({
@@ -72,13 +72,10 @@ export default function CustomInput({
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  // X 버튼 표시 조건: showClearButton이 true이고 입력값이 있을 때
   const shouldShowClearButton = showClearButton && inputValue.length > 0;
 
-  // eye 아이콘 표시 조건: showPasswordToggle이 true일 때
   const shouldShowPasswordToggle = showPasswordToggle;
 
-  // 실제 secureTextEntry 값 계산
   const actualSecureTextEntry = setSecureTextEntry && !isPasswordVisible;
 
   return (
