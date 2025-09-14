@@ -1,11 +1,46 @@
 {
   "metadata": {
-    "lastUpdated": "2025-09-11T09:50:59Z",
-    "currentVersion": "1.0.16",
+    "lastUpdated": "2025-09-14T18:09:54Z",
+    "currentVersion": "1.0.17",
     "projectType": "react-native-expo",
-    "totalReleases": 7
+    "totalReleases": 8
   },
   "releases": [
+    {
+      "version": "1.0.17",
+      "project_type": "react-native-expo",
+      "date": "2025-09-14",
+      "pr_number": 69,
+      "raw_summary": "Summary by CodeRabbit\n\nNew Features\n\n홈 화면 검색 입력을 새로운 검색 모달 기반 UI로 교체하고 검색 실행 콜백을 지원합니다.\n로그인 입력 필드에 지우기 버튼과 비밀번호 표시 토글을 추가하고 포커스/그라디언트 시각 효과를 개선했습니다.\n\n\nRefactor\n\n공용 입력 컴포넌트를 재구성해 동작과 스타일의 일관성을 높였습니다.\n\n\nDocumentation\n\nREADME 최신 버전 표기를 갱신했습니다.\n\n\nChores\n\n앱 버전을 1.0.17로 상향하고 버전 메타데이터를 갱신했습니다.\n일부 의존성의 버전 범위를 최신 호환 범위로 조정했습니다.",
+      "parsed_changes": {
+        "new_features": {
+          "title": "New Features",
+          "items": [
+            "홈 화면 검색 입력을 새로운 검색 모달 기반 UI로 교체하고 검색 실행 콜백을 지원합니다.",
+            "로그인 입력 필드에 지우기 버튼과 비밀번호 표시 토글을 추가하고 포커스/그라디언트 시각 효과를 개선했습니다."
+          ]
+        },
+        "refactor": {
+          "title": "Refactor",
+          "items": [
+            "공용 입력 컴포넌트를 재구성해 동작과 스타일의 일관성을 높였습니다."
+          ]
+        },
+        "documentation": {
+          "title": "Documentation",
+          "items": [
+            "README 최신 버전 표기를 갱신했습니다."
+          ]
+        },
+        "chores": {
+          "title": "Chores",
+          "items": [
+            "앱 버전을 1.0.17로 상향하고 버전 메타데이터를 갱신했습니다.",
+            "일부 의존성의 버전 범위를 최신 호환 범위로 조정했습니다."
+          ]
+        }
+      }
+    },
     {
       "version": "1.0.16",
       "project_type": "react-native-expo",
