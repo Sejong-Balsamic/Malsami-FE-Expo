@@ -3,14 +3,19 @@ import { AuthDto } from "@/types/responses/authDto";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import CustomButton from "@/components/common/CustomButton";
-import InputField from "@/components/common/InputField";
+import CustomSearchInput from "@/components/common/CustomSearchInput";
 
 interface WelcomeSectionProps {
   authData: AuthDto;
   onPressLogin: () => void;
+  onSearchPress?: (query: string) => void; // 검색 실행 시 호출
 }
 
-function WelcomeSection({ authData, onPressLogin }: WelcomeSectionProps) {
+function WelcomeSection({
+  authData,
+  onPressLogin,
+  onSearchPress,
+}: WelcomeSectionProps) {
   const myData = authData;
 
   if (!myData.memberId) {
@@ -51,7 +56,10 @@ function WelcomeSection({ authData, onPressLogin }: WelcomeSectionProps) {
         <View style={styles.characterIcon} />
       </View>
       <View style={styles.searchContainer}>
-        <InputField type="search" />
+        <CustomSearchInput
+          placeholder="과목명, 키워드 등을 입력하세요"
+          onSearchPress={onSearchPress}
+        />
       </View>
     </View>
   );
