@@ -1,141 +1,205 @@
-import React, { ReactNode } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
-  View,
   TextInput,
-  Pressable,
   StyleSheet,
   TextInputProps,
+  Pressable,
   Text,
+  View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
-import Feather from "@expo/vector-icons/Feather";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { colors } from "@/constants/colors";
 
 interface CustomInputProps extends TextInputProps {
   label?: string;
-  isFocused?: boolean;
-  placeholderText?: string;
-  inputValue: string;
-  onFocus: (e: any) => void;
-  onBlur: (e: any) => void;
-  onChangeText: (text: string) => void;
-  onClear: () => void;
-  type: "search" | "login";
+  type: "login" | "search";
+  placeholder?: string;
+  setSecureTextEntry?: boolean;
+  showClearButton?: boolean; // X 버튼 표시 여부
+  showPasswordToggle?: boolean; // eye 아이콘 표시 여부
 }
 
-function CustomInput({
+export default function CustomInput({
   label,
-  isFocused = false,
-  placeholderText,
-  inputValue,
+  type = "search",
+  placeholder,
   onFocus,
   onBlur,
+  setSecureTextEntry = false,
+  showClearButton = false,
+  showPasswordToggle = false,
+  value,
   onChangeText,
-  onClear,
-  type,
   ...props
 }: CustomInputProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [inputValue, setInputValue] = useState(value || "");
+  const textInputRef = useRef<TextInput>(null);
+
+  // value prop이 변경될 때 내부 상태 동기화
+  useEffect(() => {
+    setInputValue(value || "");
+  }, [value]);
+
   const handleFocus = (e: any) => {
-    onFocus(e);
+    setIsFocused(true);
+    onFocus?.(e);
   };
 
   const handleBlur = (e: any) => {
-    onBlur(e);
+    setIsFocused(false);
+    onBlur?.(e);
+  };
+
+  const handlePress = () => {
+    textInputRef.current?.focus();
   };
 
   const handleChangeText = (text: string) => {
-    onChangeText(text);
+    setInputValue(text);
+    onChangeText?.(text);
   };
 
-  const handleClear = () => {
-    onClear();
+  const handleClearText = () => {
+    setInputValue("");
+    onChangeText?.("");
+    textInputRef.current?.focus();
   };
 
-  // Container 컴포넌트 로직 - isFocused에 따라 다른 컨테이너 렌더링
-  const renderContainer = (children: ReactNode) => {
-    if (isFocused) {
-      return (
-        <LinearGradient
-          colors={[...colors.PRIMARY_GRADIENT]}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.gradientBorder}
-        >
-          <View style={styles.container}>{children}</View>
-        </LinearGradient>
-      );
-    }
-
-    return (
-      <View style={[styles.container, styles.containerBlurred]}>
-        {children}
-      </View>
-    );
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
-  // Content 컴포넌트 로직 - TextInput과 아이콘들
-  const renderContent = () => (
-    <>
+  // X 버튼 표시 조건: showClearButton이 true이고 입력값이 있을 때
+  const shouldShowClearButton = showClearButton && inputValue.length > 0;
+
+  // eye 아이콘 표시 조건: showPasswordToggle이 true일 때
+  const shouldShowPasswordToggle = showPasswordToggle;
+
+  // 실제 secureTextEntry 값 계산
+  const actualSecureTextEntry = setSecureTextEntry && !isPasswordVisible;
+
+  return (
+    <Pressable onPress={handlePress}>
       {label && <Text style={styles.label}>{label}</Text>}
-      <View style={styles.inputRow}>
-        <TextInput
-          placeholder={placeholderText}
-          {...props}
-          value={inputValue}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onChangeText={handleChangeText}
-          style={styles.textInput}
-        />
-        {inputValue !== "" && (
-          <Pressable onPress={handleClear} hitSlop={8}>
-            <Feather name="x" size={20} color={colors.PRIMARY_COLOR} />
-          </Pressable>
-        )}
-      </View>
-      {type === "search" && (
-        <EvilIcons name="search" size={32} color={colors.PRIMARY_COLOR} />
-      )}
-    </>
-  );
+      <LinearGradient
+        colors={
+          isFocused
+            ? [...colors.PRIMARY_GRADIENT]
+            : ["transparent", "transparent"]
+        }
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 0 }}
+        style={[styles.gradientBorder, !isFocused && styles.transparentBorder]}
+      >
+        <View
+          style={[
+            styles.inputContainer,
+            isFocused ? styles.containerFocused : styles.containerBlurred,
+          ]}
+        >
+          <TextInput
+            ref={textInputRef}
+            secureTextEntry={actualSecureTextEntry}
+            {...props}
+            value={inputValue}
+            placeholder={placeholder}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onChangeText={handleChangeText}
+            style={[
+              styles.input,
+              (shouldShowClearButton || shouldShowPasswordToggle) &&
+                styles.inputWithIcons,
+            ]}
+            placeholderTextColor={colors.GRAY_500}
+          />
 
-  return renderContainer(renderContent());
+          {/* 아이콘 컨테이너 */}
+          {(shouldShowClearButton || shouldShowPasswordToggle) && (
+            <View style={styles.iconsContainer}>
+              {shouldShowPasswordToggle && (
+                <Pressable
+                  onPress={togglePasswordVisibility}
+                  style={styles.iconButton}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Ionicons
+                    name={isPasswordVisible ? "eye-off-outline" : "eye-outline"}
+                    size={20}
+                    color={colors.GRAY_400}
+                  />
+                </Pressable>
+              )}
+              {shouldShowClearButton && (
+                <Pressable
+                  onPress={handleClearText}
+                  style={styles.iconButton}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Feather name="x" size={20} color={colors.GRAY_400} />
+                </Pressable>
+              )}
+            </View>
+          )}
+        </View>
+      </LinearGradient>
+    </Pressable>
+  );
 }
 
 const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: colors.GRAY_400,
+    marginBottom: 12,
+  },
   gradientBorder: {
     borderRadius: 8,
     padding: 2,
   },
-  label: {
-    fontSize: 14,
-    fontWeight: "medium",
-    color: colors.GRAY_500,
-    marginBottom: 32,
+  transparentBorder: {
+    padding: 0,
   },
-  container: {
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.UNCHANGED_WHITE,
+    borderRadius: 8,
+    height: 50,
+    overflow: "hidden",
+  },
+  input: {
+    flex: 1,
     height: 50,
     borderRadius: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    gap: 8,
-    backgroundColor: "#FFF",
+    paddingHorizontal: 16,
+    fontSize: 16,
+    backgroundColor: "transparent",
+    borderWidth: 0,
   },
+  inputWithIcons: {
+    paddingRight: 8,
+  },
+  inputFocused: {},
+  inputBlurred: {},
+  containerFocused: {},
   containerBlurred: {
     borderWidth: 1.5,
-    borderColor: "#E2E2E2",
+    borderColor: colors.GRAY_100,
   },
-  inputRow: {
+  iconsContainer: {
     flexDirection: "row",
-    flex: 1,
-    justifyContent: "space-between",
+    alignItems: "center",
+    paddingRight: 12,
+    gap: 8,
+  },
+  iconButton: {
+    padding: 4,
+    justifyContent: "center",
     alignItems: "center",
   },
-  textInput: {
-    flex: 1,
-  },
 });
-
-export default CustomInput;
