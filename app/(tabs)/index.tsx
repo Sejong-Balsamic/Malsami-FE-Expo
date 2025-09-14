@@ -66,6 +66,10 @@ export default function HomeScreen() {
           <WelcomeSection
             authData={auth}
             onPressLogin={() => router.replace("/auth")}
+            onSearchPress={(query) => {
+              console.log("검색 실행:", query);
+              // TODO: 검색 로직 구현
+            }}
           />
           <NoticeFeedList
             onPressViewAll={() => {
