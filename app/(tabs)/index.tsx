@@ -16,7 +16,6 @@ import { useAuthModal } from "@/context/AuthModalContext";
 import AuthRouteModal from "@/components/auth/AuthRouteModal";
 import QuestionBoardList from "@/components/screen/tab/home/QuestionBoardList";
 import HotQuestionFeedList from "@/components/screen/tab/home/HotQuestionFeedList";
-import CustomInput from "@/components/common/CustomInput";
 
 export default function HomeScreen() {
   const { auth } = useAuth();
@@ -67,6 +66,10 @@ export default function HomeScreen() {
           <WelcomeSection
             authData={auth}
             onPressLogin={() => router.replace("/auth")}
+            onSearchPress={(query) => {
+              console.log("검색 실행:", query);
+              // TODO: 검색 로직 구현
+            }}
           />
           <NoticeFeedList
             onPressViewAll={() => {
