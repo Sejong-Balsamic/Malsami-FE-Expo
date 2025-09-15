@@ -28,7 +28,6 @@ export default function SearchModal({
   const [inputValue, setInputValue] = useState("");
   const textInputRef = useRef<TextInput>(null);
 
-  // 모달이 열릴 때 입력값 초기화
   useEffect(() => {
     if (visible) {
       setInputValue("");
@@ -66,9 +65,7 @@ export default function SearchModal({
     // 검색 실행 후 모달은 열린 상태로 유지 (결과 표시를 위해)
   };
 
-  // X 버튼 표시 조건: 입력값이 있을 때
   const shouldShowClearButton = inputValue.length > 0;
-  // 검색 아이콘 표시 조건: 입력값이 없을 때
   const shouldShowSearchIcon = !shouldShowClearButton;
 
   return (
@@ -186,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.UNCHANGED_WHITE,
     borderRadius: 8,
-    height: 50,
+    height: 52,
     overflow: "hidden",
   },
   containerFocused: {
@@ -202,7 +199,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 50,
+    height: 52,
     paddingHorizontal: 8,
     fontSize: 16,
     backgroundColor: "transparent",
