@@ -14,6 +14,7 @@ export default function QuestionLayout() {
         name="index"
         options={{
           headerShown: true,
+          headerTitle: "",
           headerLeft: () => (
             <View style={styles.headerLeftContainer}>
               <Image
