@@ -16,13 +16,13 @@ function TabButtons({
   const getTabColors = () => {
     if (type === "question") {
       return {
-        activeBackgroundColor: colors.PRIMARY_SUB_BACKGROUND_COLOR,
-        activeTextColor: colors.PRIMARY_SUB_COLOR,
+        activeBackgroundColor: colors.PRIMARY_QUESTION_BACKGROUND_COLOR,
+        activeTextColor: colors.PRIMARY_QUESTION_COLOR,
       };
     }
     return {
-      activeBackgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
-      activeTextColor: colors.PRIMARY_COLOR,
+      activeBackgroundColor: colors.PRIMARY_DOCUMENT_BACKGROUND_COLOR,
+      activeTextColor: colors.PRIMARY_DOCUMENT_COLOR,
     };
   };
 

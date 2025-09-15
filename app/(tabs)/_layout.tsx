@@ -18,7 +18,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.PRIMARY_COLOR,
+        tabBarActiveTintColor: colors.PRIMARY_DOCUMENT_COLOR,
         tabBarInactiveTintColor: colors.light.text,
         headerShown: false,
         sceneStyle: {
@@ -66,7 +66,7 @@ export default function TabLayout() {
                 style={{ right: 12 }}
                 name="bell"
                 size={24}
-                color={colors.PRIMARY_COLOR}
+                color={colors.PRIMARY_DOCUMENT_COLOR}
               />
             </Pressable>
           ),

@@ -13,12 +13,12 @@ export default function FeedItemBadge({ subject, type }: FeedItemBadgeProps) {
   const getBadgeColor = () => {
     switch (type) {
       case "document":
-        return colors.PRIMARY_COLOR;
+        return colors.PRIMARY_DOCUMENT_COLOR;
       case "question":
-        return colors.PRIMARY_SUB_COLOR;
+        return colors.PRIMARY_QUESTION_COLOR;
       case "notice":
       default:
-        return colors.PRIMARY_COLOR; // notice는 document와 같은 색상
+        return colors.PRIMARY_DOCUMENT_COLOR; // notice는 document와 같은 색상
     }
   };
 

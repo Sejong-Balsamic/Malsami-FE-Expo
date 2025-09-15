@@ -41,10 +41,13 @@ export default function FeedItemTags({
         <AntDesign
           name={isLiked ? "like1" : "like2"}
           size={16}
-          color={isLiked ? colors.PRIMARY_COLOR : colors.GRAY_500}
+          color={isLiked ? colors.PRIMARY_DOCUMENT_COLOR : colors.GRAY_500}
         />
         <Text
-          style={[styles.likeText, isLiked && { color: colors.PRIMARY_COLOR }]}
+          style={[
+            styles.likeText,
+            isLiked && { color: colors.PRIMARY_DOCUMENT_COLOR },
+          ]}
         >
           {formatLikeCount(likeCount)}
         </Text>
@@ -62,14 +65,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   tag: {
-    backgroundColor: colors.PRIMARY_BACKGROUND_COLOR,
+    backgroundColor: colors.PRIMARY_DOCUMENT_BACKGROUND_COLOR,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
   },
   tagText: {
     fontSize: 11,
-    color: colors.PRIMARY_COLOR,
+    color: colors.PRIMARY_DOCUMENT_COLOR,
   },
   likeContainer: {
     flexDirection: "row",
