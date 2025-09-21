@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     width: "100%",
-    height: 50,
+    height: 52,
   },
 });
 
