@@ -62,7 +62,7 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        <View style={{ paddingHorizontal: 20 }}>
+        <View>
           <WelcomeSection
             authData={auth}
             onPressLogin={() => router.replace("/auth")}
@@ -165,6 +165,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
+    padding: 20,
   },
 });
