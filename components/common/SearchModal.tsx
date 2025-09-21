@@ -50,15 +50,13 @@ export default function SearchModal({
     }
   }, [visible]);
 
-  // @ 기호로 시작하는 과목 검색 필터링
   useEffect(() => {
     if (inputValue.startsWith("@")) {
-      const searchTerm = inputValue.slice(1).toLowerCase(); // @ 제거 및 소문자 변환
+      const searchTerm = inputValue.slice(1).toLowerCase();
       if (searchTerm.length > 0) {
         const filtered = subjects.filter((subject) =>
           subject.toLowerCase().includes(searchTerm)
         );
-        // 정확도 순으로 정렬 (시작하는 것부터, 그 다음 포함하는 것)
         const sortedFiltered = filtered.sort((a, b) => {
           const aLower = a.toLowerCase();
           const bLower = b.toLowerCase();
@@ -74,7 +72,7 @@ export default function SearchModal({
         setShowSubjectSuggestions(true);
       } else {
         setFilteredSubjects([]);
-        setShowSubjectSuggestions(true); // @ 만 입력했을 때도 빈 리스트 표시
+        setShowSubjectSuggestions(true);
       }
     } else {
       setFilteredSubjects([]);
@@ -118,7 +116,6 @@ export default function SearchModal({
     textInputRef.current?.focus();
   };
 
-  // 검색어 하이라이트 함수
   const highlightSearchTerm = (text: string, searchTerm: string) => {
     if (!searchTerm) return text;
 
@@ -180,7 +177,6 @@ export default function SearchModal({
                 />
               </Pressable>
 
-              {/* 검색 입력 */}
               <TextInput
                 ref={textInputRef}
                 value={inputValue}
@@ -193,7 +189,6 @@ export default function SearchModal({
                 autoFocus={true}
               />
 
-              {/* 아이콘들 */}
               <View style={styles.iconsContainer}>
                 {shouldShowClearButton && (
                   <Pressable
@@ -222,7 +217,6 @@ export default function SearchModal({
           </LinearGradient>
         </View>
 
-        {/* 검색 결과 영역 */}
         <View style={styles.resultsContainer}>
           {showSubjectSuggestions ? (
             <>
