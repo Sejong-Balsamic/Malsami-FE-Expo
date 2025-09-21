@@ -16,6 +16,7 @@
       }
     },
     "android": {
+      "package": "com.juhkang.malsami",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
