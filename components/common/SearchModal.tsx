@@ -9,11 +9,12 @@ import {
   Text,
   ScrollView,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { colors } from "@/constants/colors";
-import RecentSearchTags from "../screen/tab/RecentSearchTags";
 import subjects from "@/constants/subjects";
+import RecentSearchTags from "../screen/tab/RecentSearchTags";
 
 interface SearchModalProps {
   visible: boolean;
@@ -22,12 +23,8 @@ interface SearchModalProps {
   placeholder?: string;
 }
 
-const recentSearchTags = [
-  { name: "플렉시테리언" },
-  { name: "오보 베지테리언" },
-  { name: "페스코 베지테리언" },
-  { name: "비건" },
-];
+const RECENT_SEARCHES_KEY = "recent_searches";
+const MAX_RECENT_SEARCHES = 10;
 
 export default function SearchModal({
   visible,
@@ -39,7 +36,50 @@ export default function SearchModal({
   const [inputValue, setInputValue] = useState("");
   const [filteredSubjects, setFilteredSubjects] = useState<string[]>([]);
   const [showSubjectSuggestions, setShowSubjectSuggestions] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const textInputRef = useRef<TextInput>(null);
+
+  // AsyncStorage에서 최근 검색어 불러오기
+  const loadRecentSearches = async () => {
+    try {
+      const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+      if (stored) {
+        const searches = JSON.parse(stored);
+        setRecentSearches(searches);
+      }
+    } catch (error) {
+      console.error("Failed to load recent searches:", error);
+    }
+  };
+
+  // AsyncStorage에 최근 검색어 저장하기
+  const saveRecentSearch = async (searchTerm: string) => {
+    try {
+      const trimmedTerm = searchTerm.trim();
+      if (!trimmedTerm) return;
+
+      // 기존 검색어 불러오기
+      const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+      let searches: string[] = stored ? JSON.parse(stored) : [];
+
+      // 중복 제거 (이미 있으면 제거)
+      searches = searches.filter((item) => item !== trimmedTerm);
+
+      // 맨 앞에 새 검색어 추가
+      searches.unshift(trimmedTerm);
+
+      // 최대 개수 제한
+      if (searches.length > MAX_RECENT_SEARCHES) {
+        searches = searches.slice(0, MAX_RECENT_SEARCHES);
+      }
+
+      // 저장
+      await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
+      setRecentSearches(searches);
+    } catch (error) {
+      console.error("Failed to save recent search:", error);
+    }
+  };
 
   useEffect(() => {
     if (visible) {
@@ -47,6 +87,7 @@ export default function SearchModal({
       setIsFocused(false);
       setFilteredSubjects([]);
       setShowSubjectSuggestions(false);
+      loadRecentSearches(); // 모달이 열릴 때 최근 검색어 불러오기
     }
   }, [visible]);
 
@@ -103,9 +144,13 @@ export default function SearchModal({
     onClose();
   };
 
-  const handleSearch = () => {
-    if (onSearch && inputValue.trim()) {
-      onSearch(inputValue.trim());
+  const handleSearch = async () => {
+    const trimmedValue = inputValue.trim();
+    if (onSearch && trimmedValue) {
+      // 검색어 저장
+      await saveRecentSearch(trimmedValue);
+      // 검색 실행
+      onSearch(trimmedValue);
     }
     // 검색 실행 후 모달은 열린 상태로 유지 (결과 표시를 위해)
   };
@@ -114,6 +159,15 @@ export default function SearchModal({
     setInputValue(subject);
     setShowSubjectSuggestions(false);
     textInputRef.current?.focus();
+  };
+
+  const handleRecentSearchSelect = async (searchTerm: string) => {
+    setInputValue(searchTerm);
+    if (onSearch) {
+      // 최근 검색어를 다시 선택했을 때도 맨 앞으로 이동
+      await saveRecentSearch(searchTerm);
+      onSearch(searchTerm);
+    }
   };
 
   const highlightSearchTerm = (text: string, searchTerm: string) => {
@@ -184,6 +238,8 @@ export default function SearchModal({
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onChangeText={handleChangeText}
+                onSubmitEditing={handleSearch}
+                returnKeyType="search"
                 style={styles.input}
                 placeholderTextColor={colors.GRAY_500}
                 autoFocus={true}
@@ -259,9 +315,18 @@ export default function SearchModal({
                 horizontal
                 style={styles.recentSearchList}
               >
-                {recentSearchTags.map((tag: { name: string }) => (
-                  <RecentSearchTags key={tag.name} tagName={tag.name} />
+                {recentSearches.map((searchTerm, index) => (
+                  <RecentSearchTags
+                    key={index}
+                    tagName={searchTerm}
+                    onPress={handleRecentSearchSelect}
+                  />
                 ))}
+                {recentSearches.length === 0 && (
+                  <Text style={styles.noRecentSearchText}>
+                    최근 검색어가 없습니다
+                  </Text>
+                )}
               </ScrollView>
             </>
           )}
@@ -338,6 +403,12 @@ const styles = StyleSheet.create({
   recentSearchList: {
     paddingVertical: 8,
     gap: 8,
+  },
+  noRecentSearchText: {
+    fontSize: 14,
+    color: colors.GRAY_400,
+    fontStyle: "italic",
+    paddingVertical: 8,
   },
   suggestionTitle: {
     paddingLeft: 16,
