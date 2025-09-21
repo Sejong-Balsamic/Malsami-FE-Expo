@@ -128,15 +128,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     marginHorizontal: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 4,
+    boxShadow: "4px 4px 10px 0px #0000001A",
     overflow: "visible",
   },
   largeContainer: {
-    width: width - 32, // 전체 너비에서 마진 제외
+    width: width - 32,
     maxWidth: width - 32,
     backgroundColor: "white",
     borderRadius: 12,
