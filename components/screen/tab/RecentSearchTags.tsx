@@ -1,14 +1,21 @@
 import { colors } from "@/constants";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 interface RecentSearchTagsProps {
   tagName: string;
+  onPress?: (tagName: string) => void;
 }
 
-function RecentSearchTags({ tagName }: RecentSearchTagsProps) {
+function RecentSearchTags({ tagName, onPress }: RecentSearchTagsProps) {
+  const handlePress = () => {
+    if (onPress) {
+      onPress(tagName);
+    }
+  };
+
   return (
-    <Pressable style={styles.tagContainer}>
+    <Pressable style={styles.tagContainer} onPress={handlePress}>
       <Text style={styles.tagText}>{tagName}</Text>
     </Pressable>
   );
