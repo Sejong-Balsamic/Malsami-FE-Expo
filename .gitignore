@@ -45,3 +45,10 @@ app-example
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
+
+# Google Service Account Keys (sensitive!)
+.service-account.json
+service-account.json
+*service-account*.json
+google-services.json
+GoogleService-Info.plist

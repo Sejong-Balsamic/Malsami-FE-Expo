@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   customTag: {
-    backgroundColor: colors.PRIMARY_SUB_BACKGROUND_COLOR,
+    backgroundColor: colors.PRIMARY_QUESTION_BACKGROUND_COLOR,
     borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   customTagText: {
     fontSize: 12,
-    color: colors.PRIMARY_SUB_COLOR,
+    color: colors.PRIMARY_QUESTION_COLOR,
     fontWeight: "500",
   },
   statsContainer: {

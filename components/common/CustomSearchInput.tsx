@@ -34,7 +34,7 @@ function CustomSearchInput({
   return (
     <>
       {/* 메인 화면 검색 입력 */}
-      <Pressable onPress={openModal}>
+      <Pressable onPress={handlePress}>
         <LinearGradient
           colors={[...colors.PRIMARY_GRADIENT]}
           start={{ x: 0, y: 1 }}

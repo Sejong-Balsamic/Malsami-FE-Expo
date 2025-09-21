@@ -47,12 +47,16 @@ export default function InputFieldContent({
         />
         {inputValue !== "" && (
           <Pressable onPress={onClear} hitSlop={8}>
-            <Feather name="x" size={20} color={colors.PRIMARY_COLOR} />
+            <Feather name="x" size={20} color={colors.PRIMARY_DOCUMENT_COLOR} />
           </Pressable>
         )}
       </View>
       {type === "search" && (
-        <EvilIcons name="search" size={32} color={colors.PRIMARY_COLOR} />
+        <EvilIcons
+          name="search"
+          size={32}
+          color={colors.PRIMARY_DOCUMENT_COLOR}
+        />
       )}
     </>
   );

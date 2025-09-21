@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.GRAY_100,
+    borderBottomColor: colors.GRAY_125,
     justifyContent: "space-between",
   },
   contentContainer: {
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   courseChip: {
-    backgroundColor: colors.PRIMARY_COLOR,
+    backgroundColor: colors.PRIMARY_DOCUMENT_COLOR,
     borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,

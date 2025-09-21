@@ -167,19 +167,4 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  searchContainer: {},
-  searchHeaderContainer: {
-    flexDirection: "row",
-    zIndex: 10,
-    alignItems: "center",
-    gap: 8,
-  },
-  searchHeaderImage: {
-    width: 120,
-    height: 180,
-  },
-  searchHeaderInputContainer: {
-    marginTop: -40,
-    zIndex: 10,
-  },
 });

@@ -16,6 +16,9 @@
         "distribution": "store",
         "credentialsSource": "remote"
       },
+      "android": {
+        "distribution": "store"
+      },
       "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_MALSAMI_SERVER_BASEURL": "$EXPO_PUBLIC_MALSAMI_SERVER_BASEURL"
@@ -27,6 +30,10 @@
       "ios": {
         "ascAppId": "6749496318",
         "appleId": "kjh002899@gmail.com"
+      },
+      "android": {
+        "serviceAccountKeyPath": "./service-account.json",
+        "track": "internal"
       }
     }
   }

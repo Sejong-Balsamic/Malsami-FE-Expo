@@ -55,11 +55,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingVertical: 14,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.GRAY_175,
   },
   activeTabItem: {
-    borderBottomWidth: 2,
-    borderBottomColor: colors.PRIMARY_COLOR,
+    borderBottomWidth: 4,
+    borderBottomColor: colors.PRIMARY_DOCUMENT_COLOR,
   },
   tabText: {
     fontSize: 16,
@@ -67,6 +68,6 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     fontWeight: "bold",
-    color: colors.PRIMARY_COLOR,
+    color: colors.PRIMARY_DOCUMENT_COLOR,
   },
 });

@@ -45,7 +45,12 @@ function WelcomeSection({
       <View>
         <Text style={styles.welcomeText}>
           반가워요,{" "}
-          <Text style={[styles.welcomeText, { color: colors.PRIMARY_COLOR }]}>
+          <Text
+            style={[
+              styles.welcomeText,
+              { color: colors.PRIMARY_DOCUMENT_COLOR },
+            ]}
+          >
             {myData.studentName}
           </Text>
           님!
@@ -84,7 +89,7 @@ const styles = StyleSheet.create({
   characterIcon: {
     width: 136,
     height: 136,
-    backgroundColor: colors.PRIMARY_COLOR,
+    backgroundColor: colors.PRIMARY_DOCUMENT_COLOR,
     borderRadius: 68,
   },
   buttonContainer: {
@@ -95,7 +100,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     width: "100%",
-    height: 50,
+    height: 52,
   },
 });
 
