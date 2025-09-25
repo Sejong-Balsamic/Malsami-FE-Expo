@@ -23,6 +23,8 @@ function useGetDailyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
       queryKeys.GET_DAILY_DOCUMENTS,
     ],
     enabled,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
   });
 
   useEffect(() => {
@@ -45,6 +47,8 @@ function useGetWeeklyDocuments({ enabled = true }: UseGetDocumentsProps = {}) {
       queryKeys.GET_WEEKLY_DOCUMENTS,
     ],
     enabled,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
   });
 
   useEffect(() => {
@@ -67,6 +71,8 @@ function useGetDocumentsFilter({ enabled = true }: UseGetDocumentsProps = {}) {
       queryKeys.GET_FILTERED_DOCUMENTS,
     ],
     enabled,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
   });
 
   useEffect(() => {
