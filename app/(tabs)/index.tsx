@@ -11,6 +11,11 @@ import {
   useGetDailyDocuments,
   useGetWeeklyDocuments,
 } from "@/hooks/queries/useGetDocuments";
+import {
+  useGetDailyQuestions,
+  useGetWeeklyQuestions,
+  useGetQuestionsFilter,
+} from "@/hooks/queries/useGetQuestions";
 import Toast from "react-native-toast-message";
 import { useAuthModal } from "@/context/AuthModalContext";
 import AuthRouteModal from "@/components/auth/AuthRouteModal";
@@ -21,25 +26,62 @@ export default function HomeScreen() {
   const { auth } = useAuth();
   const { isVisible, hide, show } = useAuthModal();
 
-  const { refetch: refetchDailyDocuments } = useGetDailyDocuments();
-  const { refetch: refetchWeeklyDocuments } = useGetWeeklyDocuments();
-  const { refetch: refetchNoticePosts } = useGetNoticeFilter({
-    enabled: false,
+  const dailyDocumentsQuery = useGetDailyDocuments({
+    enabled: !!auth?.memberId,
+  });
+  const weeklyDocumentsQuery = useGetWeeklyDocuments({
+    enabled: !!auth?.memberId,
+  });
+  const dailyQuestionsQuery = useGetDailyQuestions({
+    enabled: !!auth?.memberId,
+  });
+  const weeklyQuestionsQuery = useGetWeeklyQuestions({
+    enabled: !!auth?.memberId,
+  });
+  const questionsFilterQuery = useGetQuestionsFilter({
+    enabled: !!auth?.memberId,
+  });
+  const noticeQuery = useGetNoticeFilter({
+    enabled: true,
   });
 
   useFocusEffect(
     useCallback(() => {
-      console.log("메인 화면 포커스 - 데이터 로드 시작");
-      refetchNoticePosts();
+      console.log("메인 화면 포커스 - 캐시 상태 확인");
+      if (noticeQuery.isStale) {
+        console.log("공지사항 데이터가 stale 상태 - 재조회");
+        noticeQuery.refetch();
+      }
       if (auth?.memberId) {
-        refetchDailyDocuments();
-        refetchWeeklyDocuments();
+        if (dailyDocumentsQuery.isStale) {
+          console.log("일일 문서 데이터가 stale 상태 - 재조회");
+          dailyDocumentsQuery.refetch();
+        }
+        if (weeklyDocumentsQuery.isStale) {
+          console.log("주간 문서 데이터가 stale 상태 - 재조회");
+          weeklyDocumentsQuery.refetch();
+        }
+        if (dailyQuestionsQuery.isStale) {
+          console.log("일일 질문 데이터가 stale 상태 - 재조회");
+          dailyQuestionsQuery.refetch();
+        }
+        if (weeklyQuestionsQuery.isStale) {
+          console.log("주간 질문 데이터가 stale 상태 - 재조회");
+          weeklyQuestionsQuery.refetch();
+        }
+        if (questionsFilterQuery.isStale) {
+          console.log("필터된 질문 데이터가 stale 상태 - 재조회");
+          questionsFilterQuery.refetch();
+        }
       }
     }, [
-      auth?.memberId,
-      refetchDailyDocuments,
-      refetchWeeklyDocuments,
-      refetchNoticePosts,
+      auth?.memberId, // Document 쿼리 의존성
+      dailyDocumentsQuery,
+      weeklyDocumentsQuery,
+      dailyQuestionsQuery,
+      weeklyQuestionsQuery,
+      questionsFilterQuery,
+      noticeQuery,
     ])
   );
 
