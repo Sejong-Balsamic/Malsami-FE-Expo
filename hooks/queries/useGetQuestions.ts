@@ -23,6 +23,8 @@ function useGetDailyQuestions({ enabled = true }: UseGetQuestionsProps = {}) {
       queryKeys.GET_DAILY_QUESTIONS,
     ],
     enabled,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
   });
 
   useEffect(() => {
@@ -45,6 +47,8 @@ function useGetWeeklyQuestions({ enabled = true }: UseGetQuestionsProps = {}) {
       queryKeys.GET_WEEKLY_QUESTIONS,
     ],
     enabled,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
   });
 
   useEffect(() => {
@@ -67,6 +71,8 @@ function useGetQuestionsFilter({ enabled = true }: UseGetQuestionsProps = {}) {
       queryKeys.GET_FILTERED_QUESTIONS,
     ],
     enabled,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
   });
 
   useEffect(() => {
