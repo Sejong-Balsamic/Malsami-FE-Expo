@@ -35,7 +35,7 @@ export default function HotPostLayout() {
         name="[id]"
         options={{
           headerShown: true,
-          headerTitle: "HOT 인기자료",
+          headerTitle: "자료 상세보기",
           headerBackButtonDisplayMode: "minimal",
         }}
       />
