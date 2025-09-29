@@ -28,4 +28,16 @@ async function getDocumentsFilter(): Promise<DocumentDto> {
   return data;
 }
 
-export { getDailyDocuments, getWeeklyDocuments, getDocumentsFilter };
+async function getDocumentPost(documentPostId: string): Promise<DocumentDto> {
+  const body = new FormData();
+  body.append("documentPostId", documentPostId);
+  const { data } = await axiosInstance.post("/api/document/get", body);
+  return data;
+}
+
+export {
+  getDailyDocuments,
+  getWeeklyDocuments,
+  getDocumentsFilter,
+  getDocumentPost,
+};
