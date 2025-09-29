@@ -142,7 +142,7 @@ export default function HomeScreen() {
               if (!auth?.memberId) {
                 return show();
               }
-              console.log(`자료 상세: ${id}`);
+              router.push(`/hotpost/${id}?type=document`);
             }}
           />
           <DocumentBoardList
@@ -157,8 +157,7 @@ export default function HomeScreen() {
               if (!auth?.memberId) {
                 return show();
               }
-              // TODO: 자료 게시판 상세 페이지로 이동
-              console.log(`자료 게시판 상세: ${id}`);
+              router.push(`/hotpost/${id}?type=document`);
             }}
           />
           <HotQuestionFeedList
@@ -172,7 +171,7 @@ export default function HomeScreen() {
               if (!auth?.memberId) {
                 return show();
               }
-              console.log(`자료 상세: ${id}`);
+              router.push(`/hotpost/${id}?type=question`);
             }}
           />
           <QuestionBoardList
@@ -186,7 +185,7 @@ export default function HomeScreen() {
               if (!auth?.memberId) {
                 return show();
               }
-              console.log(`질문 게시판 상세: ${id}`);
+              router.push(`/hotpost/${id}?type=question`);
             }}
           />
         </View>
