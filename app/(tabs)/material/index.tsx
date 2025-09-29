@@ -1,3 +1,4 @@
+import ClassBar from "@/components/screen/tab/document/ClassBar";
 import SearchModalBox from "@/components/screen/tab/SearchModalBox";
 import { colors } from "@/constants";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
@@ -15,6 +16,9 @@ export default function MaterialHomeScreen() {
       </Text>
       <View style={styles.searchContainer}>
         <SearchModalBox type="document" onPress={() => {}} />
+      </View>
+      <View style={styles.classContainer}>
+        <ClassBar />
       </View>
     </SafeAreaView>
   );
@@ -35,6 +39,10 @@ const styles = StyleSheet.create({
     color: colors.UNCHANGED_BLACK,
   },
   searchContainer: {
+    paddingHorizontal: 20,
+    marginTop: 24,
+  },
+  classContainer: {
     paddingHorizontal: 20,
     marginTop: 24,
   },
