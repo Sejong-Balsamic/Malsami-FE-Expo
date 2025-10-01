@@ -73,8 +73,6 @@ export default function PostDetailScreen() {
     );
   }
 
-  const isDocument = postType === "document";
-
   const handleDownloadFile = (fileName: string) => {
     Alert.alert("파일 다운로드", `${fileName} 파일을 다운로드하시겠습니까?`);
   };
@@ -94,34 +92,21 @@ export default function PostDetailScreen() {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* 태그 섹션 */}
       <View style={styles.tagContainer}>
+        {/* HOT 태그 - isPopular가 true일 때만 표시 */}
+        {post?.isPopular && (
+          <View style={[styles.tag, styles.hotTag]}>
+            <Text style={styles.hotTagText}>HOT</Text>
+          </View>
+        )}
+
+        {/* 과목 태그 */}
         {post?.subject && (
           <View style={[styles.tag, styles.subjectTag]}>
             <Text style={styles.subjectTagText}>{post.subject}</Text>
           </View>
         )}
 
-        {/* {isDocument ? (
-          <>
-            {(post as any)?.documentTypes?.map(
-              (docType: any, index: number) => (
-                <View key={index} style={[styles.tag, styles.typeTag]}>
-                  <Text style={styles.typeTagText}>{docType}</Text>
-                </View>
-              )
-            )}
-          </>
-        ) : (
-          <>
-            {(post as any)?.questionPresetTags?.map(
-              (presetTag: any, index: number) => (
-                <View key={index} style={[styles.tag, styles.typeTag]}>
-                  <Text style={styles.typeTagText}>{presetTag}</Text>
-                </View>
-              )
-            )}
-          </>
-        )} */}
-
+        {/* 커스텀 태그들 */}
         {post?.customTags?.map((tag: string, index: number) => (
           <View key={index} style={[styles.tag, styles.customTag]}>
             <Text style={styles.customTagText}>{tag}</Text>
@@ -134,33 +119,15 @@ export default function PostDetailScreen() {
 
       {/* 메타 정보 */}
       <View style={styles.metaContainer}>
-        <View style={styles.authorInfo}>
-          <Text style={styles.authorName}>
-            {post?.member?.studentName || "익명"}
-          </Text>
-          <Text style={styles.metaText}>{formatDate(post?.createdDate)}</Text>
-        </View>
-        <View style={styles.statsContainer}>
+        <Text style={styles.authorName}>
+          {post?.member?.studentName || "익명"}
+        </Text>
+        <View style={styles.metaRow}>
           <View style={styles.statItem}>
-            <Ionicons name="eye-outline" size={16} color={colors.GRAY_600} />
+            <Ionicons name="eye-outline" size={16} color={colors.GRAY_500} />
             <Text style={styles.statText}>{post?.viewCount || 0}</Text>
           </View>
-          <View style={styles.statItem}>
-            <Ionicons name="heart-outline" size={16} color={colors.GRAY_600} />
-            <Text style={styles.statText}>{post?.likeCount || 0}</Text>
-          </View>
-          {!isDocument && (
-            <View style={styles.statItem}>
-              <Ionicons
-                name="chatbubble-outline"
-                size={16}
-                color={colors.GRAY_600}
-              />
-              <Text style={styles.statText}>
-                {(post as any)?.answerCount || 0}
-              </Text>
-            </View>
-          )}
+          <Text style={styles.metaText}>{formatDate(post?.createdDate)}</Text>
         </View>
       </View>
 
@@ -169,10 +136,9 @@ export default function PostDetailScreen() {
         <Text style={styles.content}>{post?.content}</Text>
       </View>
 
-      {/* 파일 섹션 (Document만) */}
-      {isDocument && files && files.length > 0 && (
+      {/* 파일 섹션 - Document 타입이고 파일이 있을 때만 표시 */}
+      {postType === "document" && files && files.length > 0 && (
         <View style={styles.filesContainer}>
-          <Text style={styles.filesTitle}>첨부 파일</Text>
           {files.map((file: any, index: number) => (
             <TouchableOpacity
               key={index}
@@ -182,19 +148,16 @@ export default function PostDetailScreen() {
               <View style={styles.fileInfo}>
                 <Ionicons
                   name="document-outline"
-                  size={20}
+                  size={24}
                   color={colors.PRIMARY_DOCUMENT_COLOR}
                 />
-                <Text style={styles.fileName}>{file.fileName}</Text>
-                <Text style={styles.fileSize}>
-                  {file.fileSize
-                    ? `${(file.fileSize / 1024 / 1024).toFixed(1)} MB`
-                    : ""}
+                <Text style={styles.fileName}>
+                  {file.fileName || `파일 ${index + 1}`}
                 </Text>
               </View>
               <Ionicons
                 name="download-outline"
-                size={20}
+                size={24}
                 color={colors.PRIMARY_DOCUMENT_COLOR}
               />
             </TouchableOpacity>
@@ -202,26 +165,31 @@ export default function PostDetailScreen() {
         </View>
       )}
 
-      {/* 액션 버튼들 */}
-      <View style={styles.actionContainer}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons
-            name={post?.isLiked ? "heart" : "heart-outline"}
-            size={24}
-            color={post?.isLiked ? "#FF4757" : colors.GRAY_600}
-          />
-          <Text style={styles.actionButtonText}>좋아요</Text>
-        </TouchableOpacity>
+      {/* 좋아요/북마크 섹션 */}
+      <View style={styles.interactionContainer}>
+        <View style={styles.interactionRow}>
+          <TouchableOpacity style={styles.interactionButton}>
+            <Ionicons
+              name={post?.isLiked ? "heart" : "heart-outline"}
+              size={20}
+              color={post?.isLiked ? "#FF4757" : colors.GRAY_500}
+            />
+            <Text style={styles.interactionText}>{post?.likeCount || 0}</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="bookmark-outline" size={24} color={colors.GRAY_600} />
-          <Text style={styles.actionButtonText}>북마크</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.actionButton}>
-          <Ionicons name="share-outline" size={24} color={colors.GRAY_600} />
-          <Text style={styles.actionButtonText}>공유</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.interactionButton}>
+            <Ionicons
+              name="chatbubble-outline"
+              size={20}
+              color={colors.GRAY_500}
+            />
+            <Text style={styles.interactionText}>
+              {postType === "question"
+                ? (post as any)?.answerCount || 0
+                : (post as any)?.commentCount || 0}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* 하단 여백 */}
@@ -286,13 +254,21 @@ const styles = StyleSheet.create({
   tagContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginBottom: 16,
-    gap: 8,
+    marginBottom: 12,
+    gap: 4,
   },
   tag: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  hotTag: {
+    backgroundColor: "#FF6723",
+  },
+  hotTagText: {
+    color: colors.UNCHANGED_WHITE,
+    fontSize: 12,
+    fontWeight: "700",
   },
   subjectTag: {
     backgroundColor: colors.PRIMARY_DOCUMENT_COLOR,
@@ -301,14 +277,6 @@ const styles = StyleSheet.create({
     color: colors.UNCHANGED_WHITE,
     fontSize: 12,
     fontWeight: "600",
-  },
-  typeTag: {
-    backgroundColor: colors.PRIMARY_DOCUMENT_COLOR,
-  },
-  typeTagText: {
-    color: colors.UNCHANGED_WHITE,
-    fontSize: 12,
-    fontWeight: "500",
   },
   customTag: {
     backgroundColor: colors.GRAY_100,
@@ -319,37 +287,29 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 18,
+    fontWeight: "600",
     color: colors.UNCHANGED_BLACK,
-    marginBottom: 16,
-    lineHeight: 32,
+    marginBottom: 8,
+    lineHeight: 24,
   },
   metaContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.GRAY_100,
-  },
-  authorInfo: {
-    flex: 1,
+    marginBottom: 16,
   },
   authorName: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.GRAY_150,
+    fontSize: 14,
+    fontWeight: "500",
+    color: colors.GRAY_500,
     marginBottom: 4,
   },
-  metaText: {
-    fontSize: 14,
-    color: colors.GRAY_600,
-  },
-  statsContainer: {
+  metaRow: {
     flexDirection: "row",
-    gap: 16,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  metaText: {
+    fontSize: 12,
+    color: colors.GRAY_500,
   },
   statItem: {
     flexDirection: "row",
@@ -357,37 +317,50 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statText: {
-    fontSize: 14,
-    color: colors.GRAY_600,
+    fontSize: 12,
+    color: colors.GRAY_500,
   },
   contentContainer: {
-    marginBottom: 32,
+    marginBottom: 20,
+  },
+  contentTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: colors.UNCHANGED_BLACK,
+    marginBottom: 12,
+  },
+  imageContainer: {
+    marginBottom: 16,
+  },
+  imagePlaceholder: {
+    width: 120,
+    height: 80,
+    backgroundColor: colors.GRAY_200,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imagePlaceholderText: {
+    fontSize: 12,
+    color: colors.GRAY_500,
   },
   content: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: colors.GRAY_150,
+    fontSize: 14,
+    lineHeight: 20,
+    color: colors.UNCHANGED_BLACK,
   },
   filesContainer: {
-    marginBottom: 32,
-    padding: 16,
-    backgroundColor: colors.GRAY_50,
-    borderRadius: 12,
-  },
-  filesTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: colors.GRAY_150,
-    marginBottom: 12,
+    marginBottom: 20,
   },
   fileItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 12,
+    padding: 16,
     backgroundColor: colors.UNCHANGED_WHITE,
     borderRadius: 8,
-    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: colors.GRAY_100,
   },
   fileInfo: {
     flexDirection: "row",
@@ -398,29 +371,28 @@ const styles = StyleSheet.create({
   fileName: {
     fontSize: 14,
     fontWeight: "500",
-    color: colors.UNCHANGED_BLACK,
+    color: colors.PRIMARY_DOCUMENT_COLOR,
     flex: 1,
   },
-  fileSize: {
-    fontSize: 12,
-    color: colors.GRAY_600,
-  },
-  actionContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingTop: 24,
+  interactionContainer: {
+    paddingTop: 16,
     borderTopWidth: 1,
     borderTopColor: colors.GRAY_100,
-    marginBottom: 32,
+    marginBottom: 20,
   },
-  actionButton: {
+  interactionRow: {
+    flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: 16,
   },
-  actionButtonText: {
-    fontSize: 12,
-    color: colors.GRAY_600,
-    fontWeight: "500",
+  interactionButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  interactionText: {
+    fontSize: 14,
+    color: colors.GRAY_500,
   },
   bottomSpace: {
     height: 40,
