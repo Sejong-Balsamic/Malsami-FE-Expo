@@ -81,6 +81,25 @@ export default function SearchModal({
     }
   };
 
+  // 개별 검색어 삭제
+  const deleteRecentSearch = async (searchTerm: string) => {
+    try {
+      const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+      if (stored) {
+        let searches: string[] = JSON.parse(stored);
+        searches = searches.filter((item) => item !== searchTerm);
+
+        await AsyncStorage.setItem(
+          RECENT_SEARCHES_KEY,
+          JSON.stringify(searches)
+        );
+        setRecentSearches(searches);
+      }
+    } catch (error) {
+      console.error("Failed to delete recent search:", error);
+    }
+  };
+
   useEffect(() => {
     if (visible) {
       setInputValue("");
@@ -320,6 +339,8 @@ export default function SearchModal({
                     key={index}
                     tagName={searchTerm}
                     onPress={handleRecentSearchSelect}
+                    onDelete={deleteRecentSearch}
+                    showDeleteButton={true}
                   />
                 ))}
                 {recentSearches.length === 0 && (
