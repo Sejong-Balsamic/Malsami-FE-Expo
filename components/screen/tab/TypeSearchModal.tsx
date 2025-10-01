@@ -1,15 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   View,
+  ScrollView,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import TypeSearchInput from "./TypeSearchInput";
 import { colors } from "@/constants";
-import { FlatList } from "react-native";
 import RecentSearchTags from "./RecentSearchTags";
 
 interface TypeSearchModalProps {
@@ -20,12 +20,8 @@ interface TypeSearchModalProps {
   type: "document" | "question";
 }
 
-const recentSearchTags = [
-  "플렉시테리언",
-  "오보 베지테리언",
-  "페스코 베지테리언",
-  "비건",
-];
+const RECENT_SEARCHES_KEY = "recent_searches";
+const MAX_RECENT_SEARCHES = 10;
 
 function TypeSearchModal({
   visible,
@@ -34,9 +30,84 @@ function TypeSearchModal({
   placeholder = "과목명, 키워드 등을 입력하세요",
   type = "document",
 }: TypeSearchModalProps) {
-  const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const textInputRef = useRef<TextInput>(null);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+
+  const loadRecentSearches = async () => {
+    try {
+      const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+      if (stored) {
+        const searches = JSON.parse(stored);
+        setRecentSearches(searches);
+      }
+    } catch (error) {
+      console.error("Failed to load recent searches:", error);
+    }
+  };
+
+  const saveRecentSearch = async (searchTerm: string) => {
+    try {
+      const trimmedTerm = searchTerm.trim();
+      if (!trimmedTerm) return;
+
+      const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+      let searches: string[] = stored ? JSON.parse(stored) : [];
+
+      searches = searches.filter((item) => item !== trimmedTerm);
+
+      searches.unshift(trimmedTerm);
+
+      if (searches.length > MAX_RECENT_SEARCHES) {
+        searches = searches.slice(0, MAX_RECENT_SEARCHES);
+      }
+
+      await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
+      setRecentSearches(searches);
+    } catch (error) {
+      console.error("Failed to save recent search:", error);
+    }
+  };
+
+  const deleteRecentSearch = async (searchTerm: string) => {
+    try {
+      const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+      if (stored) {
+        let searches: string[] = JSON.parse(stored);
+        searches = searches.filter((item) => item !== searchTerm);
+
+        await AsyncStorage.setItem(
+          RECENT_SEARCHES_KEY,
+          JSON.stringify(searches)
+        );
+        setRecentSearches(searches);
+      }
+    } catch (error) {
+      console.error("Failed to delete recent search:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (visible) {
+      setInputValue("");
+      loadRecentSearches();
+    }
+  }, [visible]);
+
+  const handleSearch = async (query: string) => {
+    const trimmedQuery = query.trim();
+    if (onSearch && trimmedQuery) {
+      await saveRecentSearch(trimmedQuery);
+      onSearch(trimmedQuery);
+    }
+  };
+
+  const handleRecentSearchSelect = async (searchTerm: string) => {
+    setInputValue(searchTerm);
+    if (onSearch) {
+      await saveRecentSearch(searchTerm);
+      onSearch(searchTerm);
+    }
+  };
 
   return (
     <Modal
@@ -51,17 +122,31 @@ function TypeSearchModal({
             onClose={onClose}
             value={inputValue}
             onChangeText={setInputValue}
+            onSearch={handleSearch}
           />
         </View>
         <View style={styles.recentSearchContainer}>
           <Text style={styles.recentSearchTitle}>최근 검색어</Text>
-          <FlatList
+          <ScrollView
             style={styles.recentSearchList}
-            data={recentSearchTags}
-            renderItem={({ item }) => <RecentSearchTags tagName={item} />}
             horizontal
             showsHorizontalScrollIndicator={false}
-          />
+          >
+            {recentSearches.map((searchTerm, index) => (
+              <RecentSearchTags
+                key={index}
+                tagName={searchTerm}
+                onPress={handleRecentSearchSelect}
+                onDelete={deleteRecentSearch}
+                showDeleteButton={true}
+              />
+            ))}
+            {recentSearches.length === 0 && (
+              <Text style={styles.noRecentSearchText}>
+                최근 검색어가 없습니다
+              </Text>
+            )}
+          </ScrollView>
         </View>
       </SafeAreaView>
     </Modal>
@@ -89,6 +174,12 @@ const styles = StyleSheet.create({
   recentSearchList: {
     paddingVertical: 12,
     gap: 8,
+  },
+  noRecentSearchText: {
+    fontSize: 14,
+    color: colors.GRAY_400,
+    fontStyle: "italic",
+    paddingVertical: 8,
   },
 });
 
