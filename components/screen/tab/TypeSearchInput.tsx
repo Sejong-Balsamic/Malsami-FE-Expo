@@ -12,11 +12,13 @@ import {
 interface TypeSearchInputProps extends TextInputProps {
   type: "document" | "question";
   onClose: () => void;
+  onSearch?: (query: string) => void;
 }
 
 function TypeSearchInput({
   type,
   onClose,
+  onSearch,
   placeholder = "과목명, 키워드 등을 입력하세요",
   ...props
 }: TypeSearchInputProps) {
@@ -24,13 +26,33 @@ function TypeSearchInput({
     type === "document"
       ? colors.PRIMARY_DOCUMENT_COLOR
       : colors.PRIMARY_QUESTION_COLOR;
+
+  const handleSearch = () => {
+    const value = props.value as string;
+    if (onSearch && value?.trim()) {
+      onSearch(value.trim());
+    }
+  };
+
+  const handleSubmitEditing = () => {
+    handleSearch();
+  };
+
   return (
     <View style={[styles.container, { borderColor: color }]}>
       <Pressable onPress={onClose}>
         <Ionicons name="chevron-back" size={24} color={color} />
       </Pressable>
-      <TextInput style={styles.input} placeholder={placeholder} {...props} />
-      <Ionicons name="search-outline" size={24} color={color} />
+      <TextInput
+        style={styles.input}
+        placeholder={placeholder}
+        returnKeyType="search"
+        onSubmitEditing={handleSubmitEditing}
+        {...props}
+      />
+      <Pressable onPress={handleSearch}>
+        <Ionicons name="search-outline" size={24} color={color} />
+      </Pressable>
     </View>
   );
 }
